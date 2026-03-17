@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SewLink — Trusted Tailoring Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ── RESET & BASE ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: #faf9f7; color: #1a1a1a; font-size: 14px; line-height: 1.6; min-height: 100vh; }
+
+  /* ── CSS VARIABLES ── */
+  :root {
+    --bg: #faf9f7;
+    --bg2: #f3f2ef;
+    --white: #ffffff;
+    --text: #1a1a1a;
+    --text2: #5a5a5a;
+    --text3: #9a9a9a;
+    --border: rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.18);
+    --green: #1D9E75;
+    --green-bg: #EAF3DE;
+    --green-text: #3B6D11;
+    --blue: #378ADD;
+    --blue-bg: #E6F1FB;
+    --blue-text: #185FA5;
+    --amber-bg: #FAEEDA;
+    --amber-text: #854F0B;
+    --red-bg: #FCEBEB;
+    --red-text: #A32D2D;
+    --warn-bg: #FAEEDA;
+    --warn-border: #FAC775;
+    --warn-text: #854F0B;
+    --warn-title: #633806;
+    --r: 8px;
+    --rl: 12px;
+    --shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+  .view { display: none; } .view.active { display: block; }
+  .page-pad { padding: 2rem 0 3rem; }
+
+  /* ── NAV ── */
+  .sl-nav { background: var(--white); border-bottom: 0.5px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .sl-nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .sl-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
+  .sl-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; letter-spacing: 0.06em; color: var(--text); }
+  .sl-wordmark em { font-style: italic; }
+  .sl-nav-links { display: flex; gap: 6px; list-style: none; }
+  .sl-nav-link { font-size: 13px; color: var(--text2); cursor: pointer; padding: 6px 12px; border-radius: var(--r); transition: all 0.15s; border: none; background: none; font-family: 'DM Sans', sans-serif; }
+  .sl-nav-link:hover, .sl-nav-link.active { color: var(--text); background: var(--bg2); }
+  .sl-nav-actions { display: flex; gap: 8px; align-items: center; }
+  .sl-mobile-menu { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 8px; }
+  .sl-mobile-menu span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; display: block; }
+
+  /* ── BUTTONS ── */
+  .btn { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 8px 18px; border-radius: var(--r); border: 0.5px solid var(--border2); background: transparent; color: var(--text); cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn:hover { background: var(--bg2); }
+  .btn-dark { background: var(--text); color: var(--white); border-color: var(--text); }
+  .btn-dark:hover { opacity: 0.85; background: var(--text); }
+  .btn-lg { padding: 12px 28px; font-size: 13px; }
+  .btn-block { width: 100%; justify-content: center; }
+  .btn:disabled, .btn.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+  /* ── FORMS ── */
+  .sl-input { width: 100%; padding: 10px 13px; border: 0.5px solid var(--border2); border-radius: var(--r); font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--white); color: var(--text); outline: none; transition: border-color 0.2s; }
+  .sl-input:focus { border-color: var(--text); }
+  .sl-input.blocked { border-color: var(--warn-border); background: #FAEEDA30; }
+  label.sl-label { font-size: 12px; font-weight: 500; color: var(--text2); display: block; margin-bottom: 5px; letter-spacing: 0.04em; }
+  .sl-field { margin-bottom: 14px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  textarea.sl-input { resize: vertical; min-height: 80px; }
+
+  /* ── CARDS ── */
+  .card { background: var(--white); border: 0.5px solid var(--border); border-radius: var(--rl); padding: 18px 20px; }
+  .card-surface { background: var(--bg2); border-radius: var(--rl); padding: 18px 20px; }
+
+  /* ── BADGES ── */
+  .badge { display: inline-block; font-size: 10px; padding: 2px 9px; border-radius: 10px; font-weight: 500; }
+  .badge-verified { background: var(--green-bg); color: var(--green-text); }
+  .badge-top { background: var(--amber-bg); color: var(--amber-text); }
+  .badge-new { background: var(--blue-bg); color: var(--blue-text); }
+  .badge-pending { background: var(--amber-bg); color: var(--amber-text); }
+  .badge-rejected { background: var(--red-bg); color: var(--red-text); }
+
+  /* ── DIVIDER ── */
+  hr { border: none; border-top: 0.5px solid var(--border); margin: 2rem 0; }
+
+  /* ── SECTION HEADINGS ── */
+  .sec-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; margin-bottom: 6px; }
+  .sec-sub { font-size: 13px; color: var(--text2); margin-bottom: 1.75rem; line-height: 1.7; }
+  .sub-label { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+
+  /* ── AVATAR ── */
+  .avatar { border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 500; flex-shrink: 0; }
+
+  /* ── STARS ── */
+  .stars { font-size: 11px; color: #BA7517; }
+
+  /* ════════════════════════════════
+     PAGE: HOME
+  ════════════════════════════════ */
+  .hero { text-align: center; padding: 4rem 0 3rem; }
+  .hero-logo { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 1.25rem; }
+  .hero-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 54px; font-weight: 300; letter-spacing: 0.06em; line-height: 1; }
+  .hero-wordmark em { font-style: italic; }
+  .hero-tagline { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text3); margin-bottom: 0.75rem; }
+  .hero-sub { font-size: 15px; color: var(--text2); max-width: 480px; margin: 0 auto 2rem; line-height: 1.8; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .hero-search { display: flex; align-items: center; max-width: 520px; margin: 0 auto; border: 0.5px solid var(--border2); border-radius: var(--rl); overflow: hidden; background: var(--white); }
+  .hero-search input { flex: 1; border: none; outline: none; padding: 13px 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; background: transparent; color: var(--text); }
+  .hero-search-btn { padding: 10px 22px; background: var(--text); color: var(--white); border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; margin: 4px; border-radius: var(--r); }
+
+  .stats-strip { display: grid; grid-template-columns: repeat(3, 1fr); border: 0.5px solid var(--border); border-radius: var(--rl); margin: 2.5rem 0; overflow: hidden; background: var(--white); }
+  .stat-item { padding: 20px; text-align: center; border-right: 0.5px solid var(--border); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; display: block; margin-bottom: 4px; }
+  .stat-label { font-size: 12px; color: var(--text2); }
+
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 2rem; }
+  .step-card { padding: 20px; border: 0.5px solid var(--border); border-radius: var(--rl); background: var(--white); }
+  .step-num { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; color: var(--text3); margin-bottom: 10px; line-height: 1; }
+  .step-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .step-desc { font-size: 12px; color: var(--text2); line-height: 1.7; }
+
+  .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 2rem 0; }
+  .trust-item { text-align: center; padding: 18px 12px; border: 0.5px solid var(--border); border-radius: var(--rl); background: var(--white); }
+  .trust-icon { font-size: 22px; margin-bottom: 8px; }
+  .trust-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .trust-desc { font-size: 11px; color: var(--text2); line-height: 1.6; }
+
+  .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 2rem; }
+  .cta-card { border: 0.5px solid var(--border); border-radius: var(--rl); padding: 28px 24px; background: var(--white); }
+  .cta-icon { font-size: 28px; margin-bottom: 12px; }
+  .cta-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; margin-bottom: 8px; }
+  .cta-desc { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 18px; }
+
+  /* ════════════════════════════════
+     PAGE: FIND A TAILOR
+  ════════════════════════════════ */
+  .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; }
+  .filter-label { font-size: 11px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; }
+  .tag { font-size: 12px; padding: 5px 14px; border-radius: 20px; border: 0.5px solid var(--border); color: var(--text2); cursor: pointer; background: transparent; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .tag.active, .tag:hover { border-color: var(--text); color: var(--text); background: var(--bg2); }
+
+  .tailor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .tailor-card { border: 0.5px solid var(--border); border-radius: var(--rl); padding: 18px; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; background: var(--white); }
+  .tailor-card:hover { border-color: var(--border2); box-shadow: var(--shadow); }
+  .tailor-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .tailor-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; margin-bottom: 2px; }
+  .tailor-sub { font-size: 12px; color: var(--text2); }
+  .specs { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .spec { font-size: 11px; padding: 3px 10px; border-radius: 10px; border: 0.5px solid var(--border); color: var(--text2); }
+  .tailor-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 0.5px solid var(--border); }
+  .price-from { font-family: 'Cormorant Garamond', serif; font-size: 16px; }
+
+  /* ════════════════════════════════
+     PAGE: TAILOR PROFILE
+  ════════════════════════════════ */
+  .back-link { font-size: 13px; color: var(--text2); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 1.5rem; background: none; border: none; font-family: 'DM Sans', sans-serif; }
+  .back-link:hover { color: var(--text); }
+  .profile-hero { display: flex; gap: 22px; align-items: flex-start; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 0.5px solid var(--border); }
+  .profile-name { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; margin-bottom: 4px; }
+  .profile-sub { font-size: 13px; color: var(--text2); margin-bottom: 10px; }
+  .profile-stats { display: flex; gap: 24px; margin-bottom: 14px; flex-wrap: wrap; }
+  .profile-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 22px; display: block; }
+  .profile-stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
+  .profile-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .profile-bio { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 2rem; max-width: 680px; }
+
+  .sl-tabs { display: flex; gap: 0; border-bottom: 0.5px solid var(--border); margin-bottom: 1.5rem; }
+  .sl-tab { padding: 10px 18px; font-size: 13px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -0.5px; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; }
+  .sl-tab.active { color: var(--text); font-weight: 500; border-bottom-color: var(--text); }
+  .tab-panel { display: none; } .tab-panel.active { display: block; }
+
+  .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 2rem; }
+  .portfolio-item { border-radius: var(--r); border: 0.5px solid var(--border); aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; }
+  .portfolio-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.45); color: #fff; font-size: 11px; padding: 6px 10px; opacity: 0; transition: opacity 0.2s; }
+  .portfolio-item:hover .portfolio-label { opacity: 1; }
+
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 2rem; }
+  .info-card { background: var(--bg2); border-radius: var(--rl); padding: 16px; }
+  .info-card-title { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+  .info-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 0.5px solid var(--border); }
+  .info-row:last-child { border-bottom: none; }
+  .info-row span:first-child { color: var(--text2); }
+  .info-row span:last-child { font-weight: 500; }
+
+  .review-card { border: 0.5px solid var(--border); border-radius: var(--rl); padding: 16px; margin-bottom: 10px; background: var(--white); }
+  .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+
+  /* ════════════════════════════════
+     PAGE: ORDER FORM
+  ════════════════════════════════ */
+  .order-layout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+  .order-summary-card { background: var(--bg2); border-radius: var(--rl); padding: 20px; height: fit-content; position: sticky; top: 80px; }
+  .summary-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 0.5px solid var(--border); }
+  .summary-row:last-child { border-bottom: none; font-weight: 500; font-size: 14px; }
+
+  /* ════════════════════════════════
+     PAGE: DASHBOARD
+  ════════════════════════════════ */
+  .dashboard-layout { display: grid; grid-template-columns: 210px 1fr; gap: 24px; min-height: 70vh; }
+  .dashboard-sidebar { border-right: 0.5px solid var(--border); padding-right: 20px; }
+  .sidebar-profile { text-align: center; padding: 16px 0 18px; border-bottom: 0.5px solid var(--border); margin-bottom: 14px; }
+  .sidebar-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; margin-bottom: 2px; }
+  .sidebar-role { font-size: 11px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; }
+  .dash-nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--r); font-size: 13px; cursor: pointer; color: var(--text2); margin-bottom: 2px; background: none; border: none; font-family: 'DM Sans', sans-serif; width: 100%; text-align: left; transition: all 0.15s; }
+  .dash-nav-item:hover, .dash-nav-item.active { background: var(--bg2); color: var(--text); }
+  .dash-nav-item.active { font-weight: 500; }
+  .dash-panel { display: none; } .dash-panel.active { display: block; }
+
+  .order-card { border: 0.5px solid var(--border); border-radius: var(--rl); padding: 16px 18px; margin-bottom: 12px; cursor: pointer; transition: border-color 0.2s; background: var(--white); }
+  .order-card:hover { border-color: var(--border2); }
+  .order-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; margin-bottom: 3px; }
+  .order-meta { font-size: 12px; color: var(--text2); }
+  .progress-bar { height: 4px; background: var(--bg2); border-radius: 2px; margin: 10px 0 6px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; background: var(--text); }
+  .progress-steps { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); }
+  .progress-steps span.done { color: var(--text); font-weight: 500; }
+
+  /* ════════════════════════════════
+     MESSAGING
+  ════════════════════════════════ */
+  .messages-layout { display: grid; grid-template-columns: 240px 1fr; border: 0.5px solid var(--border); border-radius: var(--rl); overflow: hidden; min-height: 520px; background: var(--white); }
+  .thread-list { border-right: 0.5px solid var(--border); }
+  .thread-list-header { padding: 13px 16px; border-bottom: 0.5px solid var(--border); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); }
+  .thread-item { padding: 13px 16px; border-bottom: 0.5px solid var(--border); cursor: pointer; transition: background 0.15s; }
+  .thread-item:hover, .thread-item.active { background: var(--bg2); }
+  .thread-name { font-size: 13px; font-weight: 500; }
+  .thread-time { font-size: 10px; color: var(--text3); }
+  .thread-preview { font-size: 12px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; margin-top: 2px; }
+  .unread-dot { width: 7px; height: 7px; border-radius: 50%; background: #D85A30; flex-shrink: 0; }
+
+  .chat-area { display: flex; flex-direction: column; flex: 1; }
+  .safe-banner { padding: 7px 18px; background: var(--green-bg); border-bottom: 0.5px solid #C0DD97; display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--green-text); font-weight: 500; }
+  .chat-header { padding: 12px 18px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .chat-messages { flex: 1; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; max-height: 300px; min-height: 180px; }
+  .msg { max-width: 74%; }
+  .msg-bubble { padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.6; }
+  .msg-in .msg-bubble { background: var(--bg2); border-radius: 4px 14px 14px 14px; }
+  .msg-out { align-self: flex-end; }
+  .msg-out .msg-bubble { background: var(--text); color: var(--white); border-radius: 14px 4px 14px 14px; }
+  .msg-time { font-size: 10px; color: var(--text3); margin-top: 3px; padding: 0 4px; }
+  .msg-out .msg-time { text-align: right; }
+  .msg-blocked .msg-bubble { border: 1px solid var(--warn-border); background: #FAEEDA20; }
+  .msg-blocked-label { font-size: 10px; font-weight: 500; color: var(--warn-text); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .msg-blocked-text { color: var(--text3); text-decoration: line-through; font-size: 12px; }
+
+  .warning-box { margin: 0 18px 8px; border-radius: var(--rl); padding: 14px 16px; border: 0.5px solid var(--warn-border); background: var(--warn-bg); display: none; gap: 10px; align-items: flex-start; }
+  .warning-box.show { display: flex; animation: fadeUp 0.25s ease; }
+  .warning-title { font-size: 13px; font-weight: 500; color: var(--warn-title); margin-bottom: 4px; }
+  .warning-text { font-size: 12px; color: var(--warn-text); line-height: 1.65; }
+  .warning-clear { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 500; color: var(--warn-text); cursor: pointer; text-decoration: underline; background: none; border: none; font-family: 'DM Sans', sans-serif; }
+
+  .chat-input-area { padding: 12px 16px; border-top: 0.5px solid var(--border); display: flex; gap: 8px; align-items: center; }
+  .chat-input { flex: 1; padding: 9px 14px; border: 0.5px solid var(--border2); border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; background: var(--white); color: var(--text); outline: none; transition: border-color 0.2s; }
+  .chat-input.blocked { border-color: var(--warn-border); background: #FAEEDA20; }
+  .send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--text); color: var(--white); border: none; cursor: pointer; font-size: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .send-btn.disabled { background: var(--border); color: var(--text3); cursor: not-allowed; opacity: 0.5; }
+
+  /* ════════════════════════════════
+     MEASUREMENTS
+  ════════════════════════════════ */
+  .measure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .measure-card { background: var(--bg2); border-radius: var(--rl); padding: 16px; }
+  .measure-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; }
+  .measure-row:last-child { border-bottom: none; }
+  .saved-badge { display: none; align-items: center; gap: 5px; font-size: 11px; padding: 3px 10px; border-radius: 10px; background: var(--green-bg); color: var(--green-text); font-weight: 500; }
+  .saved-badge.show { display: inline-flex; }
+
+  /* ════════════════════════════════
+     ONBOARDING
+  ════════════════════════════════ */
+  .ob-steps { display: flex; align-items: center; gap: 0; margin-bottom: 2rem; }
+  .ob-step { display: flex; align-items: center; gap: 8px; flex: 1; }
+  .ob-step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; border: 0.5px solid var(--border2); color: var(--text3); }
+  .ob-step.active .ob-step-num { background: var(--text); color: var(--white); border-color: var(--text); }
+  .ob-step.done .ob-step-num { background: var(--green-bg); color: var(--green-text); border-color: #C0DD97; }
+  .ob-step-label { font-size: 12px; color: var(--text3); }
+  .ob-step.active .ob-step-label { color: var(--text); font-weight: 500; }
+  .ob-step.done .ob-step-label { color: var(--green-text); }
+  .ob-line { flex: 1; height: 0.5px; background: var(--border); margin: 0 8px; }
+  .type-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.5rem; }
+  .type-card { border: 0.5px solid var(--border2); border-radius: var(--rl); padding: 20px; cursor: pointer; transition: border-color 0.2s; }
+  .type-card.selected { border: 2px solid var(--text); }
+  .type-icon { font-size: 28px; margin-bottom: 10px; }
+  .type-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; margin-bottom: 4px; }
+  .type-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .upload-box { border: 0.5px dashed var(--border2); border-radius: var(--rl); padding: 22px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; }
+  .upload-box:hover { border-color: var(--text); background: var(--bg2); }
+  .upload-box.uploaded { border-color: var(--green-text); background: var(--green-bg); }
+  .upload-box.uploaded .upload-title { color: var(--green-text); }
+  .upload-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .upload-sub { font-size: 12px; color: var(--text2); }
+  .checklist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+  .check-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; padding: 10px 12px; border-radius: var(--r); background: var(--bg2); }
+  .check-row-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .success-screen { text-align: center; padding: 3rem 0; }
+
+  /* ════════════════════════════════
+     ADMIN
+  ════════════════════════════════ */
+  .admin-tabs { display: flex; gap: 0; border-bottom: 0.5px solid var(--border); margin-bottom: 1.5rem; }
+  .admin-tab { padding: 10px 18px; font-size: 13px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -0.5px; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; }
+  .admin-tab.active { color: var(--text); font-weight: 500; border-bottom-color: var(--text); }
+  .admin-panel { display: none; } .admin-panel.active { display: block; }
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+  .metric { background: var(--bg2); border-radius: var(--r); padding: 16px; }
+  .metric-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; display: block; margin-bottom: 2px; }
+  .metric-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
+  .metric-change { font-size: 11px; color: var(--green-text); margin-top: 4px; }
+  .sl-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .sl-table th { text-align: left; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); padding: 8px 12px; border-bottom: 0.5px solid var(--border); }
+  .sl-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+  .sl-table tr:last-child td { border-bottom: none; }
+  .sl-table tr:hover td { background: var(--bg2); }
+  .action-link { font-size: 12px; color: var(--text2); cursor: pointer; text-decoration: underline; margin-right: 8px; background: none; border: none; font-family: 'DM Sans', sans-serif; }
+  .action-link:hover { color: var(--text); }
+
+  /* ════════════════════════════════
+     PAYMENT
+  ════════════════════════════════ */
+  .payment-layout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+  .card-icons { display: flex; gap: 6px; margin-bottom: 12px; }
+  .card-icon { width: 38px; height: 26px; border-radius: 4px; border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 500; color: var(--text2); }
+  .secure-note { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); margin-top: 12px; }
+
+  /* ════════════════════════════════
+     REVIEWS
+  ════════════════════════════════ */
+  .star-row { display: flex; gap: 4px; margin-bottom: 12px; }
+  .star { font-size: 26px; cursor: pointer; color: var(--border); transition: color 0.1s; }
+  .star.lit { color: #BA7517; }
+  .sub-star-row { display: flex; gap: 3px; }
+  .sub-star { font-size: 16px; cursor: pointer; color: var(--border); }
+  .sub-star.lit { color: #BA7517; }
+
+  /* ════════════════════════════════
+     ANIMATIONS
+  ════════════════════════════════ */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-4px)} 40%,80%{transform:translateX(4px)} }
+  .shake { animation: shake 0.35s ease; }
+
+  /* ════════════════════════════════
+     RESPONSIVE
+  ════════════════════════════════ */
+  @media (max-width: 768px) {
+    .sl-nav-links { display: none; }
+    .sl-mobile-menu { display: flex; }
+    .hero-wordmark { font-size: 36px; }
+    .steps-grid, .trust-grid, .cta-grid, .type-cards { grid-template-columns: 1fr; }
+    .stats-strip { grid-template-columns: 1fr; }
+    .stat-item { border-right: none; border-bottom: 0.5px solid var(--border); }
+    .stat-item:last-child { border-bottom: none; }
+    .tailor-grid { grid-template-columns: 1fr; }
+    .dashboard-layout { grid-template-columns: 1fr; }
+    .dashboard-sidebar { border-right: none; padding-right: 0; border-bottom: 0.5px solid var(--border); padding-bottom: 14px; margin-bottom: 14px; }
+    .messages-layout { grid-template-columns: 1fr; }
+    .thread-list { border-right: none; border-bottom: 0.5px solid var(--border); max-height: 200px; overflow-y: auto; }
+    .order-layout, .payment-layout { grid-template-columns: 1fr; }
+    .order-summary-card { position: static; }
+    .info-grid, .measure-grid, .metrics-grid { grid-template-columns: 1fr; }
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    .row2, .row3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAVIGATION ══ -->
+<nav class="sl-nav">
+  <div class="container">
+    <div class="sl-nav-inner">
+      <a class="sl-logo" onclick="showPage('home')">
+        <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="#1D9E75" stroke-width="3"/>
+          <path d="M50 4 C28 4 10 22 10 50 C10 78 28 96 50 96" stroke="#1D9E75" stroke-width="11" fill="none" stroke-linecap="round"/>
+          <path d="M50 4 C72 4 90 22 90 50 C90 78 72 96 50 96" stroke="#378ADD" stroke-width="11" fill="none" stroke-linecap="round"/>
+          <path d="M8 38 C20 32 38 28 60 30 C80 32 92 40 94 50" stroke="#378ADD" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M6 58 C18 70 34 76 56 74 C76 72 90 64 94 50" stroke="#1D9E75" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <line x1="62" y1="8" x2="42" y2="88" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="64" cy="13" rx="5" ry="7" fill="#1a1a1a" transform="rotate(-20 64 13)"/>
+          <ellipse cx="64" cy="13" rx="2.5" ry="3.5" fill="white" transform="rotate(-20 64 13)"/>
+          <path d="M40 85 C38 90 35 93 38 95 C41 97 44 93 43 88" fill="#378ADD"/>
+        </svg>
+        <span class="sl-wordmark">Sew<em>Link</em></span>
+      </a>
+      <ul class="sl-nav-links">
+        <li><button class="sl-nav-link active" id="nav-home" onclick="showPage('home',this)">Home</button></li>
+        <li><button class="sl-nav-link" id="nav-tailors" onclick="showPage('tailors',this)">Find a tailor</button></li>
+        <li><button class="sl-nav-link" id="nav-how" onclick="showPage('how',this)">How it works</button></li>
+        <li><button class="sl-nav-link" id="nav-dashboard" onclick="showPage('dashboard',this)">Dashboard</button></li>
+        <li><button class="sl-nav-link" id="nav-join" onclick="showPage('onboarding',this)">Join as tailor</button></li>
+        <li><button class="sl-nav-link" id="nav-admin" onclick="showPage('admin',this)">Admin</button></li>
+      </ul>
+      <div class="sl-nav-actions">
+        <button class="btn" onclick="showPage('dashboard')">Sign in</button>
+        <button class="btn btn-dark" onclick="showPage('tailors')">Find a tailor ↗</button>
+      </div>
+      <div class="sl-mobile-menu" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div class="view active" id="page-home">
+  <div class="container">
+    <div class="hero">
+      <div class="hero-logo">
+        <svg width="58" height="58" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="#1D9E75" stroke-width="3"/>
+          <path d="M50 4 C28 4 10 22 10 50 C10 78 28 96 50 96" stroke="#1D9E75" stroke-width="11" fill="none" stroke-linecap="round"/>
+          <path d="M50 4 C72 4 90 22 90 50 C90 78 72 96 50 96" stroke="#378ADD" stroke-width="11" fill="none" stroke-linecap="round"/>
+          <path d="M8 38 C20 32 38 28 60 30 C80 32 92 40 94 50" stroke="#378ADD" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M6 58 C18 70 34 76 56 74 C76 72 90 64 94 50" stroke="#1D9E75" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <line x1="62" y1="8" x2="42" y2="88" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="64" cy="13" rx="5" ry="7" fill="#1a1a1a" transform="rotate(-20 64 13)"/>
+          <ellipse cx="64" cy="13" rx="2.5" ry="3.5" fill="white" transform="rotate(-20 64 13)"/>
+          <path d="M40 85 C38 90 35 93 38 95 C41 97 44 93 43 88" fill="#378ADD"/>
+        </svg>
+        <div class="hero-wordmark">Sew<em>Link</em></div>
+      </div>
+      <div class="hero-tagline">Trusted Tailoring Marketplace</div>
+      <div class="hero-sub">Connecting African mothers and young women with verified, skilled tailors across America — custom orders, traditional styles, made just for you.</div>
+      <div class="hero-btns">
+        <button class="btn btn-dark btn-lg" onclick="showPage('tailors')">Find a tailor ↗</button>
+        <button class="btn btn-lg" onclick="showPage('onboarding')">Join as tailor ↗</button>
+      </div>
+      <div class="hero-search">
+        <input type="text" placeholder="Search by specialty, city — Ankara, Kente, Bridal..." />
+        <button class="hero-search-btn" onclick="showPage('tailors')">Search</button>
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-item"><span class="stat-num">62</span><span class="stat-label">Verified tailors across America</span></div>
+      <div class="stat-item"><span class="stat-num">1,200+</span><span class="stat-label">Happy customers served</span></div>
+      <div class="stat-item"><span class="stat-num">4.9 ★</span><span class="stat-label">Average tailor rating</span></div>
+    </div>
+
+    <hr />
+    <div class="sec-title">How SewLink works</div>
+    <div class="sec-sub">Three simple steps to get your perfect custom outfit — safely and conveniently.</div>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-num">01</div><div class="step-title">Find your tailor</div><div class="step-desc">Browse verified African tailors by specialty, location, and style. Read real customer reviews before you commit.</div></div>
+      <div class="step-card"><div class="step-num">02</div><div class="step-title">Place a custom order</div><div class="step-desc">Share your saved measurements, style inspiration, and occasion. Your tailor crafts your outfit to your exact specifications.</div></div>
+      <div class="step-card"><div class="step-num">03</div><div class="step-title">Pay safely & receive</div><div class="step-desc">Your payment is held in escrow and only released when you confirm your order is perfect. Full refund protection always.</div></div>
+    </div>
+
+    <div class="trust-grid">
+      <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-title">Secure payments</div><div class="trust-desc">All payments held in escrow until you confirm delivery</div></div>
+      <div class="trust-item"><div class="trust-icon">✅</div><div class="trust-title">Verified tailors</div><div class="trust-desc">Every tailor identity-verified before joining SewLink</div></div>
+      <div class="trust-item"><div class="trust-icon">📐</div><div class="trust-title">Saved measurements</div><div class="trust-desc">Your measurements saved for easy repeat orders</div></div>
+      <div class="trust-item"><div class="trust-icon">💬</div><div class="trust-title">Protected messaging</div><div class="trust-desc">All conversations stay safely inside SewLink</div></div>
+    </div>
+
+    <hr />
+    <div class="sec-title">Featured tailors</div>
+    <div class="sec-sub">Verified, highly rated tailors ready to take your order.</div>
+    <div class="tailor-grid" style="margin-bottom:1.5rem;">
+      <div class="tailor-card" onclick="openTailorProfile(0)">
+        <div class="tailor-header"><div class="avatar" style="width:46px;height:46px;background:#FBEAF0;color:#993556;font-size:14px;">AA</div><div><div style="display:flex;align-items:center;gap:6px;"><div class="tailor-name">Adaeze Anioke</div><span class="badge badge-top">Top tailor</span></div><div class="tailor-sub">Atlanta, GA · Nigerian heritage</div></div></div>
+        <div class="specs"><span class="spec">Ankara</span><span class="spec">Aso-ebi</span><span class="spec">Bridal</span><span class="spec">Lace</span></div>
+        <div class="tailor-footer"><div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#9a9a9a;">4.9 · 87 orders</span></div><div class="price-from">From $120</div></div>
+      </div>
+      <div class="tailor-card" onclick="openTailorProfile(1)">
+        <div class="tailor-header"><div class="avatar" style="width:46px;height:46px;background:#E1F5EE;color:#0F6E56;font-size:14px;">GO</div><div><div style="display:flex;align-items:center;gap:6px;"><div class="tailor-name">Grace Owusu</div><span class="badge badge-verified">Verified</span></div><div class="tailor-sub">New York, NY · Ghanaian heritage</div></div></div>
+        <div class="specs"><span class="spec">Kente</span><span class="spec">Kaba & Slit</span><span class="spec">Kids & Family</span></div>
+        <div class="tailor-footer"><div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#9a9a9a;">5.0 · 64 orders</span></div><div class="price-from">From $95</div></div>
+      </div>
+      <div class="tailor-card" onclick="openTailorProfile(5)">
+        <div class="tailor-header"><div class="avatar" style="width:46px;height:46px;background:#EAF3DE;color:#3B6D11;font-size:14px;">BA</div><div><div style="display:flex;align-items:center;gap:6px;"><div class="tailor-name">Blessing Abiodun</div><span class="badge badge-top">Top tailor</span></div><div class="tailor-sub">Chicago, IL · Nigerian heritage</div></div></div>
+        <div class="specs"><span class="spec">Ankara</span><span class="spec">Lace</span><span class="spec">Aso-ebi</span><span class="spec">Kids</span></div>
+        <div class="tailor-footer"><div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#9a9a9a;">4.9 · 102 orders</span></div><div class="price-from">From $90</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-bottom:3rem;">
+      <button class="btn btn-dark" onclick="showPage('tailors')">View all tailors ↗</button>
+    </div>
+
+    <div class="cta-grid">
+      <div class="cta-card"><div class="cta-icon">👗</div><div class="cta-title">Looking for a tailor?</div><div class="cta-desc">Browse verified African tailors across America. Find your perfect match by specialty and location, and order custom outfits safely through SewLink.</div><button class="btn btn-dark" onclick="showPage('tailors')">Find a tailor ↗</button></div>
+      <div class="cta-card"><div class="cta-icon">🧵</div><div class="cta-title">Are you a tailor?</div><div class="cta-desc">Join SewLink and reach hundreds of customers looking for your skills. Get verified, build your profile, and grow your tailoring business.</div><button class="btn btn-dark" onclick="showPage('onboarding')">Join as tailor ↗</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FIND A TAILOR ══ -->
+<div class="view" id="page-tailors">
+  <div class="container page-pad">
+    <div class="sec-title">Find a tailor</div>
+    <div class="sec-sub">All tailors are identity-verified before joining SewLink.</div>
+    <div style="display:flex;gap:12px;margin-bottom:1.25rem;flex-wrap:wrap;">
+      <input class="sl-input" style="flex:1;min-width:200px;" placeholder="Search by name, specialty, or city..." />
+      <select class="sl-input" style="width:180px;"><option>All US states</option><option>Georgia</option><option>New York</option><option>Texas</option><option>Illinois</option><option>California</option><option>Washington DC</option></select>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Specialty:</span>
+      <button class="tag active" onclick="setFilter(this)">All</button>
+      <button class="tag" onclick="setFilter(this)">Ankara</button>
+      <button class="tag" onclick="setFilter(this)">Kente</button>
+      <button class="tag" onclick="setFilter(this)">Bridal</button>
+      <button class="tag" onclick="setFilter(this)">Aso-ebi</button>
+      <button class="tag" onclick="setFilter(this)">Kids & Family</button>
+      <button class="tag" onclick="setFilter(this)">Alterations</button>
+    </div>
+    <div class="tailor-grid" id="tailor-browse-grid"></div>
+  </div>
+</div>
+
+<!-- ══ TAILOR PROFILE ══ -->
+<div class="view" id="page-tailor-profile">
+  <div class="container page-pad">
+    <button class="back-link" onclick="showPage('tailors')">← Back to tailors</button>
+    <div class="profile-hero">
+      <div class="avatar" id="pp-avatar" style="width:76px;height:76px;font-size:24px;"></div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
+          <div class="profile-name" id="pp-name"></div>
+          <span class="badge badge-verified" id="pp-badge"></span>
+        </div>
+        <div class="profile-sub" id="pp-sub"></div>
+        <div class="profile-stats">
+          <div><span class="profile-stat-num" id="pp-orders"></span><span class="profile-stat-label">Orders</span></div>
+          <div><span class="profile-stat-num" id="pp-rating"></span><span class="profile-stat-label">Rating</span></div>
+          <div><span class="profile-stat-num" id="pp-repeat"></span><span class="profile-stat-label">Repeat clients</span></div>
+          <div><span class="profile-stat-num" id="pp-since"></span><span class="profile-stat-label">On SewLink</span></div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn btn-dark" onclick="showPage('order-form')">Request custom order ↗</button>
+          <button class="btn" onclick="showPage('dashboard');showDashPanel('messages')">Message tailor ↗</button>
+          <button class="btn">Book fitting ↗</button>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio" id="pp-bio"></div>
+    <div class="sl-tabs">
+      <button class="sl-tab active" onclick="switchTab(this,'tab-portfolio')">Portfolio</button>
+      <button class="sl-tab" onclick="switchTab(this,'tab-info')">Pricing & info</button>
+      <button class="sl-tab" onclick="switchTab(this,'tab-reviews')">Reviews</button>
+    </div>
+    <div class="tab-panel active" id="tab-portfolio"><div class="portfolio-grid" id="pp-portfolio"></div></div>
+    <div class="tab-panel" id="tab-info"><div class="info-grid"><div class="info-card"><div class="info-card-title">Pricing</div><div id="pp-pricing"></div></div><div class="info-card"><div class="info-card-title">Turnaround & availability</div><div id="pp-availability"></div></div><div class="info-card" style="grid-column:1/-1;"><div class="info-card-title">Specialties & fabrics</div><div id="pp-specs" style="font-size:13px;color:#5a5a5a;line-height:1.7;"></div></div></div></div>
+    <div class="tab-panel" id="tab-reviews"><div id="pp-reviews"></div></div>
+  </div>
+</div>
+
+<!-- ══ ORDER FORM ══ -->
+<div class="view" id="page-order-form">
+  <div class="container page-pad">
+    <button class="back-link" onclick="showPage('tailor-profile')">← Back to tailor profile</button>
+    <div class="sec-title">Request a custom order</div>
+    <div class="order-layout">
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#9a9a9a;margin-bottom:14px;">What are you ordering?</div>
+          <div class="sl-field"><label class="sl-label">Garment type</label><select class="sl-input"><option>Select garment...</option><option>Ankara dress</option><option>Aso-ebi outfit</option><option>Kente ensemble</option><option>Bridal gown</option><option>Iro & Buba</option><option>Agbada (men)</option><option>Kids outfit</option><option>Family matching set</option><option>Other / custom</option></select></div>
+          <div class="sl-field"><label class="sl-label">Fabric preference</label><select class="sl-input"><option>I will provide my own fabric</option><option>Please source fabric for me (+cost)</option><option>Open to tailor's recommendation</option></select></div>
+          <div class="sl-field"><label class="sl-label">Occasion</label><input class="sl-input" placeholder="e.g. Wedding, graduation, naming ceremony..." /></div>
+          <div class="sl-field"><label class="sl-label">Style inspiration or notes</label><textarea class="sl-input" placeholder="Describe your vision..."></textarea></div>
+          <hr />
+          <div style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#9a9a9a;margin-bottom:14px;">Your measurements (inches)</div>
+          <div class="row3"><div class="sl-field"><label class="sl-label">Bust</label><input class="sl-input" type="number" placeholder="36" /></div><div class="sl-field"><label class="sl-label">Waist</label><input class="sl-input" type="number" placeholder="28" /></div><div class="sl-field"><label class="sl-label">Hips</label><input class="sl-input" type="number" placeholder="40" /></div></div>
+          <div class="row3"><div class="sl-field"><label class="sl-label">Shoulder width</label><input class="sl-input" type="number" placeholder="15" /></div><div class="sl-field"><label class="sl-label">Sleeve length</label><input class="sl-input" type="number" placeholder="23" /></div><div class="sl-field"><label class="sl-label">Total height</label><input class="sl-input" type="number" placeholder="65" /></div></div>
+          <div class="row2"><div class="sl-field"><label class="sl-label">Dress length</label><input class="sl-input" type="number" placeholder="55" /></div><div class="sl-field"><label class="sl-label">Date needed by</label><input class="sl-input" type="date" /></div></div>
+          <div class="sl-field"><label class="sl-label">Additional fit notes</label><textarea class="sl-input" style="min-height:60px;" placeholder="e.g. I prefer relaxed at hips..."></textarea></div>
+          <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
+            <button class="btn" onclick="showPage('tailor-profile')">Cancel</button>
+            <button class="btn btn-dark" onclick="showPage('payment')">Continue to payment ↗</button>
+          </div>
+        </div>
+      </div>
+      <div class="order-summary-card">
+        <div class="sub-label">Order summary</div>
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px;" id="order-tailor-name">Adaeze Anioke</div>
+        <div style="font-size:12px;color:#5a5a5a;margin-bottom:14px;">Atlanta, GA</div>
+        <div class="summary-row"><span>Starting from</span><span>$120</span></div>
+        <div class="summary-row"><span>SewLink service fee</span><span>$12</span></div>
+        <div class="summary-row"><span>Shipping estimate</span><span>$12</span></div>
+        <hr style="margin:10px 0;" />
+        <div class="summary-row"><span>Estimated total</span><span>$144+</span></div>
+        <div style="margin-top:12px;background:#EAF3DE;border-radius:var(--r);padding:12px;font-size:12px;color:#3B6D11;line-height:1.7;">🔒 Payment held in escrow until you confirm delivery.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAYMENT ══ -->
+<div class="view" id="page-payment">
+  <div class="container page-pad">
+    <button class="back-link" onclick="showPage('order-form')">← Back to order</button>
+    <div class="sec-title">Secure checkout</div>
+    <div class="payment-layout">
+      <div class="card">
+        <div class="sub-label" style="margin-top:0;">Delivery address</div>
+        <div class="row2" style="margin-bottom:0;"><div class="sl-field"><label class="sl-label">First name</label><input class="sl-input" value="Adaeze" /></div><div class="sl-field"><label class="sl-label">Last name</label><input class="sl-input" value="Nwosu" /></div></div>
+        <div class="sl-field"><label class="sl-label">Street address</label><input class="sl-input" placeholder="123 Main Street" /></div>
+        <div class="row3"><div class="sl-field"><label class="sl-label">City</label><input class="sl-input" value="Atlanta" /></div><div class="sl-field"><label class="sl-label">State</label><input class="sl-input" value="GA" /></div><div class="sl-field"><label class="sl-label">ZIP</label><input class="sl-input" placeholder="30301" /></div></div>
+        <hr />
+        <div class="sub-label">Payment details</div>
+        <div class="card-icons"><div class="card-icon">VISA</div><div class="card-icon">MC</div><div class="card-icon">AMEX</div><div class="card-icon">DISC</div></div>
+        <div class="sl-field"><label class="sl-label">Card number</label><input class="sl-input" placeholder="1234 5678 9012 3456" /></div>
+        <div class="row3"><div class="sl-field"><label class="sl-label">Expiry</label><input class="sl-input" placeholder="MM / YY" /></div><div class="sl-field"><label class="sl-label">CVV</label><input class="sl-input" placeholder="•••" /></div><div class="sl-field"><label class="sl-label">ZIP</label><input class="sl-input" placeholder="30301" /></div></div>
+        <div class="sl-field"><label class="sl-label">Name on card</label><input class="sl-input" placeholder="As it appears on your card" /></div>
+        <div class="secure-note">🔒 Processed securely via Stripe. SewLink never stores your card details.</div>
+        <button class="btn btn-dark btn-block" style="margin-top:16px;padding:13px;" onclick="alert('Payment submitted! Your order is now being processed.')">Pay $265.00 securely ↗</button>
+      </div>
+      <div>
+        <div class="order-summary-card">
+          <div class="sub-label">Order summary</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:0.5px solid var(--border);">
+            <div style="width:40px;height:40px;border-radius:8px;background:#FBEAF0;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👗</div>
+            <div><div style="font-size:13px;font-weight:500;">Ankara Bridal Gown</div><div style="font-size:12px;color:#5a5a5a;">Adaeze Anioke · Size M</div></div>
+          </div>
+          <div class="summary-row"><span>Garment price</span><span>$235.00</span></div>
+          <div class="summary-row"><span>Service fee</span><span>$18.00</span></div>
+          <div class="summary-row"><span>Shipping</span><span>$12.00</span></div>
+          <hr style="margin:8px 0;" />
+          <div class="summary-row"><span>Total</span><span>$265.00</span></div>
+        </div>
+        <div style="margin-top:12px;background:#EAF3DE;border-radius:var(--rl);padding:14px;">
+          <div style="font-size:12px;font-weight:500;margin-bottom:6px;color:#3B6D11;">SewLink buyer protection</div>
+          <div style="font-size:12px;color:#3B6D11;line-height:1.7;">✓ Payment held until delivery confirmed<br/>✓ Full refund if order not fulfilled<br/>✓ Dispute resolution within 5 business days</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HOW IT WORKS ══ -->
+<div class="view" id="page-how">
+  <div class="container page-pad">
+    <div class="sec-title">How SewLink works</div>
+    <div class="sec-sub">Everything you need to know — whether you're a customer or a tailor.</div>
+    <div class="sub-label">For customers</div>
+    <div class="steps-grid" style="margin-bottom:2rem;">
+      <div class="step-card"><div class="step-num">01</div><div class="step-title">Find a verified tailor</div><div class="step-desc">Browse by specialty, location, and heritage. Every tailor on SewLink is identity-verified and reviewed by real customers.</div></div>
+      <div class="step-card"><div class="step-num">02</div><div class="step-title">Place your custom order</div><div class="step-desc">Share your saved measurements, fabric preference, occasion, and style inspiration. Message your tailor safely inside SewLink.</div></div>
+      <div class="step-card"><div class="step-num">03</div><div class="step-title">Pay securely & receive</div><div class="step-desc">Your payment is held in escrow until you confirm the order is perfect. Full refund protection if something goes wrong.</div></div>
+    </div>
+    <div class="sub-label">For tailors</div>
+    <div class="steps-grid" style="margin-bottom:2rem;">
+      <div class="step-card"><div class="step-num">01</div><div class="step-title">Apply & get verified</div><div class="step-desc">Submit your identity documents and portfolio. Our team reviews every application within 1–3 business days.</div></div>
+      <div class="step-card"><div class="step-num">02</div><div class="step-title">Receive orders</div><div class="step-desc">Customers find you, review your profile, and place custom orders. Communicate and manage everything in one place.</div></div>
+      <div class="step-card"><div class="step-num">03</div><div class="step-title">Get paid reliably</div><div class="step-desc">Once the customer confirms delivery, your payment is released directly to you. No chasing, no risk.</div></div>
+    </div>
+    <div style="text-align:center;display:flex;gap:12px;justify-content:center;">
+      <button class="btn btn-dark" onclick="showPage('tailors')">Find a tailor ↗</button>
+      <button class="btn" onclick="showPage('onboarding')">Join as tailor ↗</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div class="view" id="page-dashboard">
+  <div class="container page-pad">
+    <div class="dashboard-layout">
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-profile">
+          <div class="avatar" style="width:52px;height:52px;background:#FBEAF0;color:#993556;font-size:16px;margin:0 auto 10px;">AN</div>
+          <div class="sidebar-name">Adaeze N.</div>
+          <div class="sidebar-role">Customer</div>
+        </div>
+        <button class="dash-nav-item active" onclick="showDashPanel('orders',this)">📦 My orders</button>
+        <button class="dash-nav-item" onclick="showDashPanel('messages',this)">💬 Messages <span style="background:#D85A30;color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;margin-left:auto;">3</span></button>
+        <button class="dash-nav-item" onclick="showDashPanel('measurements',this)">📐 My measurements</button>
+        <button class="dash-nav-item" onclick="showDashPanel('reviews',this)">⭐ Leave a review</button>
+        <button class="dash-nav-item" onclick="showDashPanel('profile',this)">👤 My profile</button>
+        <hr style="margin:12px 0;" />
+        <button class="dash-nav-item" onclick="showPage('tailors')">✂️ Find a tailor ↗</button>
+      </aside>
+      <main>
+        <!-- ORDERS -->
+        <div class="dash-panel active" id="dp-orders">
+          <div class="sec-title" style="margin-bottom:1.25rem;">My orders</div>
+          <div class="order-card" onclick="showPage('order-form')">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div><div class="order-title">Ankara Bridal Gown</div><div class="order-meta">Adaeze Anioke · Atlanta, GA · #SL-2841</div></div><span class="badge badge-new">In progress</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:60%;"></div></div>
+            <div class="progress-steps"><span class="done">Confirmed</span><span class="done">Cutting</span><span class="done">Sewing</span><span>Finishing</span><span>Shipped</span></div>
+          </div>
+          <div class="order-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div><div class="order-title">Family Kente Set (4 pieces)</div><div class="order-meta">Grace Owusu · New York, NY · #SL-2756</div></div><span class="badge badge-pending">Ready for review</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:90%;"></div></div>
+            <div class="progress-steps"><span class="done">Confirmed</span><span class="done">Cutting</span><span class="done">Sewing</span><span class="done">Finishing</span><span>Shipped</span></div>
+          </div>
+          <div class="order-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div><div class="order-title">Embroidered Boubou</div><div class="order-meta">Fatou Diallo · Houston, TX · #SL-2698</div></div><span class="badge badge-verified">Delivered</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+            <div class="progress-steps"><span class="done">Confirmed</span><span class="done">Cutting</span><span class="done">Sewing</span><span class="done">Finishing</span><span class="done">Shipped</span></div>
+          </div>
+        </div>
+
+        <!-- MESSAGES -->
+        <div class="dash-panel" id="dp-messages">
+          <div class="sec-title" style="margin-bottom:1.25rem;">Messages</div>
+          <div class="messages-layout">
+            <div class="thread-list">
+              <div class="thread-list-header">Conversations</div>
+              <div class="thread-item active" onclick="openThread(0,this)">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;"><div style="display:flex;align-items:center;gap:6px;"><span class="thread-name">Adaeze Anioke</span><span class="unread-dot"></span></div><span class="thread-time">2m ago</span></div>
+                <div class="thread-preview">Your gown is looking beautiful! Just finishing...</div>
+              </div>
+              <div class="thread-item" onclick="openThread(1,this)">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;"><div style="display:flex;align-items:center;gap:6px;"><span class="thread-name">Grace Owusu</span><span class="unread-dot"></span></div><span class="thread-time">1h ago</span></div>
+                <div class="thread-preview">All 4 pieces complete! Ready to ship...</div>
+              </div>
+              <div class="thread-item" onclick="openThread(2,this)">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;"><span class="thread-name">Blessing Abiodun</span><span class="thread-time">5h ago</span></div>
+                <div class="thread-preview">Confirming kids outfit measurements...</div>
+              </div>
+            </div>
+            <div class="chat-area">
+              <div class="safe-banner">🔒 All conversations are protected by SewLink. Keep chats and payments here to stay covered.</div>
+              <div class="chat-header">
+                <div class="avatar" id="chat-av" style="width:34px;height:34px;background:#FBEAF0;color:#993556;font-size:11px;">AA</div>
+                <div style="flex:1;"><div style="font-size:13px;font-weight:500;" id="chat-name">Adaeze Anioke</div><div style="font-size:11px;color:#9a9a9a;" id="chat-sub">Atlanta, GA · Verified tailor ✓</div></div>
+                <button class="btn btn-dark" style="font-size:11px;" onclick="showPage('payment')">Pay securely 🔒</button>
+              </div>
+              <div class="chat-messages" id="chat-messages"></div>
+              <div class="warning-box" id="warning-box">
+                <div style="font-size:20px;flex-shrink:0;">💛</div>
+                <div style="flex:1;">
+                  <div class="warning-title" id="warn-title">Message not sent</div>
+                  <div class="warning-text" id="warn-text"></div>
+                  <button class="warning-clear" onclick="clearBlock()">Clear message and start over</button>
+                </div>
+                <button onclick="clearBlock()" style="background:none;border:none;font-size:16px;color:#BA7517;cursor:pointer;">✕</button>
+              </div>
+              <div class="chat-input-area">
+                <input class="chat-input" id="chat-input" placeholder="Message Adaeze... (your conversation is protected)" oninput="onChatInput(this.value)" onkeydown="onChatKey(event)" />
+                <button class="send-btn disabled" id="send-btn" onclick="trySend()">›</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEASUREMENTS -->
+        <div class="dash-panel" id="dp-measurements">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+            <div class="sec-title" style="margin-bottom:0;">My measurements</div>
+            <span class="saved-badge" id="saved-badge">✓ Saved</span>
+          </div>
+          <p style="font-size:13px;color:#5a5a5a;margin-bottom:1.5rem;line-height:1.7;">Your measurements are saved to your profile. Tailors can access them when you place an order — no need to re-enter each time.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem;">
+            <button class="btn btn-dark" onclick="loadProfile(this,'adult')">My measurements</button>
+            <button class="btn" onclick="loadProfile(this,'child1')">Amara (6 yrs)</button>
+            <button class="btn" onclick="loadProfile(this,'child2')">Temi (9 yrs)</button>
+            <button class="btn" style="border-style:dashed;" onclick="alert('Add new profile coming soon!')">+ Add profile</button>
+          </div>
+          <div class="card" style="margin-bottom:16px;">
+            <div style="font-size:13px;font-weight:500;margin-bottom:14px;" id="measure-profile-label">My measurements</div>
+            <div class="sub-label" style="margin-top:0;">Upper body (inches)</div>
+            <div class="row3"><div class="sl-field"><label class="sl-label">Bust</label><input class="sl-input" id="m-bust" type="number" value="38" /></div><div class="sl-field"><label class="sl-label">Waist</label><input class="sl-input" id="m-waist" type="number" value="30" /></div><div class="sl-field"><label class="sl-label">Hips</label><input class="sl-input" id="m-hips" type="number" value="42" /></div></div>
+            <div class="row3"><div class="sl-field"><label class="sl-label">Shoulder width</label><input class="sl-input" id="m-shoulder" type="number" value="15" /></div><div class="sl-field"><label class="sl-label">Sleeve length</label><input class="sl-input" id="m-sleeve" type="number" value="24" /></div><div class="sl-field"><label class="sl-label">Total height</label><input class="sl-input" id="m-height" type="number" value="65" /></div></div>
+            <hr />
+            <div class="sub-label">Lower body (inches)</div>
+            <div class="row3"><div class="sl-field"><label class="sl-label">Dress length</label><input class="sl-input" id="m-dress" type="number" value="55" /></div><div class="sl-field"><label class="sl-label">Inseam</label><input class="sl-input" id="m-inseam" type="number" value="29" /></div><div class="sl-field"><label class="sl-label">Thigh</label><input class="sl-input" id="m-thigh" type="number" value="24" /></div></div>
+            <hr />
+            <div class="sub-label">Fit preferences</div>
+            <div class="row2"><div class="sl-field"><label class="sl-label">Overall fit</label><select class="sl-input"><option>Fitted</option><option selected>Relaxed at hips, fitted at bust</option><option>Loose / flowy</option></select></div><div class="sl-field"><label class="sl-label">Preferred hem length</label><select class="sl-input"><option>Knee length</option><option selected>Midi</option><option>Maxi / floor length</option></select></div></div>
+            <div class="sl-field"><label class="sl-label">Additional notes</label><textarea class="sl-input" style="min-height:60px;">I carry weight at the hips — please allow extra room. I dislike very tight sleeves.</textarea></div>
+            <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+              <button class="btn btn-dark" onclick="saveMeasurements()">Save measurements</button>
+            </div>
+          </div>
+          <div class="card-surface">
+            <div class="sub-label">Saved snapshot — shared with tailors on order</div>
+            <div class="measure-grid">
+              <div class="measure-card"><div style="font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#9a9a9a;margin-bottom:10px;">Upper body</div>
+                <div class="measure-row"><span style="color:#5a5a5a;">Bust</span><span style="font-weight:500;" id="s-bust">38"</span></div>
+                <div class="measure-row"><span style="color:#5a5a5a;">Waist</span><span style="font-weight:500;" id="s-waist">30"</span></div>
+                <div class="measure-row"><span style="color:#5a5a5a;">Hips</span><span style="font-weight:500;" id="s-hips">42"</span></div>
+                <div class="measure-row"><span style="color:#5a5a5a;">Shoulder</span><span style="font-weight:500;" id="s-shoulder">15"</span></div>
+                <div class="measure-row"><span style="color:#5a5a5a;">Sleeve</span><span style="font-weight:500;" id="s-sleeve">24"</span></div>
+              </div>
+              <div class="measure-card"><div style="font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#9a9a9a;margin-bottom:10px;">Lower body</div>
+                <div class="measure-row"><span style="color:#5a5a5a;">Height</span><span style="font-weight:500;" id="s-height">65"</span></div>
+                <div class="measure-row"><span style="color:#5a5a5a;">Dress length</span><span style="font-weight:500;" id="s-dress">55"</span></div>
+                <div class="measure-row"><span style="color:#5a5a5a;">Inseam</span><span style="font-weight:500;" id="s-inseam">29"</span></div>
+                <div class="measure-row"><span style="color:#5a5a5a;">Thigh</span><span style="font-weight:500;" id="s-thigh">24"</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REVIEWS -->
+        <div class="dash-panel" id="dp-reviews">
+          <div class="sec-title" style="margin-bottom:1.25rem;">Leave a review</div>
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div class="avatar" style="width:44px;height:44px;background:#EAF3DE;color:#3B6D11;font-size:14px;">BA</div>
+              <div><div style="font-family:'Cormorant Garamond',serif;font-size:18px;">Blessing Abiodun</div><div style="font-size:12px;color:#5a5a5a;">Order #SL-2841 · Ankara Bridal Gown · Delivered Mar 14</div></div>
+            </div>
+            <div style="font-size:12px;font-weight:500;color:#5a5a5a;margin-bottom:8px;letter-spacing:0.04em;">YOUR OVERALL RATING</div>
+            <div class="star-row" id="main-stars">
+              <span class="star" onclick="setStars(1)">★</span><span class="star" onclick="setStars(2)">★</span><span class="star" onclick="setStars(3)">★</span><span class="star" onclick="setStars(4)">★</span><span class="star" onclick="setStars(5)">★</span>
+            </div>
+            <div id="star-label" style="font-size:12px;color:#9a9a9a;margin-bottom:16px;">Click to rate</div>
+            <div class="row2" style="margin-bottom:14px;">
+              <div><div style="font-size:12px;color:#5a5a5a;margin-bottom:5px;">Quality of work</div><div class="sub-star-row" id="sr-quality"><span class="sub-star lit" onclick="setSubStar('sr-quality',1)">★</span><span class="sub-star lit" onclick="setSubStar('sr-quality',2)">★</span><span class="sub-star lit" onclick="setSubStar('sr-quality',3)">★</span><span class="sub-star lit" onclick="setSubStar('sr-quality',4)">★</span><span class="sub-star lit" onclick="setSubStar('sr-quality',5)">★</span></div></div>
+              <div><div style="font-size:12px;color:#5a5a5a;margin-bottom:5px;">Communication</div><div class="sub-star-row" id="sr-comms"><span class="sub-star lit" onclick="setSubStar('sr-comms',1)">★</span><span class="sub-star lit" onclick="setSubStar('sr-comms',2)">★</span><span class="sub-star lit" onclick="setSubStar('sr-comms',3)">★</span><span class="sub-star lit" onclick="setSubStar('sr-comms',4)">★</span><span class="sub-star" onclick="setSubStar('sr-comms',5)">★</span></div></div>
+              <div><div style="font-size:12px;color:#5a5a5a;margin-bottom:5px;">On-time delivery</div><div class="sub-star-row" id="sr-time"><span class="sub-star lit" onclick="setSubStar('sr-time',1)">★</span><span class="sub-star lit" onclick="setSubStar('sr-time',2)">★</span><span class="sub-star lit" onclick="setSubStar('sr-time',3)">★</span><span class="sub-star lit" onclick="setSubStar('sr-time',4)">★</span><span class="sub-star lit" onclick="setSubStar('sr-time',5)">★</span></div></div>
+              <div><div style="font-size:12px;color:#5a5a5a;margin-bottom:5px;">True to measurements</div><div class="sub-star-row" id="sr-fit"><span class="sub-star lit" onclick="setSubStar('sr-fit',1)">★</span><span class="sub-star lit" onclick="setSubStar('sr-fit',2)">★</span><span class="sub-star lit" onclick="setSubStar('sr-fit',3)">★</span><span class="sub-star lit" onclick="setSubStar('sr-fit',4)">★</span><span class="sub-star" onclick="setSubStar('sr-fit',5)">★</span></div></div>
+            </div>
+            <div class="sl-field"><label class="sl-label">Your review</label><textarea class="sl-input" style="min-height:90px;" placeholder="Tell other customers about your experience..."></textarea></div>
+            <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
+              <button class="btn">Save draft</button>
+              <button class="btn btn-dark" onclick="alert('Review submitted! Thank you.')">Submit review ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="dash-panel" id="dp-profile">
+          <div class="sec-title" style="margin-bottom:1.25rem;">My profile</div>
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+              <div class="avatar" style="width:60px;height:60px;background:#FBEAF0;color:#993556;font-size:18px;">AN</div>
+              <div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:2px;">Adaeze Nwosu</div><div style="font-size:12px;color:#5a5a5a;">Atlanta, GA · Member since 2024</div></div>
+            </div>
+            <hr />
+            <div class="row2" style="margin-top:14px;"><div class="sl-field"><label class="sl-label">First name</label><input class="sl-input" value="Adaeze" /></div><div class="sl-field"><label class="sl-label">Last name</label><input class="sl-input" value="Nwosu" /></div></div>
+            <div class="row2"><div class="sl-field"><label class="sl-label">Email</label><input class="sl-input" value="adaeze.n@email.com" /></div><div class="sl-field"><label class="sl-label">Phone</label><input class="sl-input" value="+1 (404) 555-0182" /></div></div>
+            <div class="row2"><div class="sl-field"><label class="sl-label">City</label><input class="sl-input" value="Atlanta" /></div><div class="sl-field"><label class="sl-label">State</label><select class="sl-input"><option selected>Georgia</option><option>New York</option><option>Texas</option></select></div></div>
+            <div style="display:flex;justify-content:flex-end;margin-top:4px;"><button class="btn btn-dark" onclick="alert('Profile saved!')">Save profile</button></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAILOR ONBOARDING ══ -->
+<div class="view" id="page-onboarding">
+  <div class="container page-pad">
+    <div id="ob-1">
+      <div class="ob-steps"><div class="ob-step active"><div class="ob-step-num">1</div><div class="ob-step-label">Account type</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">2</div><div class="ob-step-label">Basic info</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">3</div><div class="ob-step-label">Verification</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">4</div><div class="ob-step-label">Portfolio</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">5</div><div class="ob-step-label">Submit</div></div></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;margin-bottom:8px;">Join SewLink as a tailor</div>
+      <p style="font-size:13px;color:#5a5a5a;margin-bottom:1.75rem;line-height:1.7;">Are you an individual tailor or a tailoring business? This helps us verify your identity correctly.</p>
+      <div class="type-cards">
+        <div class="type-card selected" id="type-ind" onclick="selectType('individual')"><div class="type-icon">🧵</div><div class="type-title">Individual tailor</div><div class="type-desc">Solo tailor offering your own custom services. Verified with government ID + selfie.</div><div style="margin-top:10px;font-size:11px;color:#9a9a9a;">Requires: Government ID · Selfie · Proof of address</div></div>
+        <div class="type-card" id="type-biz" onclick="selectType('business')"><div class="type-icon">🏪</div><div class="type-title">Tailoring business</div><div class="type-desc">A registered tailoring studio, shop, or brand with employees or contractors.</div><div style="margin-top:10px;font-size:11px;color:#9a9a9a;">Requires: Business registration · EIN · Owner ID</div></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;"><button class="btn btn-dark" onclick="obNext(1)">Continue →</button></div>
+    </div>
+    <div id="ob-2" style="display:none;">
+      <div class="ob-steps"><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Account type</div></div><div class="ob-line"></div><div class="ob-step active"><div class="ob-step-num">2</div><div class="ob-step-label">Basic info</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">3</div><div class="ob-step-label">Verification</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">4</div><div class="ob-step-label">Portfolio</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">5</div><div class="ob-step-label">Submit</div></div></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:1.25rem;">Tell us about yourself</div>
+      <div class="card">
+        <div class="row2"><div class="sl-field"><label class="sl-label">First name</label><input class="sl-input" placeholder="e.g. Blessing" /></div><div class="sl-field"><label class="sl-label">Last name</label><input class="sl-input" placeholder="e.g. Abiodun" /></div></div>
+        <div class="row2"><div class="sl-field"><label class="sl-label">Email</label><input class="sl-input" type="email" placeholder="you@email.com" /></div><div class="sl-field"><label class="sl-label">Phone</label><input class="sl-input" type="tel" placeholder="+1 (___) ___-____" /></div></div>
+        <div class="row2"><div class="sl-field"><label class="sl-label">City</label><input class="sl-input" placeholder="e.g. Chicago" /></div><div class="sl-field"><label class="sl-label">State</label><select class="sl-input"><option>Select state...</option><option>Georgia</option><option>New York</option><option>Texas</option><option>Illinois</option><option>California</option><option>Washington DC</option></select></div></div>
+        <div class="sl-field"><label class="sl-label">Years of experience</label><select class="sl-input"><option>Less than 1 year</option><option>1–3 years</option><option>5–10 years</option><option>10+ years</option></select></div>
+        <div class="sl-field"><label class="sl-label">Heritage / cultural background <span style="font-weight:400;color:#9a9a9a;">(optional)</span></label><input class="sl-input" placeholder="e.g. Nigerian, Ghanaian, Senegalese..." /></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:14px;"><button class="btn" onclick="obBack(2)">← Back</button><button class="btn btn-dark" onclick="obNext(2)">Continue →</button></div>
+    </div>
+    <div id="ob-3" style="display:none;">
+      <div class="ob-steps"><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Account type</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Basic info</div></div><div class="ob-line"></div><div class="ob-step active"><div class="ob-step-num">3</div><div class="ob-step-label">Verification</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">4</div><div class="ob-step-label">Portfolio</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">5</div><div class="ob-step-label">Submit</div></div></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:8px;">Verify your identity</div>
+      <p style="font-size:13px;color:#5a5a5a;margin-bottom:1.5rem;line-height:1.7;">SewLink verifies every tailor before going live. All documents are reviewed securely and never shared with customers.</p>
+      <div class="card">
+        <div class="checklist">
+          <div class="check-row"><span class="check-row-icon">🪪</span><div><div style="font-weight:500;margin-bottom:2px;">Government-issued photo ID</div><div style="font-size:12px;color:#5a5a5a;">Driver's license, state ID, or passport. Must be valid and unexpired.</div></div></div>
+          <div class="check-row"><span class="check-row-icon">🤳</span><div><div style="font-weight:500;margin-bottom:2px;">Selfie verification</div><div style="font-size:12px;color:#5a5a5a;">A photo of you holding your ID to confirm the document belongs to you.</div></div></div>
+          <div class="check-row"><span class="check-row-icon">📍</span><div><div style="font-weight:500;margin-bottom:2px;">Proof of US address</div><div style="font-size:12px;color:#5a5a5a;">Utility bill, bank statement, or lease dated within the last 90 days.</div></div></div>
+        </div>
+        <div class="upload-box" id="ub-id" onclick="markUpload('ub-id','Government ID uploaded ✓')"><div class="upload-title">📄 Upload government ID</div><div class="upload-sub">JPG, PNG, or PDF · Max 10MB</div></div>
+        <div class="upload-box" id="ub-selfie" onclick="markUpload('ub-selfie','Selfie verification uploaded ✓')"><div class="upload-title">📷 Upload selfie with ID</div><div class="upload-sub">JPG or PNG · Clear, well-lit photo</div></div>
+        <div class="upload-box" id="ub-address" onclick="markUpload('ub-address','Proof of address uploaded ✓')"><div class="upload-title">🏠 Upload proof of address</div><div class="upload-sub">PDF, JPG, or PNG · Dated within 90 days</div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:14px;"><button class="btn" onclick="obBack(3)">← Back</button><button class="btn btn-dark" onclick="obNext(3)">Continue →</button></div>
+    </div>
+    <div id="ob-4" style="display:none;">
+      <div class="ob-steps"><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Account type</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Basic info</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Verification</div></div><div class="ob-line"></div><div class="ob-step active"><div class="ob-step-num">4</div><div class="ob-step-label">Portfolio</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-step-num">5</div><div class="ob-step-label">Submit</div></div></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:1.25rem;">Your portfolio & pricing</div>
+      <div class="card">
+        <div class="sl-field"><label class="sl-label">Specialties <span style="font-weight:400;color:#9a9a9a;">(select all that apply)</span></label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+            <button class="btn" onclick="this.classList.toggle('btn-dark')">Ankara</button>
+            <button class="btn btn-dark" onclick="this.classList.toggle('btn-dark')">Aso-ebi</button>
+            <button class="btn" onclick="this.classList.toggle('btn-dark')">Kente</button>
+            <button class="btn" onclick="this.classList.toggle('btn-dark')">Bridal</button>
+            <button class="btn btn-dark" onclick="this.classList.toggle('btn-dark')">Lace & Embroidery</button>
+            <button class="btn" onclick="this.classList.toggle('btn-dark')">Boubou</button>
+            <button class="btn" onclick="this.classList.toggle('btn-dark')">Kids & Family</button>
+            <button class="btn" onclick="this.classList.toggle('btn-dark')">Alterations</button>
+            <button class="btn btn-dark" onclick="this.classList.toggle('btn-dark')">Iro & Buba</button>
+          </div>
+        </div>
+        <hr />
+        <div class="row2"><div class="sl-field"><label class="sl-label">Starting price (per garment)</label><input class="sl-input" placeholder="e.g. $90" /></div><div class="sl-field"><label class="sl-label">Average turnaround time</label><select class="sl-input"><option>1 week</option><option selected>2 weeks</option><option>3 weeks</option><option>4+ weeks</option></select></div></div>
+        <div class="sl-field"><label class="sl-label">Bio — tell customers about yourself</label><textarea class="sl-input" placeholder="e.g. I have been sewing for 12 years, specialising in Ankara and aso-ebi..."></textarea></div>
+        <div class="upload-box" id="ub-portfolio" onclick="markUpload('ub-portfolio','6 portfolio photos uploaded ✓')"><div class="upload-title">🖼️ Upload portfolio photos</div><div class="upload-sub">JPG or PNG · 3–6 photos · Max 10MB each</div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:14px;"><button class="btn" onclick="obBack(4)">← Back</button><button class="btn btn-dark" onclick="obNext(4)">Continue →</button></div>
+    </div>
+    <div id="ob-5" style="display:none;">
+      <div class="ob-steps"><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Account type</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Basic info</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Verification</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-step-num">✓</div><div class="ob-step-label">Portfolio</div></div><div class="ob-line"></div><div class="ob-step active"><div class="ob-step-num">5</div><div class="ob-step-label">Submit</div></div></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:1.25rem;">Review & agree</div>
+      <div class="card-surface" style="margin-bottom:16px;">
+        <div class="sub-label" style="margin-top:0;">Application summary</div>
+        <div style="font-size:13px;display:flex;flex-direction:column;gap:6px;color:#5a5a5a;">
+          <div>✓ Account type: <strong style="color:#1a1a1a;" id="ob-type-label">Individual tailor</strong></div>
+          <div>✓ Identity documents: <strong style="color:#1a1a1a;">Uploaded</strong></div>
+          <div>✓ Portfolio: <strong style="color:#1a1a1a;">Ready</strong></div>
+          <div>✓ Review timeline: <strong style="color:#1a1a1a;">1–3 business days</strong></div>
+        </div>
+      </div>
+      <div class="sl-field"><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#5a5a5a;line-height:1.6;"><input type="checkbox" style="margin-top:3px;" /> I confirm all information and documents I have provided are genuine and accurate.</label></div>
+      <div class="sl-field"><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#5a5a5a;line-height:1.6;"><input type="checkbox" style="margin-top:3px;" /> I agree to SewLink's Tailor Code of Conduct — timely communication, honest fulfilment, and respectful conduct.</label></div>
+      <div class="sl-field"><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#5a5a5a;line-height:1.6;"><input type="checkbox" style="margin-top:3px;" /> I agree to SewLink's Terms of Service and Privacy Policy.</label></div>
+      <div style="display:flex;justify-content:space-between;margin-top:16px;"><button class="btn" onclick="obBack(5)">← Back</button><button class="btn btn-dark" onclick="obSubmit()">Submit application ↗</button></div>
+    </div>
+    <div id="ob-success" style="display:none;">
+      <div class="success-screen">
+        <div style="font-size:48px;margin-bottom:1rem;">🎉</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;margin-bottom:8px;">Application submitted!</div>
+        <p style="font-size:14px;color:#5a5a5a;max-width:420px;margin:0 auto 1.5rem;line-height:1.7;">Thank you for applying to join SewLink. Our team will review your documents and portfolio within <strong>1–3 business days</strong>. You'll receive an email once approved.</p>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:#EAF3DE;color:#3B6D11;padding:10px 18px;border-radius:var(--r);font-size:13px;font-weight:500;margin-bottom:1.5rem;">✓ Application ID: SL-T-20260317-0042</div>
+        <br/><button class="btn btn-dark" onclick="showPage('admin')">View admin dashboard ↗</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN ══ -->
+<div class="view" id="page-admin">
+  <div class="container page-pad">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;">Admin dashboard</div>
+      <span style="font-size:12px;color:#9a9a9a;">SewLink · March 2026</span>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric"><span class="metric-num">1,248</span><span class="metric-label">Total users</span><div class="metric-change">+84 this month</div></div>
+      <div class="metric"><span class="metric-num">62</span><span class="metric-label">Active tailors</span><div class="metric-change">+7 this month</div></div>
+      <div class="metric"><span class="metric-num">$38,420</span><span class="metric-label">GMV this month</span><div class="metric-change">+22% vs last month</div></div>
+      <div class="metric"><span class="metric-num">8</span><span class="metric-label">Pending verifications</span><div style="font-size:11px;color:#854F0B;margin-top:4px;">Needs review</div></div>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchAdminTab(this,'ap-verifications')">Tailor verifications</button>
+      <button class="admin-tab" onclick="switchAdminTab(this,'ap-orders')">Orders</button>
+      <button class="admin-tab" onclick="switchAdminTab(this,'ap-users')">Users</button>
+      <button class="admin-tab" onclick="switchAdminTab(this,'ap-disputes')">Disputes</button>
+    </div>
+    <div class="admin-panel active" id="ap-verifications">
+      <div style="overflow-x:auto;"><table class="sl-table"><thead><tr><th>Tailor</th><th>Type</th><th>Location</th><th>Applied</th><th>Documents</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+        <tr><td><div style="font-weight:500;">Blessing Abiodun</div><div style="font-size:11px;color:#9a9a9a;">b.abiodun@email.com</div></td><td>Individual</td><td>Chicago, IL</td><td>Mar 16</td><td><span style="color:#3B6D11;font-size:12px;">✓ All uploaded</span></td><td><span class="badge badge-pending">Pending</span></td><td><button class="action-link">Review</button><button class="action-link" onclick="alert('Tailor approved!')">Approve</button><button class="action-link" style="color:#A32D2D;">Reject</button></td></tr>
+        <tr><td><div style="font-weight:500;">Nia Mensah Designs</div><div style="font-size:11px;color:#9a9a9a;">nia@mensahdesigns.com</div></td><td>Business</td><td>Atlanta, GA</td><td>Mar 15</td><td><span style="color:#854F0B;font-size:12px;">⚠ Missing EIN</span></td><td><span class="badge badge-pending">Pending</span></td><td><button class="action-link">Review</button><button class="action-link" style="color:#854F0B;">Request docs</button></td></tr>
+        <tr><td><div style="font-weight:500;">Adaeze Anioke</div><div style="font-size:11px;color:#9a9a9a;">adaeze.a@email.com</div></td><td>Individual</td><td>Atlanta, GA</td><td>Feb 10</td><td><span style="color:#3B6D11;font-size:12px;">✓ All uploaded</span></td><td><span class="badge badge-verified">Approved</span></td><td><button class="action-link">View profile</button><button class="action-link" style="color:#A32D2D;">Suspend</button></td></tr>
+        <tr><td><div style="font-weight:500;">Kwame Stitch Co.</div><div style="font-size:11px;color:#9a9a9a;">hello@kwamestitch.com</div></td><td>Business</td><td>Houston, TX</td><td>Mar 10</td><td><span style="color:#A32D2D;font-size:12px;">✗ ID mismatch</span></td><td><span class="badge badge-rejected">Rejected</span></td><td><button class="action-link">View</button><button class="action-link" style="color:#854F0B;">Re-open</button></td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="admin-panel" id="ap-orders">
+      <div style="overflow-x:auto;"><table class="sl-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Tailor</th><th>Item</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+        <tr><td>#SL-2841</td><td>Adaeze N.</td><td>Adaeze Anioke</td><td>Ankara Bridal Gown</td><td>$265</td><td><span class="badge badge-new">In progress</span></td><td><button class="action-link">View</button></td></tr>
+        <tr><td>#SL-2756</td><td>Adaeze N.</td><td>Grace Owusu</td><td>Family Kente Set</td><td>$420</td><td><span class="badge badge-pending">Ready to ship</span></td><td><button class="action-link">View</button><button class="action-link">Release payment</button></td></tr>
+        <tr><td>#SL-2698</td><td>Adaeze N.</td><td>Fatou Diallo</td><td>Embroidered Boubou</td><td>$130</td><td><span class="badge badge-verified">Delivered</span></td><td><button class="action-link">View</button></td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="admin-panel" id="ap-users">
+      <div style="overflow-x:auto;"><table class="sl-table"><thead><tr><th>Name</th><th>Role</th><th>Location</th><th>Joined</th><th>Orders</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+        <tr><td><div style="font-weight:500;">Adaeze Nwosu</div><div style="font-size:11px;color:#9a9a9a;">adaeze.n@email.com</div></td><td>Customer</td><td>Atlanta, GA</td><td>Jan 2024</td><td>4</td><td><span class="badge badge-verified">Active</span></td><td><button class="action-link">View</button></td></tr>
+        <tr><td><div style="font-weight:500;">Blessing Abiodun</div><div style="font-size:11px;color:#9a9a9a;">b.abiodun@email.com</div></td><td>Tailor</td><td>Chicago, IL</td><td>Mar 2021</td><td>102</td><td><span class="badge badge-verified">Verified</span></td><td><button class="action-link">View</button><button class="action-link" style="color:#A32D2D;">Suspend</button></td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="admin-panel" id="ap-disputes">
+      <div style="overflow-x:auto;"><table class="sl-table"><thead><tr><th>Dispute ID</th><th>Customer</th><th>Tailor</th><th>Issue</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+        <tr><td>#D-0041</td><td>Yemi O.</td><td>Fatou Diallo</td><td>Wrong measurements used</td><td>$110</td><td><span class="badge badge-pending">Open</span></td><td><button class="action-link">Mediate</button><button class="action-link" onclick="alert('Refund initiated.')">Refund</button></td></tr>
+        <tr><td>#D-0038</td><td>Sandra K.</td><td>Aminata K.</td><td>Late delivery — 2 weeks</td><td>$85</td><td><span class="badge badge-new">Under review</span></td><td><button class="action-link">View</button></td></tr>
+        <tr><td>#D-0035</td><td>Bola A.</td><td>Grace Owusu</td><td>Fabric not as described</td><td>$195</td><td><span class="badge badge-verified">Resolved</span></td><td><button class="action-link">View</button></td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ DATA ══ */
+const tailors = [
+  { name:'Adaeze Anioke', initials:'AA', bg:'#FBEAF0', color:'#993556', location:'Atlanta, GA', heritage:'Nigerian heritage', badge:'Top tailor', badgeClass:'badge-top', orders:87, rating:'4.9', repeat:'72%', since:'2022', bio:'I have been sewing since I was 12, taught by my grandmother in Lagos. Every piece I make carries that legacy — slow, intentional, and made with love. I specialise in silk and cotton garments with hand-stitched detailing.', specs:['Ankara','Aso-ebi','Bridal','Lace'], price:'From $120', turnaround:'2–3 weeks',
+    portfolio:[{label:'Bridal Ankara gown',bg:'#FBEAF0'},{label:'Aso-ebi family set',bg:'#FAEEDA'},{label:'Lace evening gown',bg:'#FAECE7'},{label:'Ankara jumpsuit',bg:'#FBEAF0'},{label:'Beaded lace top',bg:'#FAEEDA'},{label:'Custom iro & buba',bg:'#FAECE7'}],
+    pricing:[['Ankara dress','$120–$200'],['Aso-ebi set','$150–$280'],['Bridal gown','$350+'],['Kids outfit','$60–$90'],['Alterations','From $25']],
+    availability:[['Turnaround','2–3 weeks'],['Rush order','Available (+30%)'],['Accepting orders','Yes'],['Fitting','Virtual or in-person, ATL']],
+    specsFull:'Ankara, Aso-ebi, Lace, Organza, George fabric, Bridal. Specialises in structured silhouettes, heavily embellished work, and family matching sets.',
+    reviews:[{name:'Temi A.',stars:'★★★★★',date:'Mar 2026',text:"Adaeze made my daughter's naming ceremony outfit and it was breathtaking. Every bead was perfect."},{name:'Sandra O.',stars:'★★★★★',date:'Feb 2026',text:"I've ordered 3 times now. She always delivers on time and the quality is outstanding. My go-to tailor."}]
+  },
+  { name:'Grace Owusu', initials:'GO', bg:'#E1F5EE', color:'#0F6E56', location:'New York, NY', heritage:'Ghanaian heritage', badge:'Verified', badgeClass:'badge-verified', orders:64, rating:'5.0', repeat:'81%', since:'2023', bio:'I travel across West Africa sourcing one-of-a-kind vintage pieces. My edit is careful and considered — I only list items I would wear myself.', specs:['Kente','Kaba & Slit','Kids & Family'], price:'From $95', turnaround:'3–4 weeks',
+    portfolio:[{label:'Kente kaba & slit',bg:'#E1F5EE'},{label:'Kids kente set',bg:'#EAF3DE'},{label:'Family matching kente',bg:'#E1F5EE'},{label:'Modern kente gown',bg:'#EAF3DE'},{label:'Kente top & skirt',bg:'#E1F5EE'},{label:'Christening set',bg:'#EAF3DE'}],
+    pricing:[['Kaba & slit','$95–$180'],['Kids outfit','$55–$85'],['Family set (4 pcs)','$280–$450'],['Alterations','From $30']],
+    availability:[['Turnaround','3–4 weeks'],['Rush order','Limited'],['Accepting orders','Yes'],['Fitting','Virtual (Zoom measurements)']],
+    specsFull:'Kente, Kaba & Slit, Dansiki, Wax print. Clean geometric cuts honouring traditional Ghanaian silhouettes.',
+    reviews:[{name:'Abena K.',stars:'★★★★★',date:'Mar 2026',text:"Grace made outfits for my entire family for our reunion. 8 pieces, all perfect."},{name:'Yaa M.',stars:'★★★★★',date:'Jan 2026',text:"5 stars is not enough. The kaba & slit she made me for graduation was the most beautiful thing I've ever worn."}]
+  },
+  { name:'Fatou Diallo', initials:'FD', bg:'#EEEDFE', color:'#534AB7', location:'Houston, TX', heritage:'Senegalese heritage', badge:'Verified', badgeClass:'badge-verified', orders:43, rating:'4.7', repeat:'65%', since:'2023', bio:'Trained in Dakar and now based in Houston. I specialise in flowing West African silhouettes with intricate hand embroidery.', specs:['Boubou','Wax print','Embroidery','Alterations'], price:'From $75', turnaround:'2 weeks',
+    portfolio:[{label:'Grand boubou',bg:'#EEEDFE'},{label:'Wax print dress',bg:'#CED0F8'},{label:'Embroidered kaftan',bg:'#EEEDFE'},{label:'Taille basse skirt',bg:'#CED0F8'},{label:"Men's boubou",bg:'#EEEDFE'},{label:'Girls wax set',bg:'#CED0F8'}],
+    pricing:[['Boubou (women)','$100–$175'],['Embroidered kaftan','$130–$220'],['Wax print dress','$75–$120'],["Men's boubou",'$110–$190'],['Alterations','From $20']],
+    availability:[['Turnaround','2 weeks'],['Rush order','Available (+25%)'],['Accepting orders','Yes'],['Fitting','In-person, Houston only']],
+    specsFull:'Boubou, Wax print, Grand bazin, Embroidery, Taille basse. Intricate hand embroidery around necklines and cuffs.',
+    reviews:[{name:'Mariama S.',stars:'★★★★★',date:'Feb 2026',text:"My boubou was exquisite. Fatou really understands Senegalese tailoring — it felt like home."},{name:'Djeneba C.',stars:'★★★★',date:'Jan 2026',text:"Great quality and fast turnaround. Minor delay in communication but the final result was worth it."}]
+  },
+  { name:'Ngozi Eze', initials:'NE', bg:'#FAECE7', color:'#993C1D', location:'Washington, DC', heritage:'Nigerian heritage', badge:'New tailor', badgeClass:'badge-new', orders:12, rating:'5.0', repeat:'58%', since:'2025', bio:'New to SewLink but with 8 years of tailoring experience. Particularly known for impeccable agbada detailing.', specs:['Iro & Buba','Agbada','Bridal','Kids'], price:'From $85', turnaround:'3 weeks',
+    portfolio:[{label:'Iro & buba set',bg:'#FAECE7'},{label:'Agbada (men)',bg:'#F5C4B3'},{label:'Bridal iro set',bg:'#FAECE7'},{label:'Kids ankara',bg:'#F5C4B3'},{label:'Owambe gown',bg:'#FAECE7'},{label:'Senator suit',bg:'#F5C4B3'}],
+    pricing:[['Iro & buba','$85–$150'],['Agbada','$180–$300'],['Bridal set','$300+'],['Kids outfit','$50–$80'],['Alterations','From $20']],
+    availability:[['Turnaround','3 weeks'],['Rush order','Not available yet'],['Accepting orders','Yes'],['Fitting','In-person, DC/MD/VA']],
+    specsFull:'Iro & Buba, Agbada, Owambe styles, Senator suits, Bridal.',
+    reviews:[{name:'Chisom N.',stars:'★★★★★',date:'Mar 2026',text:"New to SewLink but incredibly talented. My husband's agbada was the talk of the event."},{name:'Kemi A.',stars:'★★★★★',date:'Feb 2026',text:"So happy I found Ngozi. Her attention to detail is incredible."}]
+  },
+  { name:'Zainab Nkosi', initials:'ZN', bg:'#E6F1FB', color:'#185FA5', location:'Los Angeles, CA', heritage:'South African heritage', badge:'Verified', badgeClass:'badge-verified', orders:58, rating:'4.8', repeat:'70%', since:'2022', bio:'Brings Southern African textile traditions to contemporary silhouettes — a rare speciality in the US diaspora.', specs:['Shweshwe','Ndebele','Modern African'], price:'From $110', turnaround:'2–3 weeks',
+    portfolio:[{label:'Shweshwe dress',bg:'#E6F1FB'},{label:'Ndebele beaded top',bg:'#B5D4F4'},{label:'Modern African gown',bg:'#E6F1FB'},{label:'Shweshwe skirt set',bg:'#B5D4F4'},{label:'Fusion blazer',bg:'#E6F1FB'},{label:'Kids shweshwe',bg:'#B5D4F4'}],
+    pricing:[['Shweshwe dress','$110–$190'],['Ndebele-inspired piece','$150–$250'],['Modern fusion gown','$180–$300'],['Kids outfit','$65–$95']],
+    availability:[['Turnaround','2–3 weeks'],['Rush order','Available (+20%)'],['Accepting orders','Yes'],['Fitting','Virtual or in-person, LA']],
+    specsFull:'Shweshwe, Ndebele, Zulu beadwork-inspired, Modern African fusion.',
+    reviews:[{name:'Lerato M.',stars:'★★★★★',date:'Mar 2026',text:"Finally a tailor who truly understands shweshwe! Zainab is exceptional."},{name:'Amahle D.',stars:'★★★★★',date:'Feb 2026',text:"Gorgeous work. She honours tradition while making it feel fresh and modern."}]
+  },
+  { name:'Blessing Abiodun', initials:'BA', bg:'#EAF3DE', color:'#3B6D11', location:'Chicago, IL', heritage:'Nigerian heritage', badge:'Top tailor', badgeClass:'badge-top', orders:102, rating:'4.9', repeat:'85%', since:'2021', bio:"SewLink's most experienced tailor with over 12 years of professional experience. Specialises in family matching and owambe event styling.", specs:['Ankara','Lace','Aso-ebi','Kids & Family'], price:'From $90', turnaround:'2 weeks',
+    portfolio:[{label:'Ankara maxi dress',bg:'#EAF3DE'},{label:'Lace gown',bg:'#C0DD97'},{label:'Family aso-ebi set',bg:'#EAF3DE'},{label:'Kids ankara',bg:'#C0DD97'},{label:'Owambe look',bg:'#EAF3DE'},{label:'Ankara blazer',bg:'#C0DD97'}],
+    pricing:[['Ankara dress','$90–$160'],['Lace gown','$130–$220'],['Aso-ebi set','$120–$200'],['Family set (3 pcs)','$220–$350'],['Kids outfit','$50–$75'],['Alterations','From $20']],
+    availability:[['Turnaround','2 weeks'],['Rush order','Available (+20%)'],['Accepting orders','Yes'],['Fitting','In-person, Chicago']],
+    specsFull:"Ankara, Aso-ebi, Lace, George fabric, Adire. Over 12 years professional experience.",
+    reviews:[{name:'Funke A.',stars:'★★★★★',date:'Mar 2026',text:"Blessing has made outfits for my whole family for 2 years. Nobody does aso-ebi like her."},{name:'Chidinma O.',stars:'★★★★★',date:'Mar 2026',text:"102 orders and still improving. My lace gown was a masterpiece."}]
+  }
+];
+
+const chatThreads = [
+  { name:'Adaeze Anioke', initials:'AA', bg:'#FBEAF0', color:'#993556', sub:'Atlanta, GA · Verified tailor ✓',
+    msgs:[{out:false,text:'Hello! I received your order for the Ankara bridal gown. I love your vision!',time:'Mon 10:14am'},{out:true,text:'Thank you! I want the bodice fitted and the skirt to flare from the knee.',time:'Mon 10:32am'},{out:false,text:'Perfect. I can see your saved measurements — I will start cutting this week.',time:'Mon 11:05am'},{out:false,text:'Your gown is looking beautiful! Just finishing the beadwork on the hem.',time:'Today 9:02am'}]},
+  { name:'Grace Owusu', initials:'GO', bg:'#E1F5EE', color:'#0F6E56', sub:'New York, NY · Verified tailor ✓',
+    msgs:[{out:false,text:"Hi! I've started on your family kente set. Could you confirm the children's heights?",time:'Wed 3:10pm'},{out:true,text:'Amara is 44 inches, Temi is 52 inches.',time:'Wed 4:02pm'},{out:false,text:'All 4 pieces complete! Ready to ship as soon as you confirm the address.',time:'Today 8:30am'}]},
+  { name:'Blessing Abiodun', initials:'BA', bg:'#EAF3DE', color:'#3B6D11', sub:'Chicago, IL · Verified tailor ✓',
+    msgs:[{out:false,text:"Hello! I received your kids Ankara order. Shall I use Amara's saved measurements?",time:'5h ago'},{out:true,text:"Yes please, her measurements are up to date!",time:'4h ago'}]}
+];
+
+const contactDetectors = [
+  {type:'phone', pattern:/(\+?1?\s?)?(\(?\d{3}\)?[\s\-.]?\d{3}[\s\-.]?\d{4})/, label:'phone number', msg:"We noticed a phone number in your message. For your safety, we can't send personal contact details through SewLink chat.\n\nEverything you need to discuss is right here — and keeping it here means your order, payments, and peace of mind are always covered. 💛"},
+  {type:'email', pattern:/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/, label:'email address', msg:"We spotted an email address in your message. Moving the conversation outside SewLink means losing your buyer protection and dispute coverage.\n\nEverything you need can be shared right here, safely. 💛"},
+  {type:'whatsapp', pattern:/whatsapp|wa\.me|whats[\s\-.]?app/i, label:'WhatsApp', msg:"We noticed a mention of WhatsApp. We get it — it's super convenient! But once the conversation moves off SewLink, we can no longer protect your order or help if something goes wrong.\n\nStay here and you're always covered. 💛"},
+  {type:'instagram', pattern:/instagram\.com|instagr\.am|\binstagram\b|\binsta\b/i, label:'Instagram', msg:"We spotted an Instagram reference. Instagram is great for browsing portfolios — but please keep your order conversations here in SewLink so your buyer protection stays active. 💛"},
+  {type:'facebook', pattern:/facebook\.com|fb\.com|fb\.me|\bfacebook\b/i, label:'Facebook', msg:"We noticed a Facebook mention. Any orders or payments arranged outside SewLink are not protected under our buyer guarantee.\n\nWe're here to make sure things go smoothly — so let's keep it right here. 💛"},
+  {type:'twitter', pattern:/twitter\.com|x\.com|\btwitter\b|\b@[a-zA-Z0-9_]{1,15}\b/i, label:'Twitter / X', msg:"We spotted a Twitter or X reference. Conversations moved off SewLink aren't protected by our buyer cover or dispute process.\n\nKeep your conversation here and we'll always have your back. 💛"},
+  {type:'payment', pattern:/venmo|cashapp|cash app|zelle|paypal|pay me|send money|wire|bank transfer/i, label:'outside payment method', msg:"We noticed an outside payment method. Payments made outside SewLink are not protected. If something goes wrong, we can't help.\n\nPay securely here and your money is always safe — held in escrow until you confirm delivery. 💛"},
+];
+
+let currentThread = 0;
+let isBlocked = false;
+let currentTailorIdx = 0;
+let obType = 'individual';
+
+/* ══ NAVIGATION ══ */
+function showPage(name, navEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById('page-'+name);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+  if (navEl) {
+    document.querySelectorAll('.sl-nav-link').forEach(l => l.classList.remove('active'));
+    navEl.classList.add('active');
+  }
+  if (name === 'tailors') renderTailorGrid();
+  if (name === 'messages' || name === 'dashboard') { showDashPanel('messages'); openThread(0, document.querySelectorAll('.thread-item')[0]); }
+}
+
+function toggleMobileMenu() {
+  const links = document.querySelector('.sl-nav-links');
+  if (links.style.display === 'flex') { links.style.display = ''; } else { links.style.display = 'flex'; links.style.flexDirection = 'column'; links.style.position = 'absolute'; links.style.top = '60px'; links.style.left = '0'; links.style.right = '0'; links.style.background = '#fff'; links.style.padding = '12px 20px'; links.style.borderBottom = '0.5px solid var(--border)'; links.style.zIndex = '99'; }
+}
+
+/* ══ TAILOR BROWSE ══ */
+function renderTailorGrid() {
+  const grid = document.getElementById('tailor-browse-grid');
+  if (!grid) return;
+  grid.innerHTML = tailors.map((t,i) => `
+    <div class="tailor-card" onclick="openTailorProfile(${i})">
+      <div class="tailor-header">
+        <div class="avatar" style="width:46px;height:46px;background:${t.bg};color:${t.color};font-size:14px;">${t.initials}</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+            <div class="tailor-name">${t.name}</div>
+            <span class="badge ${t.badgeClass}">${t.badge}</span>
+          </div>
+          <div class="tailor-sub">${t.location} · ${t.heritage}</div>
+        </div>
+      </div>
+      <div class="specs">${t.specs.map(s=>`<span class="spec">${s}</span>`).join('')}</div>
+      <div class="tailor-footer">
+        <div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#9a9a9a;">${t.rating} · ${t.orders} orders · ${t.turnaround}</span></div>
+        <div class="price-from">${t.price}</div>
+      </div>
+    </div>`).join('');
+}
+
+function openTailorProfile(i) {
+  currentTailorIdx = i;
+  const t = tailors[i];
+  document.getElementById('pp-avatar').style.cssText = `width:76px;height:76px;font-size:24px;background:${t.bg};color:${t.color};`;
+  document.getElementById('pp-avatar').textContent = t.initials;
+  document.getElementById('pp-name').textContent = t.name;
+  document.getElementById('pp-badge').textContent = t.badge;
+  document.getElementById('pp-badge').className = 'badge ' + t.badgeClass;
+  document.getElementById('pp-sub').textContent = `${t.location} · ${t.heritage}`;
+  document.getElementById('pp-orders').textContent = t.orders;
+  document.getElementById('pp-rating').textContent = t.rating;
+  document.getElementById('pp-repeat').textContent = t.repeat;
+  document.getElementById('pp-since').textContent = t.since;
+  document.getElementById('pp-bio').textContent = t.bio;
+  document.getElementById('pp-portfolio').innerHTML = t.portfolio.map(p=>`
+    <div class="portfolio-item" style="background:${p.bg};">
+      <svg width="44" height="44" viewBox="0 0 44 44"><rect x="8" y="6" width="28" height="32" rx="4" fill="${t.color}" opacity="0.3"/><rect x="12" y="10" width="20" height="24" rx="3" fill="${t.color}" opacity="0.5"/></svg>
+      <div class="portfolio-label">${p.label}</div>
+    </div>`).join('');
+  document.getElementById('pp-pricing').innerHTML = t.pricing.map(r=>`<div class="info-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
+  document.getElementById('pp-availability').innerHTML = t.availability.map(r=>`<div class="info-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
+  document.getElementById('pp-specs').textContent = t.specsFull;
+  document.getElementById('pp-reviews').innerHTML = t.reviews.map(r=>`
+    <div class="review-card">
+      <div class="review-header">
+        <div style="display:flex;align-items:center;gap:8px;"><div class="avatar" style="width:28px;height:28px;background:${t.bg};color:${t.color};font-size:10px;">${r.name.split(' ').map(n=>n[0]).join('')}</div><span style="font-size:13px;font-weight:500;">${r.name}</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="stars">${r.stars}</span><span style="font-size:11px;color:#9a9a9a;">${r.date}</span></div>
+      </div>
+      <div style="font-size:13px;color:#5a5a5a;line-height:1.6;">${r.text}</div>
+    </div>`).join('');
+  document.getElementById('order-tailor-name').textContent = t.name;
+  document.querySelectorAll('.sl-tab').forEach((tab,i)=>tab.classList.toggle('active',i===0));
+  document.querySelectorAll('.tab-panel').forEach((panel,i)=>panel.classList.toggle('active',i===0));
+  showPage('tailor-profile');
+}
+
+function switchTab(btn, id) {
+  document.querySelectorAll('.sl-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+function setFilter(el) {
+  document.querySelectorAll('.tag').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ══ DASHBOARD ══ */
+function showDashPanel(name, btn) {
+  document.querySelectorAll('.dash-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.dash-nav-item').forEach(b=>b.classList.remove('active'));
+  const el = document.getElementById('dp-'+name);
+  if (el) el.classList.add('active');
+  if (btn) btn.classList.add('active');
+  else { const b = document.querySelector(`[onclick*="'${name}'"]`); if(b) b.classList.add('active'); }
+}
+
+/* ══ MESSAGING ══ */
+function openThread(i, el) {
+  currentThread = i;
+  const t = chatThreads[i];
+  document.querySelectorAll('.thread-item').forEach(ti=>ti.classList.remove('active'));
+  if (el) { el.classList.add('active'); const dot = el.querySelector('.unread-dot'); if(dot) dot.remove(); }
+  document.getElementById('chat-av').style.cssText = `width:34px;height:34px;font-size:11px;background:${t.bg};color:${t.color};`;
+  document.getElementById('chat-av').textContent = t.initials;
+  document.getElementById('chat-name').textContent = t.name;
+  document.getElementById('chat-sub').textContent = t.sub;
+  renderChatMsgs(t.msgs);
+  clearBlock();
+}
+
+function renderChatMsgs(msgs) {
+  const area = document.getElementById('chat-messages');
+  area.innerHTML = msgs.map(m=>`
+    <div class="msg ${m.out?'msg-out':'msg-in'}">
+      <div class="msg-bubble">${m.text}</div>
+      <div class="msg-time">${m.time}</div>
+    </div>`).join('');
+  area.scrollTop = area.scrollHeight;
+}
+
+function detectRisk(text) {
+  for (const d of contactDetectors) { if (d.pattern.test(text)) return d; }
+  return null;
+}
+
+function onChatInput(val) {
+  const risk = detectRisk(val);
+  if (risk) { blockMsg(risk); } else { unblockMsg(); document.getElementById('warning-box').classList.remove('show'); }
+}
+
+function onChatKey(e) {
+  if (e.key === 'Enter') { isBlocked ? shakeWarn() : trySend(); }
+}
+
+function blockMsg(risk) {
+  isBlocked = true;
+  document.getElementById('chat-input').classList.add('blocked');
+  const btn = document.getElementById('send-btn'); btn.classList.add('disabled'); btn.disabled = true;
+  document.getElementById('warn-title').textContent = 'Message not sent — ' + risk.label + ' detected';
+  document.getElementById('warn-text').textContent = risk.msg;
+  document.getElementById('warning-box').classList.add('show');
+}
+
+function unblockMsg() {
+  isBlocked = false;
+  document.getElementById('chat-input').classList.remove('blocked');
+  const btn = document.getElementById('send-btn'); btn.classList.remove('disabled'); btn.disabled = false;
+}
+
+function clearBlock() {
+  document.getElementById('chat-input').value = '';
+  unblockMsg();
+  document.getElementById('warning-box').classList.remove('show');
+}
+
+function shakeWarn() {
+  const box = document.getElementById('warning-box');
+  box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
+  setTimeout(()=>box.classList.remove('shake'),400);
+}
+
+function trySend() {
+  if (isBlocked) { shakeWarn(); return; }
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  chatThreads[currentThread].msgs.push({out:true,text,time:'Just now'});
+  renderChatMsgs(chatThreads[currentThread].msgs);
+  input.value = '';
+}
+
+/* ══ MEASUREMENTS ══ */
+const measureProfiles = {
+  adult:{label:'My measurements',bust:38,waist:30,hips:42,shoulder:15,sleeve:24,height:65,dress:55,inseam:29,thigh:24},
+  child1:{label:'Amara (6 yrs)',bust:22,waist:21,hips:23,shoulder:10,sleeve:14,height:44,dress:28,inseam:18,thigh:13},
+  child2:{label:'Temi (9 yrs)',bust:26,waist:24,hips:27,shoulder:12,sleeve:17,height:52,dress:34,inseam:22,thigh:15},
+};
+
+function loadProfile(btn, type) {
+  document.querySelectorAll('[onclick*="loadProfile"]').forEach(b=>b.classList.remove('btn-dark'));
+  btn.classList.add('btn-dark');
+  const p = measureProfiles[type];
+  document.getElementById('measure-profile-label').textContent = p.label;
+  ['bust','waist','hips','shoulder','sleeve','height','dress','inseam','thigh'].forEach(f=>{
+    const input = document.getElementById('m-'+f);
+    const snap = document.getElementById('s-'+f);
+    if(input) input.value = p[f];
+    if(snap) snap.textContent = p[f]+'"';
+  });
+}
+
+function saveMeasurements() {
+  ['bust','waist','hips','shoulder','sleeve','height','dress','inseam','thigh'].forEach(f=>{
+    const v = document.getElementById('m-'+f)?.value;
+    const snap = document.getElementById('s-'+f);
+    if(snap&&v) snap.textContent = v+'"';
+  });
+  const badge = document.getElementById('saved-badge');
+  badge.classList.add('show');
+  setTimeout(()=>badge.classList.remove('show'),2500);
+}
+
+/* ══ REVIEWS ══ */
+const starLabels = ['','Not satisfied','Could be better','Good','Very good','Excellent!'];
+function setStars(n) {
+  document.querySelectorAll('#main-stars .star').forEach((s,i)=>s.classList.toggle('lit',i<n));
+  document.getElementById('star-label').textContent = starLabels[n];
+}
+function setSubStar(id, n) {
+  document.querySelectorAll('#'+id+' .sub-star').forEach((s,i)=>s.classList.toggle('lit',i<n));
+}
+
+/* ══ ONBOARDING ══ */
+function selectType(type) {
+  obType = type;
+  document.getElementById('type-ind').classList.toggle('selected', type==='individual');
+  document.getElementById('type-biz').classList.toggle('selected', type==='business');
+}
+
+function obNext(step) {
+  document.getElementById('ob-'+step).style.display = 'none';
+  const next = step+1;
+  if (next<=5) document.getElementById('ob-'+next).style.display = 'block';
+  if (step===4) document.getElementById('ob-type-label').textContent = obType==='individual'?'Individual tailor':'Tailoring business';
+}
+
+function obBack(step) {
+  document.getElementById('ob-'+step).style.display = 'none';
+  document.getElementById('ob-'+(step-1)).style.display = 'block';
+}
+
+function obSubmit() {
+  document.getElementById('ob-5').style.display = 'none';
+  document.getElementById('ob-success').style.display = 'block';
+}
+
+function markUpload(id, label) {
+  const box = document.getElementById(id);
+  box.classList.add('uploaded');
+  box.querySelector('.upload-title').textContent = '✓ ' + label;
+  const sub = box.querySelector('.upload-sub'); if(sub) sub.textContent = '';
+}
+
+/* ══ ADMIN ══ */
+function switchAdminTab(btn, panelId) {
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+/* ══ INIT ══ */
+renderTailorGrid();
+openThread(0, document.querySelectorAll('.thread-item')[0]);
+</script>
+</body>
+</html>
