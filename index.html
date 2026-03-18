@@ -45,7 +45,7 @@
 
   /* ── LAYOUT ── */
   .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
-  .view { display: none; } .view.active { display: block; }
+  .view { display: none !important; } .view.active { display: block !important; }
   .page-pad { padding: 2rem 0 3rem; }
 
   /* ── NAV ── */
@@ -1044,15 +1044,37 @@ let obType = 'individual';
 
 /* ══ NAVIGATION ══ */
 function showPage(name, navEl) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  // Hide all views
+  document.querySelectorAll('.view').forEach(v => {
+    v.classList.remove('active');
+    v.style.display = 'none';
+  });
+  
+  // Show target view
   const el = document.getElementById('page-'+name);
-  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
-  if (navEl) {
-    document.querySelectorAll('.sl-nav-link').forEach(l => l.classList.remove('active'));
-    navEl.classList.add('active');
+  if (el) { 
+    el.classList.add('active'); 
+    el.style.display = 'block';
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
+  
+  // Update nav active state
+  document.querySelectorAll('.sl-nav-link').forEach(l => l.classList.remove('active'));
+  if (navEl) {
+    navEl.classList.add('active');
+  } else {
+    const navBtn = document.getElementById('nav-'+name);
+    if (navBtn) navBtn.classList.add('active');
+  }
+  
   if (name === 'tailors') renderTailorGrid();
-  if (name === 'messages' || name === 'dashboard') { showDashPanel('messages'); openThread(0, document.querySelectorAll('.thread-item')[0]); }
+  if (name === 'dashboard') { 
+    setTimeout(() => {
+      showDashPanel('orders');
+      const firstThread = document.querySelectorAll('.thread-item')[0];
+      if (firstThread) openThread(0, firstThread);
+    }, 100);
+  }
 }
 
 function toggleMobileMenu() {
