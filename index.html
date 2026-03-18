@@ -43,21 +43,21 @@
   }
 
   /* ── LAYOUT ── */
-  .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
-  .view { display: none !important; } .view.active { display: block !important; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+  .view { display: none; } .view.active { display: block; }
   .page-pad { padding: 2rem 0 3rem; }
 
   /* ── NAV ── */
-  .sl-nav { background: #1a1a1a; border-bottom: none; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+  .sl-nav { background: #1a1a1a; border-bottom: none; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.15); width: 100%; }
   .sl-nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
-  .sl-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
+  .sl-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; flex-shrink: 0; }
   .sl-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; letter-spacing: 0.06em; color: #ffffff; }
   .sl-wordmark em { font-style: italic; }
-  .sl-nav-links { display: flex; gap: 6px; list-style: none; }
+  .sl-nav-links { display: flex; gap: 2px; list-style: none; flex-wrap: nowrap; align-items: center; }
   .sl-nav-link { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); cursor: pointer; padding: 7px 14px; border-radius: var(--r); transition: all 0.15s; border: none; background: none; font-family: 'DM Sans', sans-serif; letter-spacing: 0.02em; }
   .sl-nav-link:hover, .sl-nav-link.active { color: #ffffff; background: rgba(255,255,255,0.12); }
   .sl-nav-actions { display: flex; gap: 8px; align-items: center; }
-  .sl-nav .btn { color: #ffffff; border-color: rgba(255,255,255,0.35); }
+  .sl-nav .btn { color: #ffffff; border-color: rgba(255,255,255,0.35); white-space: nowrap; font-size: 12px; padding: 7px 14px; }
   .sl-nav .btn:hover { background: rgba(255,255,255,0.12); }
   .sl-nav .btn-dark { background: #1D9E75; border-color: #1D9E75; color: #ffffff; }
   .sl-nav .btn-dark:hover { background: #178a64; opacity: 1; }
@@ -388,7 +388,7 @@
   <div class="container">
     <div class="sl-nav-inner">
       <a class="sl-logo" onclick="showPage('home')">
-        <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewLink_Logo.png" style="height:40px;width:40px;object-fit:contain;background:transparent;border-radius:4px;" alt="SewLink" />
+        <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewLink_Logo.png" style="height:46px;width:46px;object-fit:contain;background:transparent;" alt="SewLink" />
         <span class="sl-wordmark">Sew<em>Link</em></span>
       </a>
       <ul class="sl-nav-links">
@@ -413,7 +413,7 @@
   <div class="container">
     <div class="hero">
       <div class="hero-logo">
-        <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewLink_Logo.png" style="height:70px;width:70px;object-fit:contain;background:transparent;" alt="SewLink" />
+        <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewLink_Logo.png" style="height:90px;width:90px;object-fit:contain;background:transparent;" alt="SewLink" />
         <div class="hero-wordmark">Sew<em>Link</em></div>
       </div>
       <div class="hero-tagline">Trusted Tailoring Marketplace</div>
@@ -1043,35 +1043,28 @@ let obType = 'individual';
 
 /* ══ NAVIGATION ══ */
 function showPage(name, navEl) {
-  // Hide all views
-  document.querySelectorAll('.view').forEach(v => {
-    v.classList.remove('active');
-    v.style.display = 'none';
-  });
-  
-  // Show target view
-  const el = document.getElementById('page-'+name);
-  if (el) { 
-    el.classList.add('active'); 
-    el.style.display = 'block';
-    window.scrollTo({top: 0, behavior: 'smooth'});
+  var allViews = document.querySelectorAll('.view');
+  for (var i = 0; i < allViews.length; i++) {
+    allViews[i].style.display = 'none';
+    allViews[i].classList.remove('active');
   }
-  
-  // Update nav active state
-  document.querySelectorAll('.sl-nav-link').forEach(l => l.classList.remove('active'));
-  if (navEl) {
-    navEl.classList.add('active');
-  } else {
-    const navBtn = document.getElementById('nav-'+name);
-    if (navBtn) navBtn.classList.add('active');
+  var page = document.getElementById('page-' + name);
+  if (page) {
+    page.style.display = 'block';
+    page.classList.add('active');
   }
-  
+  window.scrollTo(0, 0);
+  var allNavLinks = document.querySelectorAll('.sl-nav-link');
+  for (var j = 0; j < allNavLinks.length; j++) {
+    allNavLinks[j].classList.remove('active');
+  }
+  if (navEl) navEl.classList.add('active');
   if (name === 'tailors') renderTailorGrid();
-  if (name === 'dashboard') { 
-    setTimeout(() => {
+  if (name === 'dashboard') {
+    setTimeout(function() {
       showDashPanel('orders');
-      const firstThread = document.querySelectorAll('.thread-item')[0];
-      if (firstThread) openThread(0, firstThread);
+      var th = document.querySelectorAll('.thread-item')[0];
+      if (th) openThread(0, th);
     }, 100);
   }
 }
