@@ -4,6 +4,73 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>SewBridge</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPA_URL = 'https://prypgbyuwszdjtftouzj.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+let CURRENT_USER = null;
+let CURRENT_PROFILE = null;
+
+// Auth state listener
+supa.auth.onAuthStateChange(async (event, session) => {
+  if (session && session.user) {
+    CURRENT_USER = session.user;
+    await loadProfile(session.user.id);
+    updateNavForLoggedIn();
+  } else {
+    CURRENT_USER = null;
+    CURRENT_PROFILE = null;
+    updateNavForLoggedOut();
+  }
+});
+
+async function loadProfile(userId) {
+  const { data, error } = await supa.from('profiles').select('*').eq('id', userId).single();
+  if (data) {
+    CURRENT_PROFILE = data;
+    updateDashboardUI(data);
+  }
+}
+
+function updateNavForLoggedIn() {
+  var signInBtn = document.querySelector('.btn-white');
+  var signUpBtn = document.querySelector('.btn-green');
+  if (CURRENT_PROFILE) {
+    if (signInBtn) signInBtn.textContent = CURRENT_PROFILE.full_name ? CURRENT_PROFILE.full_name.split(' ')[0] : 'Account';
+    if (signUpBtn) { signUpBtn.textContent = 'Sign out'; signUpBtn.onclick = DOSIGNOUT; }
+  }
+}
+
+function updateNavForLoggedOut() {
+  var signInBtn = document.querySelector('.btn-white');
+  var signUpBtn = document.querySelector('.btn-green');
+  if (signInBtn) { signInBtn.textContent = 'Sign in'; signInBtn.onclick = function(){MODAL('signin');}; }
+  if (signUpBtn) { signUpBtn.textContent = 'Sign up free'; signUpBtn.onclick = function(){MODAL('signup');}; }
+}
+
+function updateDashboardUI(profile) {
+  var sbAv = document.querySelector('.sb-av');
+  var sbName = document.querySelector('.sb-name');
+  var sbRole = document.querySelector('.sb-role');
+  if (sbAv) sbAv.textContent = getInitials(profile.full_name || 'User');
+  if (sbName) sbName.textContent = profile.full_name ? profile.full_name.split(' ')[0] + ' ' + (profile.full_name.split(' ')[1]||'').charAt(0) + '.' : 'User';
+  if (sbRole) sbRole.textContent = profile.role === 'tailor' ? 'Tailor' : 'Customer';
+}
+
+function getInitials(name) {
+  return name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+}
+
+async function DOSIGNOUT() {
+  await supa.auth.signOut();
+  CURRENT_USER = null;
+  CURRENT_PROFILE = null;
+  SHOWOK('Signed out', 'You have been signed out successfully.');
+  setTimeout(function(){ CLOSEMODAL(); GO('home'); }, 1500);
+  MODAL('signin');
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -611,12 +678,24 @@ function CLEARWARN(){
   var wb=document.getElementById('warn');if(wb)wb.classList.remove('on');
 }
 
-function TRYSEND(){
+async function TRYSEND(){
   if(BLK)return;
   var inp=document.getElementById('chat-inp');
   if(!inp)return;
   var text=inp.value.trim();
   if(!text)return;
+  // Save to Supabase if user is logged in
+  if(CURRENT_USER){
+    var thread=TH[CUR];
+    await supa.from('messages').insert({
+      sender_id:CURRENT_USER.id,
+      sender_name:CURRENT_PROFILE?CURRENT_PROFILE.full_name:'Customer',
+      recipient_name:thread.name,
+      content:text,
+      thread_index:CUR,
+      created_at:new Date().toISOString()
+    });
+  }
   TH[CUR].msgs.push({o:1,t:text,time:'Just now'});
   THREAD(CUR,document.querySelectorAll('.thread')[CUR]);
 }
@@ -636,12 +715,21 @@ function LOADM(btn,type){
   }
 }
 
-function SAVEM(){
+async function SAVEM(){
   var F=['bust','waist','hips','shoulder','sleeve','height','dress','inseam','thigh'];
+  var measurements={};
   for(var f=0;f<F.length;f++){
     var v=document.getElementById('m-'+F[f]);
     var snap=document.getElementById('s-'+F[f]);
-    if(v&&snap)snap.textContent=v.value+'"';
+    if(v&&snap){snap.textContent=v.value+'"';measurements[F[f]]=v.value;}
+  }
+  // Save to Supabase if logged in
+  if(CURRENT_USER){
+    await supa.from('measurements').upsert({
+      user_id:CURRENT_USER.id,
+      ...measurements,
+      updated_at:new Date().toISOString()
+    });
   }
   var s=document.getElementById('saved');
   if(s){s.classList.add('on');setTimeout(function(){s.classList.remove('on');},2500);}
@@ -733,28 +821,75 @@ function SHOWOK(title,msg){
   if(m)m.textContent=msg;
 }
 
-function DOSIGNIN(){
+async function DOSIGNIN(){
   var e=document.getElementById('si-email');
   var p=document.getElementById('si-pw');
   if(!e||!e.value||!p||!p.value){alert('Please enter your email and password.');return;}
+  var btn=document.querySelector('#af-signin .auth-btn');
+  if(btn){btn.textContent='Signing in...';btn.disabled=true;}
+  var {data,error}=await supa.auth.signInWithPassword({email:e.value,password:p.value});
+  if(btn){btn.textContent='Sign in to SewBridge';btn.disabled=false;}
+  if(error){
+    alert('Error: '+error.message);return;
+  }
   SHOWOK('Welcome back!','You are now signed in to SewBridge.');
+  setTimeout(function(){CLOSEMODAL();GO('dashboard');},1500);
 }
 
-function DOSIGNUP(){
+async function DOSIGNUP(){
+  var fname=document.querySelector('#af-signup input[placeholder="e.g. Adaeze"]');
+  var lname=document.querySelector('#af-signup input[placeholder="e.g. Nwosu"]');
+  var email=document.querySelector('#af-signup input[type="email"]');
+  var pw=document.querySelector('#af-signup input[type="password"]');
+  if(!fname||!fname.value||!lname||!lname.value){alert('Please enter your first and last name.');return;}
+  if(!email||!email.value){alert('Please enter your email.');return;}
+  if(!pw||!pw.value||pw.value.length<8){alert('Password must be at least 8 characters.');return;}
+  var btn=document.querySelector('#af-signup .auth-btn');
+  if(btn){btn.textContent='Creating account...';btn.disabled=true;}
+  var fullName=fname.value.trim()+' '+lname.value.trim();
+  var {data,error}=await supa.auth.signUp({
+    email:email.value,
+    password:pw.value,
+    options:{data:{full_name:fullName,role:ATT}}
+  });
+  if(btn){btn.textContent='Create my SewBridge account';btn.disabled=false;}
+  if(error){alert('Error: '+error.message);return;}
+  // Insert profile into profiles table
+  if(data.user){
+    await supa.from('profiles').upsert({
+      id:data.user.id,
+      full_name:fullName,
+      email:email.value,
+      role:ATT,
+      created_at:new Date().toISOString()
+    });
+  }
   if(ATT==='tailor'){
-    SHOWOK('Welcome, tailor!','Your account is created. Complete your tailor profile to go live.');
-    setTimeout(function(){CLOSEMODAL();GO('join');},2000);
+    SHOWOK('Welcome, tailor!','Account created! Check your email to confirm, then complete your profile.');
+    setTimeout(function(){CLOSEMODAL();GO('join');},2500);
   } else {
-    SHOWOK('Welcome to SewBridge!','Your account is created. Start finding your perfect tailor!');
-    setTimeout(function(){CLOSEMODAL();GO('tailors');},2000);
+    SHOWOK('Welcome to SewBridge!','Account created! Check your email to confirm your address.');
+    setTimeout(function(){CLOSEMODAL();GO('tailors');},2500);
   }
 }
 
-function GAUTH(){
-  SHOWOK('Signed in with Google!','Welcome to SewBridge. You are all set!');
-  setTimeout(function(){CLOSEMODAL();},2000);
+async function GAUTH(){
+  var {data,error}=await supa.auth.signInWithOAuth({
+    provider:'google',
+    options:{redirectTo:window.location.href}
+  });
+  if(error){alert('Google sign in error: '+error.message);}
 }
-function DORESET(){
+async function DORESET(){
+  var email=document.querySelector('#af-forgot input[type="email"]');
+  if(!email||!email.value){alert('Please enter your email address.');return;}
+  var btn=document.querySelector('#af-forgot .auth-btn');
+  if(btn){btn.textContent='Sending...';btn.disabled=true;}
+  var {error}=await supa.auth.resetPasswordForEmail(email.value,{
+    redirectTo:window.location.href
+  });
+  if(btn){btn.textContent='Send reset link';btn.disabled=false;}
+  if(error){alert('Error: '+error.message);return;}
   SHOWOK('Reset link sent!','Check your email for a password reset link.');
 }
 
