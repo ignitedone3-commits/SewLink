@@ -1,1204 +1,2234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SewBridge</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:#faf9f7;color:#1a1a1a;font-size:15px;line-height:1.7}
-.wrap{max-width:1100px;margin:0 auto;padding:0 28px}
-hr{border:none;border-top:1px solid #e8e8e8;margin:2.5rem 0}
-.nav{background:#1a1a1a;position:sticky;top:0;z-index:999}
-.nav-inner{max-width:1100px;margin:0 auto;padding:0 28px;height:68px;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0}
-.logo img{height:52px;width:auto;object-fit:contain}
-.logo-text{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:#fff;letter-spacing:.05em;white-space:nowrap}
-.logo-text em{font-style:italic}
-.nav-links{display:flex;align-items:center;gap:2px;list-style:none}
-.nb{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,.8);background:none;border:none;cursor:pointer;padding:7px 12px;border-radius:6px;white-space:nowrap}
-.nb:hover,.nb.on{color:#fff;background:rgba(255,255,255,.12)}
-.nav-right{display:flex;gap:8px;flex-shrink:0}
-.btn{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:all .15s;text-transform:uppercase;letter-spacing:.03em;display:inline-block}
-.btn-white{border:1.5px solid rgba(255,255,255,.4);background:transparent;color:#fff}
-.btn-white:hover{background:rgba(255,255,255,.1)}
-.btn-green{background:#1D9E75;border:none;color:#fff}
-.btn-green:hover{background:#178a64}
-.btn-dark{background:#1a1a1a;border:1.5px solid #1a1a1a;color:#fff}
-.btn-dark:hover{background:#333}
-.btn-outline{background:transparent;border:1.5px solid #1a1a1a;color:#1a1a1a}
-.btn-outline:hover{background:#1a1a1a;color:#fff}
-.btn-lg{padding:12px 30px;font-size:14px}
-.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
-.bg{background:#EAF3DE;color:#2d6a0a}.ba{background:#FAEEDA;color:#854F0B}.bb{background:#E6F1FB;color:#185FA5}
-.pg-title{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:500;margin-bottom:8px}
-.pg-sub{font-size:16px;color:#555;margin-bottom:2rem;line-height:1.7}
-.sec-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;margin-bottom:8px}
-.sec-sub{font-size:15px;color:#555;margin-bottom:1.75rem}
-.hero{text-align:center;padding:5rem 0 4rem}
-.hero-logo{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1rem}
-.hero-logo img{height:100px;width:auto;object-fit:contain}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:500;letter-spacing:.04em;line-height:1}
-.hero-title em{font-style:italic}
-.hero-tag{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#1D9E75;margin:1rem 0 .75rem}
-.hero-desc{font-size:17px;color:#444;max-width:520px;margin:0 auto 2.5rem;line-height:1.8}
-.hero-btns{display:flex;gap:14px;justify-content:center;margin-bottom:2.5rem;flex-wrap:wrap}
-.hero-search{display:flex;max-width:520px;margin:0 auto;border:2px solid #1a1a1a;border-radius:10px;overflow:hidden}
-.hero-search input{flex:1;border:none;outline:none;padding:13px 18px;font-family:'DM Sans',sans-serif;font-size:14px;background:#fff}
-.search-btn{padding:11px 22px;background:#1a1a1a;color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;cursor:pointer}
-.search-btn:hover{background:#1D9E75}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid #e0e0e0;border-radius:14px;margin:3rem 0;background:#fff}
-.stat{padding:26px;text-align:center;border-right:1px solid #e0e0e0}
-.stat:last-child{border-right:none}
-.stat-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;display:block;margin-bottom:4px}
-.stat-label{font-size:13px;color:#666;font-weight:500}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:2rem}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:2rem 0}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.step{padding:24px;border:2px solid #e8e8e8;border-radius:14px;background:#fff;transition:all .2s}
-.step:hover{border-color:#1D9E75}
-.step-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;color:#1D9E75;margin-bottom:10px;line-height:1}
-.step-title{font-size:15px;font-weight:600;margin-bottom:6px}
-.step-desc{font-size:13px;color:#555;line-height:1.7}
-.trust{text-align:center;padding:20px 14px;border:2px solid #e8e8e8;border-radius:14px;background:#fff}
-.trust-icon{font-size:26px;margin-bottom:8px}
-.trust-title{font-size:14px;font-weight:600;margin-bottom:4px}
-.trust-desc{font-size:12px;color:#666;line-height:1.6}
-.cta-card{border:2px solid #e0e0e0;border-radius:14px;padding:30px 26px;background:#fff}
-.cta-card.green{border-color:#1D9E75;background:#f8fdf9}
-.cta-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
-.cta-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;margin-bottom:8px}
-.cta-desc{font-size:14px;color:#555;line-height:1.7;margin-bottom:18px}
-.inp{padding:10px 14px;border:1.5px solid #ddd;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;background:#fff;outline:none}
-.inp:focus{border-color:#1D9E75}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.75rem;align-items:center}
-.fl{font-size:11px;font-weight:700;color:#888;letter-spacing:.1em;text-transform:uppercase}
-.tag{font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;border:1.5px solid #ddd;color:#555;cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
-.tag:hover,.tag.on{border-color:#1D9E75;color:#1D9E75;background:#EAF3DE}
-.tailor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.tc{border:2px solid #e0e0e0;border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;background:#fff}
-.tc:hover{border-color:#1D9E75;transform:translateY(-2px)}
-.tc-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0}
-.tc-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;margin-bottom:2px}
-.tc-loc{font-size:12px;color:#666}
-.specs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-.spec{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;border:1px solid #ddd;color:#555}
-.tc-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid #eee}
-.stars{font-size:12px;color:#d4a00a}
-.price{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500}
-.aud-lbl{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#1D9E75;margin-bottom:14px;display:block}
-.dash{display:grid;grid-template-columns:210px 1fr;gap:24px;min-height:70vh}
-.sidebar{border-right:2px solid #eee;padding-right:20px}
-.sb-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;margin:0 auto 8px;background:#FBEAF0;color:#993556}
-.sb-name{font-family:'Cormorant Garamond',serif;font-size:18px;text-align:center;margin-bottom:2px}
-.sb-role{font-size:11px;color:#888;text-align:center;text-transform:uppercase;letter-spacing:.08em;margin-bottom:18px}
-.sb-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-size:14px;cursor:pointer;color:#555;margin-bottom:2px;background:none;border:none;font-family:'DM Sans',sans-serif;width:100%;text-align:left;font-weight:500;transition:all .15s}
-.sb-btn:hover,.sb-btn.on{background:#EAF3DE;color:#1D9E75}
-.panel{display:none}
-.panel.on{display:block}
-.msg-wrap{display:grid;grid-template-columns:230px 1fr;border:2px solid #e0e0e0;border-radius:14px;overflow:hidden;min-height:480px;background:#fff}
-.tl{border-right:2px solid #eee}
-.tl-head{padding:12px 14px;border-bottom:1px solid #eee;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888}
-.thread{padding:12px 14px;border-bottom:1px solid #eee;cursor:pointer}
-.thread:hover,.thread.on{background:#f5fdf9}
-.th-name{font-size:13px;font-weight:600;margin-bottom:2px}
-.th-prev{font-size:12px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
-.th-time{font-size:11px;color:#aaa}
-.chat{display:flex;flex-direction:column}
-.safe-bar{padding:7px 16px;background:#EAF3DE;font-size:12px;color:#2d6a0a;font-weight:600;border-bottom:1px solid #c3dfa0;display:flex;align-items:center;gap:8px}
-.chat-top{padding:12px 16px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:12px}
-.chat-name{font-size:14px;font-weight:600}
-.chat-sub{font-size:12px;color:#888}
-.msgs{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:260px;min-height:140px}
-.msg{max-width:74%}
-.bub{padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.6}
-.msg-in .bub{background:#f0f0f0;border-radius:4px 14px 14px 14px}
-.msg-out{align-self:flex-end}
-.msg-out .bub{background:#1a1a1a;color:#fff;border-radius:14px 4px 14px 14px}
-.msg-time{font-size:11px;color:#aaa;margin-top:3px;padding:0 4px}
-.msg-out .msg-time{text-align:right}
-.warn{margin:0 14px 8px;border-radius:12px;padding:13px 15px;border:2px solid #FAC775;background:#FAEEDA;display:none;gap:10px;align-items:flex-start}
-.warn.on{display:flex}
-.warn-title{font-size:13px;font-weight:700;color:#633806;margin-bottom:3px}
-.warn-text{font-size:12px;color:#854F0B;line-height:1.6}
-.chat-foot{padding:10px 14px;border-top:1px solid #eee;display:flex;gap:8px}
-.chat-inp{flex:1;padding:9px 14px;border:1.5px solid #ddd;border-radius:22px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;outline:none}
-.send{width:36px;height:36px;border-radius:50%;background:#1a1a1a;color:#fff;border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
-.saved{display:none;font-size:12px;font-weight:600;color:#2d6a0a;background:#EAF3DE;padding:4px 12px;border-radius:20px}
-.saved.on{display:inline-block}
-.fc{background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:26px;margin-bottom:16px}
-.fs-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #eee}
-.field{margin-bottom:14px}
-.lbl{font-size:13px;font-weight:600;color:#444;display:block;margin-bottom:5px}
-.finp{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;background:#fff;outline:none}
-.finp:focus{border-color:#1D9E75}
-textarea.finp{resize:vertical;min-height:80px}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.ob-steps{display:flex;align-items:center;margin-bottom:2.5rem}
-.ob-step{display:flex;align-items:center;gap:8px;flex:1}
-.ob-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;border:2px solid #ddd;color:#aaa;flex-shrink:0}
-.ob-step.act .ob-num{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
-.ob-step.done .ob-num{background:#1D9E75;color:#fff;border-color:#1D9E75}
-.ob-lbl{font-size:12px;color:#aaa;font-weight:500}
-.ob-step.act .ob-lbl{color:#1a1a1a;font-weight:600}
-.ob-step.done .ob-lbl{color:#1D9E75}
-.ob-line{flex:1;height:2px;background:#eee;margin:0 8px}
-.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem}
-.type-card{border:2px solid #ddd;border-radius:14px;padding:20px;cursor:pointer;transition:all .2s}
-.type-card.sel{border-color:#1a1a1a;background:#fafafa}
-.type-card:hover{border-color:#1D9E75}
-.type-icon{font-size:28px;margin-bottom:10px}
-.type-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;margin-bottom:5px}
-.type-desc{font-size:13px;color:#666;line-height:1.6}
-.ck-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:#f5f5f5;font-size:14px;margin-bottom:8px}
-.up-box{border:2px dashed #ddd;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:10px}
-.up-box:hover{border-color:#1D9E75;background:#f8fdf9}
-.up-box.done{border-color:#1D9E75;background:#EAF3DE}
-.up-title{font-size:14px;font-weight:600;margin-bottom:3px}
-.up-sub{font-size:12px;color:#888}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem}
-.metric{background:#f5f5f5;border-radius:12px;padding:16px}
-.met-num{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;display:block;margin-bottom:2px}
-.met-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.1em}
-.met-chg{font-size:12px;color:#1D9E75;margin-top:4px}
-.adm-tabs{display:flex;border-bottom:2px solid #eee;margin-bottom:1.5rem}
-.adm-tab{padding:9px 18px;font-size:14px;font-weight:500;cursor:pointer;color:#888;border-bottom:3px solid transparent;margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif}
-.adm-tab.on{color:#1a1a1a;border-bottom-color:#1D9E75}
-.adm-panel{display:none}
-.adm-panel.on{display:block;overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;padding:9px 12px;border-bottom:2px solid #eee}
-td{padding:11px 12px;border-bottom:1px solid #eee;vertical-align:middle}
-tr:hover td{background:#fafafa}
-.act-btn{font-size:12px;color:#555;cursor:pointer;text-decoration:underline;margin-right:8px;background:none;border:none;font-family:'DM Sans',sans-serif;font-weight:500}
-.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center}
-.overlay.on{display:flex}
-.modal{background:#fff;border-radius:18px;width:100%;max-width:440px;margin:20px;overflow:hidden}
-.modal-top{background:#1a1a1a;padding:26px 30px 22px;text-align:center;position:relative}
-.modal-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}
-.modal-logo img{height:48px;width:auto;object-fit:contain}
-.modal-logo-text{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:#fff;letter-spacing:.05em}
-.modal-logo-text em{font-style:italic}
-.modal-tabs{display:flex;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;overflow:hidden}
-.modal-tab{flex:1;padding:8px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;border:none;color:rgba(255,255,255,.6);font-family:'DM Sans',sans-serif;text-transform:uppercase}
-.modal-tab.on{background:#fff;color:#1a1a1a}
-.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:rgba(255,255,255,.6)}
-.modal-body{padding:26px 30px 30px}
-.af{display:none}
-.af.on{display:block}
-.auth-lbl{font-size:13px;font-weight:600;color:#444;display:block;margin-bottom:5px}
-.auth-inp{width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;outline:none;margin-bottom:12px}
-.auth-inp:focus{border-color:#1D9E75}
-.auth-btn{width:100%;padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;margin-bottom:12px}
-.auth-btn:hover{background:#1D9E75}
-.auth-div{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.auth-div span{font-size:12px;color:#aaa}
-.auth-div-line{flex:1;height:1px;background:#eee}
-.auth-switch{text-align:center;font-size:13px;color:#888}
-.auth-switch a{color:#1D9E75;font-weight:600;cursor:pointer}
-.auth-forgot{text-align:right;margin-top:-6px;margin-bottom:12px}
-.auth-forgot a{font-size:12px;color:#1D9E75;cursor:pointer;font-weight:600}
-.at-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.at-card{padding:12px;border:1.5px solid #ddd;border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;background:#fff}
-.at-card.sel{border-color:#1D9E75;background:#f8fdf9}
-.at-icon{font-size:20px;margin-bottom:5px}
-.at-lbl{font-size:13px;font-weight:600}
-.at-sub{font-size:11px;color:#888;margin-top:1px}
-.auth-ok{text-align:center;padding:1.5rem 0;display:none}
-.auth-ok.on{display:block}
-@media(max-width:768px){
-  .nav-links{display:none}
-  .hero-title{font-size:46px}
-  .stats,.g3,.g4,.g2,.type-grid,.r2,.r3,.metrics{grid-template-columns:1fr}
-  .dash,.msg-wrap{grid-template-columns:1fr}
-  .sidebar{border-right:none;border-bottom:2px solid #eee;padding-right:0;padding-bottom:12px;margin-bottom:12px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SewBridge - Connect with Master Tailors</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --dark: #1a1a1a;
+      --green: #1D9E75;
+      --bg: #faf9f7;
+      --white: #fff;
+      --gray: #666;
+      --lightgray: #f0f0f0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--dark);
+      background-color: var(--bg);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav .logo-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark);
+      cursor: pointer;
+    }
+
+    nav .logo-brand img {
+      height: 40px;
+      width: auto;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    nav .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    nav .nav-links a:hover {
+      color: var(--green);
+    }
+
+    nav .auth-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    nav .auth-buttons button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    nav .auth-buttons .signin-btn {
+      background: transparent;
+      color: var(--dark);
+      border: 2px solid var(--dark);
+    }
+
+    nav .auth-buttons .signin-btn:hover {
+      background: var(--dark);
+      color: var(--white);
+    }
+
+    nav .auth-buttons .signup-btn {
+      background: var(--green);
+      color: var(--white);
+    }
+
+    nav .auth-buttons .signup-btn:hover {
+      opacity: 0.9;
+    }
+
+    nav .user-menu {
+      display: none;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    nav .user-menu.active {
+      display: flex;
+    }
+
+    nav .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--green);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    nav .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    nav .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--white);
+      min-width: 200px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      padding: 0.5rem 0;
+      z-index: 1;
+      border-radius: 6px;
+      top: 100%;
+      right: 0;
+      margin-top: 0.5rem;
+    }
+
+    nav .dropdown-content.active {
+      display: block;
+    }
+
+    nav .dropdown-content a {
+      color: var(--dark);
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      display: block;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    nav .dropdown-content a:hover {
+      background-color: var(--lightgray);
+      color: var(--green);
+    }
+
+    /* PAGES */
+    .page {
+      display: none;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .scroll-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* HOME PAGE */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(26,26,26,0.8) 0%, rgba(29,158,117,0.3) 100%),
+                  repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(29,158,117,0.05) 35px, rgba(29,158,117,0.05) 70px),
+                  var(--bg);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: rgba(29,158,117,0.1);
+      filter: blur(80px);
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      max-width: 800px;
+      padding: 2rem;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--green);
+      color: var(--white);
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      line-height: 1.2;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-cta button {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .hero-cta .btn-primary {
+      background: var(--green);
+      color: var(--white);
+    }
+
+    .hero-cta .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(29,158,117,0.3);
+    }
+
+    .hero-cta .btn-secondary {
+      background: var(--white);
+      color: var(--dark);
+      border: 2px solid var(--white);
+    }
+
+    .hero-cta .btn-secondary:hover {
+      background: transparent;
+      color: var(--white);
+    }
+
+    /* STATS */
+    .stats-section {
+      background: var(--white);
+      padding: 3rem 2rem;
+      margin: 3rem 0;
+    }
+
+    .stats-grid {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 2rem;
+      border: 2px solid var(--lightgray);
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--green);
+      box-shadow: 0 4px 12px rgba(29,158,117,0.1);
+    }
+
+    .stat-card h3 {
+      font-size: 2.5rem;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card p {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    /* HOW IT WORKS */
+    .how-section {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 2rem;
+    }
+
+    .how-section h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .how-card {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .how-card-icon {
+      width: 70px;
+      height: 70px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: var(--white);
+      font-size: 1.8rem;
+    }
+
+    .how-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .how-card p {
+      color: var(--gray);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* FEATURED TAILORS */
+    .featured-section {
+      background: var(--white);
+      padding: 3rem 2rem;
+      margin: 3rem 0;
+    }
+
+    .featured-section h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .featured-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .tailor-card {
+      background: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+      cursor: pointer;
+      border: 1px solid var(--lightgray);
+    }
+
+    .tailor-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .tailor-header {
+      background: linear-gradient(135deg, var(--green) 0%, #16a373 100%);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .tailor-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 2rem;
+      font-weight: 700;
+      border: 3px solid var(--white);
+    }
+
+    .tailor-name {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .tailor-location {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .tailor-body {
+      padding: 1.5rem;
+    }
+
+    .tailor-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      justify-content: center;
+    }
+
+    .tailor-badge {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.7rem;
+      background: var(--lightgray);
+      border-radius: 20px;
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .tailor-badge.verified {
+      background: rgba(29,158,117,0.2);
+      color: var(--green);
+    }
+
+    .tailor-specialties {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .spec-chip {
+      font-size: 0.8rem;
+      padding: 0.4rem 0.8rem;
+      background: var(--lightgray);
+      border-radius: 4px;
+      color: var(--dark);
+    }
+
+    .tailor-rating {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .tailor-rating .stars {
+      color: var(--green);
+    }
+
+    .tailor-price {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 1rem;
+    }
+
+    .tailor-card button {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tailor-card button:hover {
+      opacity: 0.9;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials-section {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 2rem;
+    }
+
+    .testimonials-section h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .testimonial-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid var(--lightgray);
+    }
+
+    .testimonial-stars {
+      color: #ffc107;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .testimonial-quote {
+      font-style: italic;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .testimonial-city {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    /* EARN SECTION */
+    .earn-section {
+      background: linear-gradient(135deg, var(--dark) 0%, rgba(29,158,117,0.3) 100%);
+      color: var(--white);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .earn-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .earn-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+
+    .earn-section p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+    }
+
+    .earn-section button {
+      padding: 1rem 2rem;
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .earn-section button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(29,158,117,0.4);
+    }
+
+    /* TAILORS PAGE */
+    .tailors-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .tailors-header {
+      margin-bottom: 2rem;
+    }
+
+    .tailors-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tailors-filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-group label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+
+    .filter-group input,
+    .filter-group select {
+      padding: 0.75rem;
+      border: 1px solid var(--lightgray);
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px rgba(29,158,117,0.1);
+    }
+
+    .specialty-tags {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .spec-tag {
+      padding: 0.5rem 1rem;
+      background: var(--lightgray);
+      border: 2px solid var(--lightgray);
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .spec-tag.active {
+      background: var(--green);
+      color: var(--white);
+      border-color: var(--green);
+    }
+
+    .tailors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+
+    /* HOW PAGE */
+    .how-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .how-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .how-role {
+      margin-bottom: 4rem;
+    }
+
+    .how-role h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--green);
+    }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .step {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--green);
+    }
+
+    .step-number {
+      display: inline-flex;
+      width: 40px;
+      height: 40px;
+      background: var(--green);
+      color: var(--white);
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .step h3 {
+      margin-bottom: 0.75rem;
+      font-size: 1.2rem;
+    }
+
+    .step p {
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* DASHBOARD */
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 2rem;
+      min-height: 80vh;
+    }
+
+    .dashboard-sidebar {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 1.5rem;
+      height: fit-content;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .dashboard-sidebar h3 {
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .sidebar-menu button {
+      padding: 0.75rem 1rem;
+      background: transparent;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      font-weight: 500;
+      border-radius: 4px;
+      transition: all 0.3s;
+      color: var(--dark);
+    }
+
+    .sidebar-menu button:hover,
+    .sidebar-menu button.active {
+      background: var(--lightgray);
+      color: var(--green);
+    }
+
+    .dashboard-panels {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .panel-form {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 0.75rem;
+      border: 1px solid var(--lightgray);
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px rgba(29,158,117,0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .panel-button {
+      padding: 0.75rem 1.5rem;
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: fit-content;
+    }
+
+    .panel-button:hover {
+      opacity: 0.9;
+    }
+
+    .orders-table,
+    .users-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .orders-table th,
+    .users-table th {
+      text-align: left;
+      padding: 1rem;
+      background: var(--lightgray);
+      font-weight: 600;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .orders-table td,
+    .users-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .orders-table tr:hover,
+    .users-table tr:hover {
+      background: var(--lightgray);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-completed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-cancelled {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    /* MODALS */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+    }
+
+    .modal-close:hover {
+      color: var(--dark);
+    }
+
+    .modal h2 {
+      margin-bottom: 1.5rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--lightgray);
+    }
+
+    .tab-btn {
+      padding: 0.75rem 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--gray);
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .tab-btn.active {
+      color: var(--green);
+      border-bottom-color: var(--green);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .oauth-button {
+      padding: 0.75rem;
+      background: var(--lightgray);
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+
+    .oauth-button:hover {
+      background: #f5f5f5;
+    }
+
+    .toggle-role {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .toggle-role button {
+      flex: 1;
+      padding: 0.75rem;
+      background: var(--lightgray);
+      border: 2px solid var(--lightgray);
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .toggle-role button.active {
+      background: var(--green);
+      color: var(--white);
+      border-color: var(--green);
+    }
+
+    /* TAILOR PROFILE MODAL */
+    .profile-modal-content {
+      max-width: 700px;
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, var(--green) 0%, #16a373 100%);
+      padding: 2rem;
+      text-align: center;
+      color: var(--white);
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 2.5rem;
+      font-weight: 700;
+      border: 4px solid var(--white);
+    }
+
+    .profile-name {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-details {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .detail-row {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .detail {
+      flex: 1;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: var(--gray);
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-value {
+      font-size: 1.1rem;
+      color: var(--dark);
+    }
+
+    /* PAYMENT MODAL */
+    .payment-modal-content {
+      max-width: 600px;
+    }
+
+    .payment-summary {
+      background: var(--lightgray);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .summary-row.total {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-top: 2px solid #ddd;
+      padding-top: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .card-placeholder {
+      background: var(--lightgray);
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+      margin: 1.5rem 0;
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    .success-message {
+      display: none;
+      background: #d4edda;
+      color: #155724;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    /* JOIN PAGE */
+    .join-container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .join-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .join-container p {
+      text-align: center;
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+
+    .progress-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .progress-step {
+      flex: 1;
+      height: 4px;
+      background: var(--lightgray);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .progress-step.active,
+    .progress-step.completed {
+      background: var(--green);
+    }
+
+    .join-section {
+      display: none;
+    }
+
+    .join-section.active {
+      display: block;
+      animation: slideUp 0.3s ease;
+    }
+
+    .join-nav {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+
+    .join-nav button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .join-nav button.back {
+      background: var(--lightgray);
+      color: var(--dark);
+    }
+
+    .join-nav button.next,
+    .join-nav button.submit {
+      background: var(--green);
+      color: var(--white);
+    }
+
+    .join-nav button:hover {
+      opacity: 0.9;
+    }
+
+    .join-nav button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ADMIN PAGE */
+    .admin-container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .admin-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .admin-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .admin-card h3 {
+      font-size: 3rem;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-card p {
+      color: var(--gray);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: var(--white);
+      padding: 3rem 2rem;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h4 {
+      margin-bottom: 1rem;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section ul li a {
+      color: #ccc;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .footer-section ul li a:hover {
+      color: var(--green);
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-logo img {
+      height: 35px;
+      width: auto;
+    }
+
+    .footer-trust {
+      background: rgba(29,158,117,0.1);
+      padding: 1rem;
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1.5rem;
+      color: #999;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      nav .logo-brand {
+        flex: 1;
+      }
+
+      nav .nav-links {
+        order: 3;
+        flex-basis: 100%;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .how-section h2,
+      .featured-section h2,
+      .testimonials-section h2 {
+        font-size: 2rem;
+      }
+
+      .dashboard-container {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        height: auto;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-row {
+        flex-direction: column;
+      }
+
+      .toggle-role {
+        flex-direction: column;
+      }
+
+      .progress-bar {
+        gap: 0.3rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="logo" onclick="GO('home')">
-      <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge"/>
-      <span class="logo-text">Sew<em>Bridge</em></span>
-    </div>
-    <ul class="nav-links">
-      <li><button class="nb on" id="n0" onclick="GO('home')">Home</button></li>
-      <li><button class="nb" id="n1" onclick="GO('tailors')">Find a tailor</button></li>
-      <li><button class="nb" id="n2" onclick="GO('how')">How it works</button></li>
-      <li><button class="nb" id="n3" onclick="GO('dashboard')">Dashboard</button></li>
-      <li><button class="nb" id="n4" onclick="GO('join')">Join as tailor</button></li>
-      <li><button class="nb" id="n5" onclick="GO('admin')">Admin</button></li>
-    </ul>
-    <div class="nav-right">
-      <button class="btn btn-white" id="btn-signin" onclick="MODAL('signin')">Sign in</button>
-      <button class="btn btn-green" id="btn-signup" onclick="MODAL('signup')">Sign up free</button>
+<!-- NAV -->
+<nav>
+  <div class="logo-brand" onclick="GO('home')">
+    <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge">
+    <span>SewBridge</span>
+  </div>
+  <div class="nav-links">
+    <a onclick="GO('home')">Home</a>
+    <a onclick="GO('tailors')">Find a Tailor</a>
+    <a onclick="GO('how')">How it Works</a>
+  </div>
+  <div class="auth-buttons" id="authBtns">
+    <button class="signin-btn" onclick="MODAL('auth')">Sign In</button>
+    <button class="signup-btn" onclick="MODAL('auth'); SWITCHMODAL('signup')">Sign Up</button>
+  </div>
+  <div class="user-menu" id="userMenu">
+    <div class="dropdown">
+      <div class="user-avatar" id="userAvatar" onclick="toggleDropdown()">JD</div>
+      <div class="dropdown-content" id="dropdownContent">
+        <a onclick="GO('dashboard')">Dashboard</a>
+        <a id="adminLink" style="display:none;" onclick="GO('admin')">Admin Panel</a>
+        <a onclick="LOGOUT()">Sign Out</a>
+      </div>
     </div>
   </div>
 </nav>
 
-<!-- HOME -->
-<div id="P-home" style="display:none">
-<div class="wrap">
+<!-- HOME PAGE -->
+<div class="page active" id="home">
   <div class="hero">
-    <div class="hero-logo">
-      <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge"/>
-      <div class="hero-title">Sew<em>Bridge</em></div>
-    </div>
-    <div class="hero-tag">Trusted Tailoring Marketplace</div>
-    <div class="hero-desc">Clothes that fit your body. Tailors who honor your story.<br/>Handcrafted with care, for every culture and every occasion.</div>
-    <div class="hero-btns">
-      <button class="btn btn-dark btn-lg" onclick="GO('tailors')">Find a tailor &#8599;</button>
-      <button class="btn btn-outline btn-lg" onclick="GO('join')">Join as tailor &#8599;</button>
-    </div>
-    <div class="hero-search">
-      <input type="text" placeholder="Search by specialty, city - Ankara, Kente, Bridal..."/>
-      <button class="search-btn" onclick="GO('tailors')">Search</button>
+    <div class="hero-content">
+      <div class="hero-tag">Welcome to SewBridge</div>
+      <h1>Every Stitch. Perfectly Yours.</h1>
+      <p>Connect with master tailors who transform your fashion dreams into reality. Fast, secure, and beautifully personal.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="GO('tailors')">Find a Tailor</button>
+        <button class="btn-secondary" onclick="GO('how')">Learn More</button>
+      </div>
     </div>
   </div>
-  <div class="stats">
-    <div class="stat"><span class="stat-num">62</span><span class="stat-label">Verified tailors across America</span></div>
-    <div class="stat"><span class="stat-num">1,200+</span><span class="stat-label">Happy customers served</span></div>
-    <div class="stat"><span class="stat-num">4.9 &#9733;</span><span class="stat-label">Average tailor rating</span></div>
+
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card scroll-reveal">
+        <h3>2,400+</h3>
+        <p>Expert Tailors</p>
+      </div>
+      <div class="stat-card scroll-reveal">
+        <h3>45K+</h3>
+        <p>Happy Customers</p>
+      </div>
+      <div class="stat-card scroll-reveal">
+        <h3>98%</h3>
+        <p>Satisfaction Rate</p>
+      </div>
+    </div>
   </div>
-  <hr/>
-  <div class="sec-title">How SewBridge works</div>
-  <div class="sec-sub">Three simple steps to get your perfect custom outfit.</div>
-  <div class="g3">
-    <div class="step"><div class="step-num">01</div><div class="step-title">Find your tailor</div><div class="step-desc">Browse verified tailors by specialty and location. Read real reviews before you commit.</div></div>
-    <div class="step"><div class="step-num">02</div><div class="step-title">Place a custom order</div><div class="step-desc">Share your saved measurements and style. Your tailor crafts your outfit to your exact specifications.</div></div>
-    <div class="step"><div class="step-num">03</div><div class="step-title">Pay safely and receive</div><div class="step-desc">Payment held in escrow - only released when you confirm your order is perfect.</div></div>
+
+  <div class="how-section">
+    <h2>How It Works</h2>
+    <div class="how-grid">
+      <div class="how-card scroll-reveal">
+        <div class="how-card-icon"><i class="fas fa-search"></i></div>
+        <h3>Find Your Tailor</h3>
+        <p>Browse verified tailors by specialty, location, and rating. Read reviews and see their portfolio.</p>
+      </div>
+      <div class="how-card scroll-reveal">
+        <div class="how-card-icon"><i class="fas fa-handshake"></i></div>
+        <h3>Request & Discuss</h3>
+        <p>Message directly with your tailor to discuss measurements, style preferences, and timeline.</p>
+      </div>
+      <div class="how-card scroll-reveal">
+        <div class="how-card-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>Secure Payment</h3>
+        <p>Pay securely through Stripe escrow. Your money is protected until you're fully satisfied.</p>
+      </div>
+      <div class="how-card scroll-reveal">
+        <div class="how-card-icon"><i class="fas fa-star"></i></div>
+        <h3>Enjoy & Review</h3>
+        <p>Receive your custom garment and share your experience. Help other customers find great tailors.</p>
+      </div>
+    </div>
   </div>
-  <div class="g4">
-    <div class="trust"><div class="trust-icon">&#128274;</div><div class="trust-title">Secure payments</div><div class="trust-desc">Escrow until you confirm delivery</div></div>
-    <div class="trust"><div class="trust-icon">&#9989;</div><div class="trust-title">Verified tailors</div><div class="trust-desc">Every tailor identity-verified</div></div>
-    <div class="trust"><div class="trust-icon">&#128208;</div><div class="trust-title">Saved measurements</div><div class="trust-desc">Easy repeat orders</div></div>
-    <div class="trust"><div class="trust-icon">&#128172;</div><div class="trust-title">Protected messaging</div><div class="trust-desc">All chats stay in SewBridge</div></div>
+
+  <div class="featured-section">
+    <h2>Featured Tailors</h2>
+    <div class="featured-grid" id="featuredGrid">
+    </div>
   </div>
-  <hr/>
-  <div class="sec-title">Featured tailors</div>
-  <div class="sec-sub">Verified, highly rated tailors ready for your order.</div>
-  <div class="tailor-grid" id="home-grid" style="margin-bottom:2rem"></div>
-  <div style="text-align:center;margin-bottom:3rem"><button class="btn btn-dark" onclick="GO('tailors')">View all tailors &#8599;</button></div>
-  <div class="g2" style="margin-bottom:3rem">
-    <div class="cta-card"><div class="cta-icon" style="background:#EAF3DE">&#9986;</div><div class="cta-title">Looking for a tailor?</div><div class="cta-desc">Browse verified tailors across America and Canada. Find your perfect match by specialty and location.</div><button class="btn btn-dark" onclick="GO('tailors')">Find a tailor &#8599;</button></div>
-    <div class="cta-card green"><div class="cta-icon" style="background:#1D9E75;color:#fff">&#129521;</div><div class="cta-title">Are you a tailor?</div><div class="cta-desc">Join SewBridge and reach hundreds of customers. Get verified and grow your tailoring business.</div><button class="btn btn-dark" onclick="GO('join')">Join as tailor &#8599;</button></div>
+
+  <div class="testimonials-section">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card scroll-reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-quote">"Adaeze's work is absolutely stunning. My wedding dress was perfect, and she was so patient through every fitting."</div>
+        <div class="testimonial-author">Maria Gonzalez</div>
+        <div class="testimonial-city">New York, NY</div>
+      </div>
+      <div class="testimonial-card scroll-reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-quote">"Grace made my son's traditional outfit exactly as I imagined. The attention to detail is incredible."</div>
+        <div class="testimonial-author">James Thompson</div>
+        <div class="testimonial-city">Boston, MA</div>
+      </div>
+      <div class="testimonial-card scroll-reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-quote">"Priya's knowledge of traditional sari draping is unmatched. I've been a customer for 3 years now."</div>
+        <div class="testimonial-author">Anjali Patel</div>
+        <div class="testimonial-city">San Francisco, CA</div>
+      </div>
+    </div>
   </div>
-</div>
+
+  <div class="earn-section">
+    <div class="earn-content">
+      <h2>Earn with SewBridge</h2>
+      <p>Are you a talented tailor? Join thousands of craftspeople building thriving businesses on SewBridge.</p>
+      <button onclick="GO('join')">Become a Tailor</button>
+    </div>
+  </div>
 </div>
 
-<!-- FIND A TAILOR -->
-<div id="P-tailors" style="display:none">
-<div class="wrap" style="padding:3rem 0 4rem">
-  <div class="pg-title">Find a tailor</div>
-  <div class="pg-sub">All tailors are identity-verified before joining SewBridge.</div>
-  <div style="display:flex;gap:12px;margin-bottom:1.5rem;flex-wrap:wrap">
-    <input class="inp" style="flex:1;min-width:180px" type="text" placeholder="Search by name, specialty, or city..."/>
-    <select class="inp" style="width:200px">
-      <option>All locations</option><option>Georgia</option><option>New York</option><option>Texas</option><option>Illinois</option><option>California</option><option>Washington DC</option>
-      <option disabled>-- Canada --</option><option>Ontario</option><option>British Columbia</option><option>Alberta</option><option>Quebec</option>
-    </select>
+<!-- TAILORS PAGE -->
+<div class="page" id="tailors">
+  <div class="tailors-container">
+    <div class="tailors-header">
+      <h1>Find Your Perfect Tailor</h1>
+    </div>
+
+    <div class="tailors-filters">
+      <div class="filter-group">
+        <label>Search by Name or Specialty</label>
+        <input type="text" id="searchInput" placeholder="e.g., Adaeze, Bridal, Qipao" onkeyup="FILTERTAILORS()">
+      </div>
+      <div class="filter-group">
+        <label>Filter by Location</label>
+        <select id="locationSelect" onchange="FILTERTAILORS()">
+          <option value="">All Locations</option>
+          <option value="Atlanta">Atlanta, GA</option>
+          <option value="New York">New York, NY</option>
+          <option value="Miami">Miami, FL</option>
+          <option value="Dallas">Dallas, TX</option>
+          <option value="Houston">Houston, TX</option>
+          <option value="San Francisco">San Francisco, CA</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <p style="margin-bottom: 1rem; color: var(--gray);">Filter by Specialty:</p>
+      <div class="specialty-tags" id="specTags">
+        <span class="spec-tag" data-spec="Bridal" onclick="TOGGLESPEC(this)">Bridal</span>
+        <span class="spec-tag" data-spec="Formal" onclick="TOGGLESPEC(this)">Formal</span>
+        <span class="spec-tag" data-spec="Traditional" onclick="TOGGLESPEC(this)">Traditional</span>
+        <span class="spec-tag" data-spec="Alterations" onclick="TOGGLESPEC(this)">Alterations</span>
+        <span class="spec-tag" data-spec="Custom" onclick="TOGGLESPEC(this)">Custom</span>
+        <span class="spec-tag" data-spec="Kids" onclick="TOGGLESPEC(this)">Kids</span>
+      </div>
+    </div>
+
+    <div class="tailors-grid" id="tailorsGrid">
+    </div>
+    <div class="no-results" id="noResults" style="display:none;">
+      No tailors found matching your criteria. Try adjusting your filters.
+    </div>
   </div>
-  <div class="filter-row">
-    <span class="fl">Specialty:</span>
-    <button class="tag on" onclick="setTag(this)">All</button>
-    <button class="tag" onclick="setTag(this)">African wear</button>
-    <button class="tag" onclick="setTag(this)">Bridal</button>
-    <button class="tag" onclick="setTag(this)">Alterations</button>
-    <button class="tag" onclick="setTag(this)">Formal wear</button>
-    <button class="tag" onclick="setTag(this)">Kids clothing</button>
-    <button class="tag" onclick="setTag(this)">Men's wear</button>
-    <button class="tag" onclick="setTag(this)">Fast turnaround</button>
-  </div>
-  <div class="tailor-grid" id="tailor-grid"></div>
-</div>
 </div>
 
-<!-- HOW IT WORKS -->
-<div id="P-how" style="display:none">
-<div class="wrap" style="padding:3rem 0 4rem">
-  <div class="pg-title">How SewBridge works</div>
-  <div class="pg-sub">Everything you need to know - whether you are a customer or a tailor.</div>
-  <span class="aud-lbl">For customers</span>
-  <div class="g3" style="margin-bottom:2.5rem">
-    <div class="step"><div class="step-num">01</div><div class="step-title">Find a verified tailor</div><div class="step-desc">Browse by specialty and heritage. Every tailor is identity-verified and reviewed by real customers.</div></div>
-    <div class="step"><div class="step-num">02</div><div class="step-title">Place your custom order</div><div class="step-desc">Share your saved measurements, fabric preference, and style inspiration. Message your tailor safely inside SewBridge.</div></div>
-    <div class="step"><div class="step-num">03</div><div class="step-title">Pay securely and receive</div><div class="step-desc">Payment held in escrow until you confirm the order is perfect. Full refund protection.</div></div>
+<!-- HOW PAGE -->
+<div class="page" id="how">
+  <div class="how-container">
+    <h1>How SewBridge Works</h1>
+
+    <div class="how-role">
+      <h2>For Customers</h2>
+      <div class="how-steps">
+        <div class="step scroll-reveal">
+          <div class="step-number">1</div>
+          <h3>Browse Tailors</h3>
+          <p>Explore our verified tailors. Filter by specialty, location, and ratings to find your perfect match.</p>
+        </div>
+        <div class="step scroll-reveal">
+          <div class="step-number">2</div>
+          <h3>Request an Order</h3>
+          <p>Click "Request Order" on a tailor's profile, describe your garment, and book securely online.</p>
+        </div>
+        <div class="step scroll-reveal">
+          <div class="step-number">3</div>
+          <h3>Discuss Details</h3>
+          <p>Message with your tailor about measurements, style preferences, fabric, and timeline.</p>
+        </div>
+        <div class="step scroll-reveal">
+          <div class="step-number">4</div>
+          <h3>Receive & Review</h3>
+          <p>Get your custom garment, track fittings via secure messaging, and review your tailor.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-role">
+      <h2>For Tailors</h2>
+      <div class="how-steps">
+        <div class="step scroll-reveal">
+          <div class="step-number">1</div>
+          <h3>Create Your Profile</h3>
+          <p>Sign up and build your tailor profile. Showcase your specialties, pricing, and previous work.</p>
+        </div>
+        <div class="step scroll-reveal">
+          <div class="step-number">2</div>
+          <h3>Get Verified</h3>
+          <p>Complete our verification process to earn a trusted badge and appear in search results.</p>
+        </div>
+        <div class="step scroll-reveal">
+          <div class="step-number">3</div>
+          <h3>Receive Orders</h3>
+          <p>Accept orders, communicate with customers, and manage measurements all in one dashboard.</p>
+        </div>
+        <div class="step scroll-reveal">
+          <div class="step-number">4</div>
+          <h3>Grow Your Business</h3>
+          <p>Build your reputation, increase earnings, and grow your customer base month over month.</p>
+        </div>
+      </div>
+    </div>
   </div>
-  <span class="aud-lbl">For tailors</span>
-  <div class="g3" style="margin-bottom:2.5rem">
-    <div class="step"><div class="step-num">01</div><div class="step-title">Apply and get verified</div><div class="step-desc">Submit your identity documents and portfolio. Reviewed within 1 to 3 business days.</div></div>
-    <div class="step"><div class="step-num">02</div><div class="step-title">Receive orders</div><div class="step-desc">Customers find you and place custom orders. Communicate and manage everything in one place.</div></div>
-    <div class="step"><div class="step-num">03</div><div class="step-title">Get paid reliably</div><div class="step-desc">Payment released when the customer confirms delivery. No chasing, no risk.</div></div>
-  </div>
-  <div style="display:flex;gap:14px;justify-content:center">
-    <button class="btn btn-dark" onclick="GO('tailors')">Find a tailor &#8599;</button>
-    <button class="btn btn-outline" onclick="GO('join')">Join as tailor &#8599;</button>
-  </div>
-</div>
 </div>
 
-<!-- DASHBOARD -->
-<div id="P-dashboard" style="display:none">
-<div class="wrap" style="padding:3rem 0 4rem">
-  <div class="dash">
-    <aside class="sidebar">
-      <div class="sb-av" id="sb-av">SB</div>
-      <div class="sb-name" id="sb-name">My Account</div>
-      <div class="sb-role" id="sb-role">Customer</div>
-      <button class="sb-btn on" id="sb0" onclick="PANEL('orders',this)">&#128230; My orders</button>
-      <button class="sb-btn" id="sb1" onclick="PANEL('messages',this)">&#128172; Messages</button>
-      <button class="sb-btn" id="sb2" onclick="PANEL('measurements',this)">&#128208; Measurements</button>
-      <button class="sb-btn" id="sb3" onclick="PANEL('profile',this)">&#128100; Profile</button>
-      <hr style="margin:12px 0"/>
-      <button class="sb-btn" onclick="GO('tailors')">&#9986; Find a tailor &#8599;</button>
-    </aside>
-    <main>
-      <div class="panel on" id="panel-orders">
-        <div class="sec-title" style="margin-bottom:1.25rem">My orders</div>
-        <div style="text-align:center;padding:3rem;border:2px dashed #ddd;border-radius:14px;background:#fff">
-          <div style="font-size:36px;margin-bottom:10px">&#128230;</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;margin-bottom:8px">No orders yet</div>
-          <div style="font-size:14px;color:#888;margin-bottom:18px">Find a tailor and place your first custom order!</div>
-          <button class="btn btn-dark" onclick="GO('tailors')">Find a tailor &#8599;</button>
-        </div>
+<!-- DASHBOARD PAGE -->
+<div class="page" id="dashboard">
+  <div class="dashboard-container">
+    <div class="dashboard-sidebar">
+      <h3>Menu</h3>
+      <div class="sidebar-menu">
+        <button class="active" onclick="PANEL('profile')">My Profile</button>
+        <button onclick="PANEL('orders')">Orders</button>
+        <button onclick="PANEL('messages')">Messages</button>
+        <button onclick="PANEL('measurements')">Measurements</button>
+        <button id="tailorOrders" style="display:none;" onclick="PANEL('incoming')">Incoming Orders</button>
+        <button id="tailorEarnings" style="display:none;" onclick="PANEL('earnings')">Earnings</button>
       </div>
-      <div class="panel" id="panel-messages">
-        <div class="sec-title" style="margin-bottom:1.25rem">Messages</div>
-        <div class="msg-wrap">
-          <div class="tl">
-            <div class="tl-head">Conversations</div>
-            <div class="thread on" onclick="THREAD(0,this)">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px"><span class="th-name">Adaeze Anioke</span><span class="th-time">2m ago</span></div>
-              <div class="th-prev">Your gown is looking beautiful!</div>
-            </div>
-            <div class="thread" onclick="THREAD(1,this)">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px"><span class="th-name">Grace Owusu</span><span class="th-time">1h ago</span></div>
-              <div class="th-prev">All 4 pieces complete!</div>
-            </div>
-            <div class="thread" onclick="THREAD(2,this)">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px"><span class="th-name">Blessing Abiodun</span><span class="th-time">5h ago</span></div>
-              <div class="th-prev">Confirming measurements...</div>
-            </div>
-          </div>
-          <div class="chat">
-            <div class="safe-bar">&#128274; All conversations protected by SewBridge.</div>
-            <div class="chat-top">
-              <div class="av" id="ch-av" style="width:34px;height:34px;background:#FBEAF0;color:#993556;font-size:11px">AA</div>
-              <div><div class="chat-name" id="ch-name">Adaeze Anioke</div><div class="chat-sub" id="ch-sub">Atlanta, GA - Verified tailor</div></div>
-              <button class="btn btn-green" style="margin-left:auto;font-size:12px;padding:6px 12px">Pay securely &#128274;</button>
-            </div>
-            <div class="msgs" id="chat-msgs"></div>
-            <div class="warn" id="warn">
-              <div style="font-size:20px;flex-shrink:0">&#128155;</div>
-              <div style="flex:1"><div class="warn-title" id="warn-title">Message blocked</div><div class="warn-text" id="warn-txt"></div><button style="font-size:12px;font-weight:600;color:#854F0B;cursor:pointer;text-decoration:underline;background:none;border:none;margin-top:6px" onclick="CLEARWARN()">Clear and start over</button></div>
-              <button onclick="CLEARWARN()" style="background:none;border:none;font-size:17px;color:#BA7517;cursor:pointer">&#10005;</button>
-            </div>
-            <div class="chat-foot">
-              <input class="chat-inp" id="chat-inp" placeholder="Message your tailor... (protected)" oninput="SCANMSG(this.value)" onkeydown="if(event.key==='Enter')TRYSEND()"/>
-              <button class="send" id="send-btn" onclick="TRYSEND()">&#8250;</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel" id="panel-measurements">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-          <div class="sec-title" style="margin-bottom:0">My measurements</div>
-          <span class="saved" id="saved">&#10003; Saved!</span>
-        </div>
-        <p style="font-size:14px;color:#666;margin-bottom:1.25rem">Saved and shared with tailors when you place an order.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem">
-          <button class="btn btn-dark" onclick="LOADM(this,'adult')">My measurements</button>
-          <button class="btn btn-outline" onclick="LOADM(this,'child1')">Child 1</button>
-          <button class="btn btn-outline" onclick="LOADM(this,'child2')">Child 2</button>
-        </div>
-        <div class="fc">
-          <div style="font-size:14px;font-weight:600;margin-bottom:14px" id="m-lbl">My measurements</div>
-          <div class="fs-title">Upper body (inches)</div>
-          <div class="r3" style="margin-bottom:12px">
-            <div class="field"><label class="lbl">Bust</label><input class="finp" id="m-bust" type="number" value="38"/></div>
-            <div class="field"><label class="lbl">Waist</label><input class="finp" id="m-waist" type="number" value="30"/></div>
-            <div class="field"><label class="lbl">Hips</label><input class="finp" id="m-hips" type="number" value="42"/></div>
-          </div>
-          <div class="r3" style="margin-bottom:12px">
-            <div class="field"><label class="lbl">Shoulder</label><input class="finp" id="m-shoulder" type="number" value="15"/></div>
-            <div class="field"><label class="lbl">Sleeve</label><input class="finp" id="m-sleeve" type="number" value="24"/></div>
-            <div class="field"><label class="lbl">Height</label><input class="finp" id="m-height" type="number" value="65"/></div>
-          </div>
-          <div class="fs-title">Lower body (inches)</div>
-          <div class="r3">
-            <div class="field"><label class="lbl">Dress length</label><input class="finp" id="m-dress" type="number" value="55"/></div>
-            <div class="field"><label class="lbl">Inseam</label><input class="finp" id="m-inseam" type="number" value="29"/></div>
-            <div class="field"><label class="lbl">Thigh</label><input class="finp" id="m-thigh" type="number" value="24"/></div>
-          </div>
-          <div style="display:flex;justify-content:flex-end;margin-top:12px">
-            <button class="btn btn-dark" onclick="SAVEM()">Save measurements</button>
-          </div>
-        </div>
-      </div>
-      <div class="panel" id="panel-profile">
-        <div class="sec-title" style="margin-bottom:1.25rem">My profile</div>
-        <div class="fc">
-          <div class="r2">
-            <div class="field"><label class="lbl">First name</label><input class="finp" id="p-fname" placeholder="First name"/></div>
-            <div class="field"><label class="lbl">Last name</label><input class="finp" id="p-lname" placeholder="Last name"/></div>
-          </div>
-          <div class="r2">
-            <div class="field"><label class="lbl">Email</label><input class="finp" id="p-email" placeholder="Email"/></div>
-            <div class="field"><label class="lbl">Phone</label><input class="finp" id="p-phone" placeholder="Phone"/></div>
-          </div>
-          <div class="r2">
-            <div class="field"><label class="lbl">City</label><input class="finp" id="p-city" placeholder="City"/></div>
-            <div class="field"><label class="lbl">State / Province</label><input class="finp" id="p-state" placeholder="State"/></div>
-          </div>
-          <div style="display:flex;justify-content:flex-end;margin-top:6px">
-            <button class="btn btn-dark" onclick="alert('Profile saved!')">Save profile</button>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-</div>
-</div>
+    </div>
 
-<!-- JOIN AS TAILOR -->
-<div id="P-join" style="display:none">
-<div class="wrap" style="padding:3rem 0 4rem">
-  <div class="pg-title">Join SewBridge as a tailor</div>
-  <div class="pg-sub">Reach hundreds of customers. Verified, trusted, and growing.</div>
-  <div id="ob1">
-    <div class="ob-steps">
-      <div class="ob-step act"><div class="ob-num">1</div><div class="ob-lbl">Account type</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">2</div><div class="ob-lbl">Basic info</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">3</div><div class="ob-lbl">Verification</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
-    </div>
-    <div class="type-grid">
-      <div class="type-card sel" id="t-ind" onclick="SELTYPE('ind')"><div class="type-icon">&#129525;</div><div class="type-title">Individual tailor</div><div class="type-desc">Solo tailor offering your own custom services.</div></div>
-      <div class="type-card" id="t-biz" onclick="SELTYPE('biz')"><div class="type-icon">&#127978;</div><div class="type-title">Tailoring business</div><div class="type-desc">A registered tailoring studio or brand.</div></div>
-    </div>
-    <div style="display:flex;justify-content:flex-end"><button class="btn btn-dark" onclick="OBGO(1,2)">Continue &#8594;</button></div>
-  </div>
-  <div id="ob2" style="display:none">
-    <div class="ob-steps">
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Account type</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step act"><div class="ob-num">2</div><div class="ob-lbl">Basic info</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">3</div><div class="ob-lbl">Verification</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
-    </div>
-    <div class="fc">
-      <div class="r2">
-        <div class="field"><label class="lbl">First name</label><input class="finp" id="j-fname" placeholder="e.g. Blessing"/></div>
-        <div class="field"><label class="lbl">Last name</label><input class="finp" id="j-lname" placeholder="e.g. Abiodun"/></div>
+    <div class="dashboard-panels">
+      <div class="panel active" id="profilePanel">
+        <h2>My Profile</h2>
+        <div class="panel-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="firstName" placeholder="Your first name">
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="lastName" placeholder="Your last name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="profileEmail" disabled>
+          </div>
+          <div class="form-group">
+            <label>Bio</label>
+            <textarea id="bio" placeholder="Tell customers about yourself..."></textarea>
+          </div>
+          <div class="form-group" id="locationGroup">
+            <label>Location</label>
+            <input type="text" id="location" placeholder="City, State">
+          </div>
+          <div class="form-group" id="specialtiesGroup" style="display:none;">
+            <label>Specialties (comma-separated)</label>
+            <input type="text" id="specialties" placeholder="e.g., Bridal, Formal, Traditional">
+          </div>
+          <div class="form-group" id="priceGroup" style="display:none;">
+            <label>Starting Price ($)</label>
+            <input type="number" id="price" placeholder="100" min="0">
+          </div>
+          <div class="form-group" id="heritageGroup" style="display:none;">
+            <label>Cultural Heritage/Background</label>
+            <input type="text" id="heritage" placeholder="e.g., Nigerian, Indian, Mexican">
+          </div>
+          <button class="panel-button" onclick="SAVEPROFILE()">Save Profile</button>
+        </div>
       </div>
-      <div class="r2">
-        <div class="field"><label class="lbl">Email</label><input class="finp" id="j-email" type="email" placeholder="you@email.com"/></div>
-        <div class="field"><label class="lbl">Phone</label><input class="finp" id="j-phone" placeholder="+1 (___) ___-____"/></div>
+
+      <div class="panel" id="ordersPanel">
+        <h2>Your Orders</h2>
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Tailor</th>
+              <th>Item</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody">
+          </tbody>
+        </table>
       </div>
-      <div class="r2">
-        <div class="field"><label class="lbl">City</label><input class="finp" id="j-city" placeholder="e.g. Chicago"/></div>
-        <div class="field"><label class="lbl">State / Province</label>
-          <select class="finp">
-            <option>Select...</option><option>Georgia</option><option>New York</option><option>Texas</option><option>Illinois</option><option>California</option><option>Washington DC</option>
-            <option disabled>-- Canada --</option><option>Ontario</option><option>British Columbia</option><option>Alberta</option><option>Quebec</option>
+
+      <div class="panel" id="messagesPanel">
+        <h2>Messages</h2>
+        <div style="margin-bottom: 1.5rem;">
+          <label>Select a conversation:</label>
+          <select id="threadSelect" onchange="THREAD(this.value)" style="width:100%; margin-top: 0.5rem; padding: 0.75rem; border: 1px solid var(--lightgray); border-radius: 4px;">
+            <option value="">-- No conversations --</option>
           </select>
         </div>
+        <div id="messagesContainer" style="display:none; background: var(--lightgray); padding: 1.5rem; border-radius: 8px; max-height: 400px; overflow-y: auto; margin-bottom: 1rem;">
+          <div id="messagesList"></div>
+        </div>
+        <div class="panel-form" id="messageForm" style="display:none;">
+          <textarea id="messageInput" placeholder="Type your message..."></textarea>
+          <div style="display:flex; gap: 1rem;">
+            <button class="panel-button" onclick="SENDMSG()" style="flex:1;">Send</button>
+            <button class="panel-button" style="background: var(--lightgray); color: var(--dark); flex:1;" onclick="document.getElementById('messagesContainer').style.display='none'; document.getElementById('messageForm').style.display='none';">Close</button>
+          </div>
+        </div>
+        <div id="contactWarning" style="display:none; background: #fff3cd; color: #856404; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+          Warning: Don't share phone numbers, emails, or payment details in messages. Use SewBridge's secure system.
+        </div>
       </div>
-      <div class="r2">
-        <div class="field"><label class="lbl">Years of experience</label><select class="finp"><option>1-3 years</option><option>3-5 years</option><option selected>5-10 years</option><option>10+ years</option></select></div>
-        <div class="field"><label class="lbl">Heritage (optional)</label><input class="finp" placeholder="e.g. Nigerian, Ghanaian..."/></div>
+
+      <div class="panel" id="measurementsPanel">
+        <h2>Measurements</h2>
+        <div class="panel-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Bust (inches)</label>
+              <input type="number" id="bust" placeholder="0" min="0" step="0.5">
+            </div>
+            <div class="form-group">
+              <label>Waist (inches)</label>
+              <input type="number" id="waist" placeholder="0" min="0" step="0.5">
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Hips (inches)</label>
+              <input type="number" id="hips" placeholder="0" min="0" step="0.5">
+            </div>
+            <div class="form-group">
+              <label>Shoulder Width (inches)</label>
+              <input type="number" id="shoulders" placeholder="0" min="0" step="0.5">
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Sleeve Length (inches)</label>
+              <input type="number" id="sleeves" placeholder="0" min="0" step="0.5">
+            </div>
+            <div class="form-group">
+              <label>Inseam (inches)</label>
+              <input type="number" id="inseam" placeholder="0" min="0" step="0.5">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Additional Notes</label>
+            <textarea id="measurementNotes" placeholder="Any special fitting instructions..."></textarea>
+          </div>
+          <button class="panel-button" onclick="SAVEM()">Save Measurements</button>
+        </div>
+      </div>
+
+      <div class="panel" id="incomingPanel">
+        <h2>Incoming Orders</h2>
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Item</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="incomingBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel" id="earningsPanel">
+        <h2>Earnings</h2>
+        <div class="stat-card" style="margin-bottom: 2rem;">
+          <h3 id="totalEarnings">$0</h3>
+          <p>Total Earnings</p>
+        </div>
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Amount</th>
+              <th>Your Cut (92%)</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="earningsBody">
+          </tbody>
+        </table>
       </div>
     </div>
-    <div style="display:flex;justify-content:space-between;margin-top:12px">
-      <button class="btn btn-outline" onclick="OBGO(2,1)">&#8592; Back</button>
-      <button class="btn btn-dark" onclick="OBGO(2,3)">Continue &#8594;</button>
-    </div>
   </div>
-  <div id="ob3" style="display:none">
-    <div class="ob-steps">
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Account type</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Basic info</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step act"><div class="ob-num">3</div><div class="ob-lbl">Verification</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
-    </div>
-    <div class="fc">
-      <div class="ck-row"><span>&#129306;</span><div><strong>Government-issued photo ID</strong><div style="font-size:13px;color:#666;margin-top:2px">Driver's license, state ID, or passport.</div></div></div>
-      <div class="ck-row"><span>&#129335;</span><div><strong>Selfie verification</strong><div style="font-size:13px;color:#666;margin-top:2px">A photo of you holding your ID.</div></div></div>
-      <div class="ck-row"><span>&#128205;</span><div><strong>Proof of address</strong><div style="font-size:13px;color:#666;margin-top:2px">Utility bill or bank statement within 90 days.</div></div></div>
-      <div style="margin-top:14px">
-        <div class="up-box" id="ub1" onclick="MARKUP('ub1','Government ID uploaded')"><div class="up-title">&#128196; Upload government ID</div><div class="up-sub">JPG, PNG, or PDF</div></div>
-        <div class="up-box" id="ub2" onclick="MARKUP('ub2','Selfie uploaded')"><div class="up-title">&#128247; Upload selfie with ID</div><div class="up-sub">JPG or PNG</div></div>
-        <div class="up-box" id="ub3" onclick="MARKUP('ub3','Proof of address uploaded')"><div class="up-title">&#127968; Upload proof of address</div><div class="up-sub">PDF, JPG, or PNG</div></div>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-top:12px">
-      <button class="btn btn-outline" onclick="OBGO(3,2)">&#8592; Back</button>
-      <button class="btn btn-dark" onclick="OBGO(3,4)">Continue &#8594;</button>
-    </div>
-  </div>
-  <div id="ob4" style="display:none">
-    <div class="ob-steps">
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Account type</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Basic info</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Verification</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step act"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
-    </div>
-    <div class="fc">
-      <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#1D9E75;margin-bottom:10px">Select your specialties</p>
-      <div id="spec-tags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
-      <div class="r2">
-        <div class="field"><label class="lbl">Starting price</label><input class="finp" placeholder="e.g. $90"/></div>
-        <div class="field"><label class="lbl">Turnaround time</label><select class="finp"><option>1 week</option><option selected>2 weeks</option><option>3 weeks</option><option>4+ weeks</option></select></div>
-      </div>
-      <div class="field"><label class="lbl">Bio</label><textarea class="finp" placeholder="Tell customers about yourself..."></textarea></div>
-      <div class="up-box" id="ub4" onclick="MARKUP('ub4','Portfolio uploaded')"><div class="up-title">&#128444; Upload portfolio photos</div><div class="up-sub">3-6 photos - JPG or PNG</div></div>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-top:12px">
-      <button class="btn btn-outline" onclick="OBGO(4,3)">&#8592; Back</button>
-      <button class="btn btn-dark" onclick="OBGO(4,5)">Continue &#8594;</button>
-    </div>
-  </div>
-  <div id="ob5" style="display:none">
-    <div class="ob-steps">
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Account type</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Basic info</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Verification</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Portfolio</div></div>
-      <div class="ob-line"></div>
-      <div class="ob-step act"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
-    </div>
-    <div style="background:#f5f5f5;border-radius:14px;padding:18px;margin-bottom:16px">
-      <p style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Summary</p>
-      <p style="font-size:14px;color:#555;margin-bottom:6px">&#10003; Type: <strong id="ob-type">Individual tailor</strong></p>
-      <p style="font-size:14px;color:#555;margin-bottom:6px">&#10003; Documents uploaded</p>
-      <p style="font-size:14px;color:#555">&#10003; Review: 1-3 business days</p>
-    </div>
-    <div class="fc">
-      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:14px;color:#555;margin-bottom:10px"><input type="checkbox" style="margin-top:3px"/> I confirm all information is genuine and accurate.</label>
-      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:14px;color:#555;margin-bottom:10px"><input type="checkbox" style="margin-top:3px"/> I agree to SewBridge's Tailor Code of Conduct.</label>
-      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:14px;color:#555"><input type="checkbox" style="margin-top:3px"/> I agree to SewBridge's Terms of Service and Privacy Policy.</label>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-top:12px">
-      <button class="btn btn-outline" onclick="OBGO(5,4)">&#8592; Back</button>
-      <button class="btn btn-dark" onclick="OBDONE()">Submit application &#8599;</button>
-    </div>
-  </div>
-  <div id="ob-ok" style="display:none;text-align:center;padding:4rem 0">
-    <div style="font-size:52px;margin-bottom:1rem">&#127881;</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;margin-bottom:8px">Application submitted!</div>
-    <p style="font-size:15px;color:#666;max-width:420px;margin:0 auto 1.5rem;line-height:1.8">Our team will review your documents within <strong>1-3 business days</strong>.</p>
-    <button class="btn btn-dark" onclick="GO('home')">Back to home &#8599;</button>
-  </div>
-</div>
 </div>
 
-<!-- ADMIN -->
-<div id="P-admin" style="display:none">
-<div class="wrap" style="padding:3rem 0 4rem">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem">
-    <div class="pg-title">Admin dashboard</div>
-    <span style="font-size:13px;color:#888">SewBridge 2026</span>
+<!-- JOIN PAGE -->
+<div class="page" id="join">
+  <div class="join-container">
+    <h1>Become a SewBridge Tailor</h1>
+    <p>Join our community of skilled tailors and grow your business online.</p>
+
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-step active"></div>
+      <div class="progress-step"></div>
+      <div class="progress-step"></div>
+      <div class="progress-step"></div>
+      <div class="progress-step"></div>
+    </div>
+
+    <div class="join-section active" id="step1">
+      <h2>Tell Us About Yourself</h2>
+      <div class="panel-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="joinFirstName" placeholder="Your first name">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="joinLastName" placeholder="Your last name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="joinEmail" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" id="joinPhone" placeholder="(555) 123-4567">
+        </div>
+      </div>
+    </div>
+
+    <div class="join-section" id="step2">
+      <h2>Your Experience</h2>
+      <div class="panel-form">
+        <div class="form-group">
+          <label>Years of Experience</label>
+          <input type="number" id="yearsExp" placeholder="5" min="0">
+        </div>
+        <div class="form-group">
+          <label>Cultural Heritage / Background</label>
+          <input type="text" id="joinHeritage" placeholder="e.g., Nigerian, Indian, Mexican">
+        </div>
+        <div class="form-group">
+          <label>Brief Bio</label>
+          <textarea id="joinBio" placeholder="Tell customers about your tailoring style and expertise..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="join-section" id="step3">
+      <h2>Your Specialties</h2>
+      <div class="panel-form">
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label>Select Your Main Specialties (check all that apply)</label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
+              <input type="checkbox" value="Bridal" class="specCheckbox"> Bridal
+            </label>
+            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
+              <input type="checkbox" value="Formal" class="specCheckbox"> Formal Wear
+            </label>
+            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
+              <input type="checkbox" value="Traditional" class="specCheckbox"> Traditional Garments
+            </label>
+            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
+              <input type="checkbox" value="Alterations" class="specCheckbox"> Alterations
+            </label>
+            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
+              <input type="checkbox" value="Custom" class="specCheckbox"> Custom Design
+            </label>
+            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
+              <input type="checkbox" value="Kids" class="specCheckbox"> Kids Wear
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="join-section" id="step4">
+      <h2>Pricing & Service Area</h2>
+      <div class="panel-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Starting Price ($)</label>
+            <input type="number" id="joinPrice" placeholder="100" min="0">
+          </div>
+          <div class="form-group">
+            <label>Average Turnaround (days)</label>
+            <input type="number" id="joinTurnaround" placeholder="14" min="1">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" id="joinCity" placeholder="Atlanta">
+          </div>
+          <div class="form-group">
+            <label>State</label>
+            <input type="text" id="joinState" placeholder="Georgia">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="join-section" id="step5">
+      <h2>Review & Submit</h2>
+      <div style="background: var(--lightgray); padding: 1.5rem; border-radius: 8px;">
+        <h3 style="margin-bottom: 1rem;">Application Summary</h3>
+        <div id="reviewSummary"></div>
+        <p style="color: var(--gray); margin-top: 1.5rem; font-size: 0.9rem;">By submitting, you agree to our Tailor Terms of Service. Your application will be reviewed within 3-5 business days.</p>
+      </div>
+    </div>
+
+    <div class="join-nav">
+      <button class="back" id="backBtn" onclick="JOINNAV(-1)" style="display:none;">Back</button>
+      <button class="next" id="nextBtn" onclick="JOINNAV(1)">Next</button>
+      <button class="submit" id="submitBtn" onclick="SUBMITJOIN()" style="display:none;">Submit Application</button>
+    </div>
   </div>
-  <div class="metrics">
-    <div class="metric"><span class="met-num">1,248</span><span class="met-lbl">Total users</span><div class="met-chg">+84 this month</div></div>
-    <div class="metric"><span class="met-num">62</span><span class="met-lbl">Active tailors</span><div class="met-chg">+7 this month</div></div>
-    <div class="metric"><span class="met-num">$38,420</span><span class="met-lbl">GMV this month</span><div class="met-chg">+22%</div></div>
-    <div class="metric"><span class="met-num">8</span><span class="met-lbl">Pending reviews</span><div style="font-size:12px;color:#854F0B;margin-top:4px">Needs review</div></div>
-  </div>
-  <div class="adm-tabs">
-    <button class="adm-tab on" onclick="ADMTAB(this,'adm1')">Verifications</button>
-    <button class="adm-tab" onclick="ADMTAB(this,'adm2')">Orders</button>
-    <button class="adm-tab" onclick="ADMTAB(this,'adm3')">Users</button>
-    <button class="adm-tab" onclick="ADMTAB(this,'adm4')">Disputes</button>
-  </div>
-  <div class="adm-panel on" id="adm1">
-    <table><thead><tr><th>Tailor</th><th>Type</th><th>Location</th><th>Applied</th><th>Status</th><th>Actions</th></tr></thead>
-    <tbody><tr><td><div style="font-weight:600">Blessing Abiodun</div><div style="font-size:12px;color:#888">b.abiodun@email.com</div></td><td>Individual</td><td>Chicago, IL</td><td>Mar 16</td><td><span class="badge ba">Pending</span></td><td><button class="act-btn">Review</button><button class="act-btn" onclick="alert('Approved!')">Approve</button><button class="act-btn" style="color:#A32D2D">Reject</button></td></tr></tbody></table>
-  </div>
-  <div class="adm-panel" id="adm2">
-    <table><thead><tr><th>Order ID</th><th>Customer</th><th>Tailor</th><th>Item</th><th>Amount</th><th>Status</th></tr></thead>
-    <tbody><tr><td>#SB-2841</td><td>Adaeze N.</td><td>Adaeze Anioke</td><td>Ankara Bridal Gown</td><td>$265</td><td><span class="badge bb">In progress</span></td></tr></tbody></table>
-  </div>
-  <div class="adm-panel" id="adm3">
-    <table><thead><tr><th>Name</th><th>Role</th><th>Location</th><th>Joined</th><th>Orders</th><th>Status</th></tr></thead>
-    <tbody><tr><td><strong>Adaeze Nwosu</strong></td><td>Customer</td><td>Atlanta, GA</td><td>Jan 2024</td><td>4</td><td><span class="badge bg">Active</span></td></tr></tbody></table>
-  </div>
-  <div class="adm-panel" id="adm4">
-    <table><thead><tr><th>ID</th><th>Customer</th><th>Tailor</th><th>Issue</th><th>Amount</th><th>Status</th></tr></thead>
-    <tbody><tr><td>#D-0041</td><td>Yemi O.</td><td>Fatou Diallo</td><td>Wrong measurements</td><td>$110</td><td><span class="badge ba">Open</span></td></tr></tbody></table>
-  </div>
-</div>
 </div>
 
-<!-- MODAL -->
-<div class="overlay" id="overlay" onclick="if(event.target===this)CLOSEMODAL()">
-  <div class="modal">
-    <div class="modal-top">
-      <button class="modal-close" onclick="CLOSEMODAL()">&#10005;</button>
-      <div class="modal-logo">
-        <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge"/>
-        <span class="modal-logo-text">Sew<em>Bridge</em></span>
+<!-- ADMIN PAGE -->
+<div class="page" id="admin">
+  <div class="admin-container">
+    <h1>Admin Dashboard</h1>
+
+    <div class="admin-grid">
+      <div class="admin-card">
+        <h3 id="adminUsers">0</h3>
+        <p>Total Users</p>
       </div>
-      <div class="modal-tabs">
-        <button class="modal-tab on" id="mt-si" onclick="SWITCHMODAL('signin')">Sign in</button>
-        <button class="modal-tab" id="mt-su" onclick="SWITCHMODAL('signup')">Sign up</button>
+      <div class="admin-card">
+        <h3 id="adminTailors">0</h3>
+        <p>Active Tailors</p>
+      </div>
+      <div class="admin-card">
+        <h3 id="adminOrders">0</h3>
+        <p>Total Orders</p>
+      </div>
+      <div class="admin-card">
+        <h3 id="adminRevenue">$0</h3>
+        <p>Platform Revenue</p>
       </div>
     </div>
-    <div class="modal-body">
-      <div class="af on" id="af-signin">
-        <label class="auth-lbl">Email</label>
-        <input class="auth-inp" type="email" id="si-email" placeholder="you@email.com"/>
-        <label class="auth-lbl">Password</label>
-        <input class="auth-inp" type="password" id="si-pw" placeholder="Your password"/>
-        <div class="auth-forgot"><a onclick="SWITCHMODAL('forgot')">Forgot password?</a></div>
-        <button class="auth-btn" id="si-btn" onclick="DOSIGNIN()">Sign in to SewBridge</button>
-        <div class="auth-switch">No account? <a onclick="SWITCHMODAL('signup')">Create one free</a></div>
-      </div>
-      <div class="af" id="af-signup">
-        <div class="at-grid">
-          <div class="at-card sel" id="at-cu" onclick="SELAT('customer')"><div class="at-icon">&#128541;</div><div class="at-lbl">Customer</div><div class="at-sub">Find and order</div></div>
-          <div class="at-card" id="at-ta" onclick="SELAT('tailor')"><div class="at-icon">&#129525;</div><div class="at-lbl">Tailor</div><div class="at-sub">Offer services</div></div>
+
+    <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Pending Verifications</h2>
+    <table class="users-table" id="verificationsTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Applied</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="verificationsBody"></tbody>
+    </table>
+
+    <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Recent Orders</h2>
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Tailor</th>
+          <th>Amount</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="adminOrdersBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal" id="authModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="CLOSEMODAL()">&times;</button>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="SWITCHMODAL('signin')">Sign In</button>
+      <button class="tab-btn" onclick="SWITCHMODAL('signup')">Sign Up</button>
+    </div>
+
+    <div class="tab-content active" id="signinTab">
+      <div class="panel-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="signinEmail" placeholder="your@email.com">
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div><label class="auth-lbl">First name</label><input class="auth-inp" id="su-fname" type="text" placeholder="First name"/></div>
-          <div><label class="auth-lbl">Last name</label><input class="auth-inp" id="su-lname" type="text" placeholder="Last name"/></div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signinPassword" placeholder="••••••••">
         </div>
-        <label class="auth-lbl">Email</label>
-        <input class="auth-inp" id="su-email" type="email" placeholder="you@email.com"/>
-        <label class="auth-lbl">Password</label>
-        <input class="auth-inp" id="su-pw" type="password" placeholder="At least 8 characters"/>
-        <button class="auth-btn" id="su-btn" onclick="DOSIGNUP()">Create my SewBridge account</button>
-        <div class="auth-switch">Already have an account? <a onclick="SWITCHMODAL('signin')">Sign in</a></div>
+        <button class="panel-button" style="width: 100%;" onclick="SIGNIN()">Sign In</button>
+        <button class="oauth-button" onclick="GOOGLESIGNIN()">
+          <i class="fab fa-google"></i> Sign in with Google
+        </button>
+        <p style="text-align: center; margin-top: 1rem;">
+          <a href="#" onclick="RESETPWD(); return false;" style="color: var(--green); text-decoration: none;">Forgot password?</a>
+        </p>
       </div>
-      <div class="af" id="af-forgot">
-        <div style="text-align:center;margin-bottom:18px">
-          <div style="font-size:34px;margin-bottom:8px">&#128273;</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;margin-bottom:5px">Reset password</div>
-          <div style="font-size:13px;color:#888">Enter your email for a reset link.</div>
+    </div>
+
+    <div class="tab-content" id="signupTab">
+      <div class="panel-form">
+        <div class="toggle-role">
+          <button class="active" data-role="customer" onclick="TOGGLEROLE(this, 'customer')">Customer</button>
+          <button data-role="tailor" onclick="TOGGLEROLE(this, 'tailor')">Tailor</button>
         </div>
-        <label class="auth-lbl">Email</label>
-        <input class="auth-inp" id="reset-email" type="email" placeholder="you@email.com"/>
-        <button class="auth-btn" onclick="DORESET()">Send reset link</button>
-        <div class="auth-switch"><a onclick="SWITCHMODAL('signin')">&#8592; Back to sign in</a></div>
-      </div>
-      <div class="auth-ok" id="auth-ok">
-        <div style="font-size:44px;margin-bottom:10px">&#127881;</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;margin-bottom:6px" id="ok-title">Welcome!</div>
-        <div style="font-size:14px;color:#666;margin-bottom:18px" id="ok-msg">Your account is ready.</div>
-        <button class="auth-btn" onclick="CLOSEMODAL()">Get started &#8599;</button>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="signupFirstName" placeholder="Your first name">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="signupLastName" placeholder="Your last name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="signupEmail" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="••••••••">
+        </div>
+        <button class="panel-button" style="width: 100%;" onclick="SIGNUP()">Create Account</button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- TAILOR PROFILE MODAL -->
+<div class="modal" id="profileModal">
+  <div class="modal-content profile-modal-content">
+    <button class="modal-close" onclick="CLOSEMODAL()">&times;</button>
+    <div class="profile-header">
+      <div class="profile-avatar" id="profileAvatar">AD</div>
+      <div class="profile-name" id="profileNameDisplay">Adaeze Anioke</div>
+      <div style="font-size: 0.95rem;" id="profileLocationDisplay">Atlanta, GA</div>
+      <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+        <span id="profileVerified" style="display:none;">Verified</span>
+      </div>
+    </div>
+    <div class="profile-details">
+      <div>
+        <div class="detail-label">Heritage/Background</div>
+        <div class="detail-value" id="profileHeritage">Nigerian</div>
+      </div>
+      <div>
+        <div class="detail-label">Specialties</div>
+        <div class="detail-value" id="profileSpecs">Bridal, Ankara</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail">
+          <div class="detail-label">Rating</div>
+          <div class="detail-value" id="profileRating">4.9</div>
+        </div>
+        <div class="detail">
+          <div class="detail-label">Orders Completed</div>
+          <div class="detail-value" id="profileOrders">87</div>
+        </div>
+      </div>
+      <div>
+        <div class="detail-label">Turnaround Time</div>
+        <div class="detail-value" id="profileTurnaround">14-21 days</div>
+      </div>
+      <div>
+        <div class="detail-label">Bio</div>
+        <div class="detail-value" id="profileBio">Passionate about authentic African textiles and modern bridal design.</div>
+      </div>
+      <div>
+        <div class="detail-label">Starting Price</div>
+        <div class="detail-value" id="profileStartPrice">$120</div>
+      </div>
+      <button class="panel-button" style="width: 100%; margin-top: 1rem;" onclick="MODAL('payment')">Request Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal" id="paymentModal">
+  <div class="modal-content payment-modal-content">
+    <button class="modal-close" onclick="CLOSEMODAL()">&times;</button>
+    <h2>Order Details</h2>
+
+    <div class="success-message" id="successMsg">
+      Order created successfully! Check your dashboard for details.
+    </div>
+
+    <div class="payment-summary">
+      <div class="summary-row">
+        <span>Tailor</span>
+        <span id="payTailorName">Adaeze Anioke</span>
+      </div>
+      <div class="summary-row">
+        <span>Item Type</span>
+        <span id="payItemType">Custom Garment</span>
+      </div>
+      <div class="summary-row">
+        <span>Starting Price</span>
+        <span id="payStartPrice">$120.00</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total Amount</span>
+        <span id="payTotal">$120.00</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Item Description</label>
+      <textarea id="payItemDesc" placeholder="Describe the garment you want tailored..."></textarea>
+    </div>
+
+    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem;">Payment Information</h3>
+    <div class="card-placeholder">
+      <p><strong>Stripe Card Fields</strong></p>
+      <p style="margin-top: 0.5rem; font-size: 0.85rem;">Stripe integration: Add your publishable key to the STRIPE_KEY variable at the top of the script.</p>
+      <p style="margin-top: 0.75rem; color: #666; font-size: 0.85rem;">For now, this is a placeholder UI. Payment processing would be enabled with proper Stripe setup.</p>
+    </div>
+
+    <button class="panel-button" style="width: 100%; margin-top: 1.5rem;" onclick="COMPLETEPAYMENT()">Pay Securely</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <div class="footer-logo">
+        <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge">
+        <span>SewBridge</span>
+      </div>
+      <p style="color: #999; font-size: 0.95rem;">Connecting customers with master tailors worldwide.</p>
+    </div>
+    <div class="footer-section">
+      <h4>Explore</h4>
+      <ul>
+        <li><a onclick="GO('tailors')">Find a Tailor</a></li>
+        <li><a onclick="GO('join')">Join as Tailor</a></li>
+        <li><a onclick="GO('how')">How it Works</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#privacy">Privacy Policy</a></li>
+        <li><a href="#terms">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-trust">
+    All payments protected by Stripe escrow. Your funds stay safe until you're satisfied.
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 SewBridge. All rights reserved.</p>
+  </div>
+</footer>
 
 <script>
-// =============================================
-// ALL DATA
-// =============================================
-var TD = [
-  {name:'Adaeze Anioke',init:'AA',bg:'#FBEAF0',col:'#993556',loc:'Atlanta, GA',her:'Nigerian heritage',badge:'Top tailor',bc:'ba',specs:['Ankara','Aso-ebi','Bridal'],price:'From $120',rat:'4.9',ord:87},
-  {name:'Grace Owusu',init:'GO',bg:'#E1F5EE',col:'#0F6E56',loc:'New York, NY',her:'Ghanaian heritage',badge:'Verified',bc:'bg',specs:['Kente','Kaba and Slit','Kids'],price:'From $95',rat:'5.0',ord:64},
-  {name:'Fatou Diallo',init:'FD',bg:'#EEEDFE',col:'#534AB7',loc:'Houston, TX',her:'Senegalese heritage',badge:'Verified',bc:'bg',specs:['Boubou','Wax print','Embroidery'],price:'From $75',rat:'4.7',ord:43},
-  {name:'Ngozi Eze',init:'NE',bg:'#FAECE7',col:'#993C1D',loc:'Washington, DC',her:'Nigerian heritage',badge:'New',bc:'bb',specs:['Iro and Buba','Agbada','Bridal'],price:'From $85',rat:'5.0',ord:12},
-  {name:'Zainab Nkosi',init:'ZN',bg:'#E6F1FB',col:'#185FA5',loc:'Los Angeles, CA',her:'South African heritage',badge:'Verified',bc:'bg',specs:['Shweshwe','Modern African'],price:'From $110',rat:'4.8',ord:58},
-  {name:'Blessing Abiodun',init:'BA',bg:'#EAF3DE',col:'#3B6D11',loc:'Chicago, IL',her:'Nigerian heritage',badge:'Top tailor',bc:'ba',specs:['Ankara','Lace','Kids'],price:'From $90',rat:'4.9',ord:102}
-];
-
-var TH = [
-  {name:'Adaeze Anioke',init:'AA',bg:'#FBEAF0',col:'#993556',sub:'Atlanta, GA - Verified tailor',
-   msgs:[{o:0,t:'Hello! I received your order for the Ankara bridal gown.',time:'Mon 10:14am'},{o:1,t:'Thank you! I want the bodice fitted.',time:'Mon 10:32am'},{o:0,t:'Your gown is looking beautiful!',time:'Today 9:02am'}]},
-  {name:'Grace Owusu',init:'GO',bg:'#E1F5EE',col:'#0F6E56',sub:'New York, NY - Verified tailor',
-   msgs:[{o:0,t:'Started on your family kente set.',time:'Wed 3:10pm'},{o:0,t:'All 4 pieces complete! Ready to ship.',time:'Today 8:30am'}]},
-  {name:'Blessing Abiodun',init:'BA',bg:'#EAF3DE',col:'#3B6D11',sub:'Chicago, IL - Verified tailor',
-   msgs:[{o:0,t:'Shall I use your saved measurements?',time:'5h ago'},{o:1,t:'Yes please!',time:'4h ago'}]}
-];
-
-var BLOCKED_PATTERNS = [
-  {label:'phone number',re:/(\+?1\s?)?(\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4})/,msg:'Sharing phone numbers is not allowed. Keep all communication here for your safety.'},
-  {label:'email address',re:/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/,msg:'Sharing emails moves you outside SewBridge protection. Stay here to keep your order safe.'},
-  {label:'WhatsApp',re:/whatsapp/i,msg:'Keep your conversations in SewBridge so your buyer protection stays active.'},
-  {label:'outside payment',re:/venmo|cashapp|zelle|paypal/i,msg:'Outside payments are not protected. Pay here and your money is held in escrow until delivery.'}
-];
-
-var SPECS_LIST = ['Custom fitting','Alterations','Bridal','Formal wear','Modest fashion','Casual wear','African traditional wear','Ankara / Kente','Cultural outfits','Modern-traditional fusion','Mens suit tailoring','Smart casual','Custom shirts','Traditional mens outfits','Matching family outfits','Kids clothing','Embroidery','Luxury finishing','Fast turnaround','Uniform tailoring','Clothing repair','Remote measurements'];
-
-var MP = {
-  adult:{label:'My measurements',bust:38,waist:30,hips:42,shoulder:15,sleeve:24,height:65,dress:55,inseam:29,thigh:24},
-  child1:{label:'Child 1',bust:22,waist:21,hips:23,shoulder:10,sleeve:14,height:44,dress:28,inseam:18,thigh:13},
-  child2:{label:'Child 2',bust:26,waist:24,hips:27,shoulder:12,sleeve:17,height:52,dress:34,inseam:22,thigh:15}
-};
-
-var CUR_THREAD = 0;
-var BLOCKED = false;
-var OB_TYPE = 'ind';
-var AT_TYPE = 'customer';
-var CURRENT_USER = null;
-var CURRENT_PROFILE = null;
-
-// =============================================
-// NAVIGATION - this is the core function
-// =============================================
-function GO(page) {
-  var allPages = ['home','tailors','how','dashboard','join','admin'];
-  for (var i = 0; i < allPages.length; i++) {
-    var el = document.getElementById('P-' + allPages[i]);
-    if (el) el.style.display = 'none';
-  }
-  var show = document.getElementById('P-' + page);
-  if (show) {
-    show.style.display = 'block';
-    window.scrollTo(0, 0);
-  }
-  var navIds = {home:'n0', tailors:'n1', how:'n2', dashboard:'n3', join:'n4', admin:'n5'};
-  var allNbs = document.querySelectorAll('.nb');
-  for (var j = 0; j < allNbs.length; j++) allNbs[j].classList.remove('on');
-  var activeNb = document.getElementById(navIds[page]);
-  if (activeNb) activeNb.classList.add('on');
-  if (page === 'tailors') BUILDGRID('tailor-grid', TD);
-  if (page === 'home') BUILDGRID('home-grid', TD.slice(0, 3));
-}
-
-// =============================================
-// BUILD TAILOR GRID - uses DOM, not innerHTML
-// =============================================
-function BUILDGRID(gridId, data) {
-  var grid = document.getElementById(gridId);
-  if (!grid) return;
-  grid.innerHTML = '';
-  for (var i = 0; i < data.length; i++) {
-    var t = data[i];
-    var card = document.createElement('div');
-    card.className = 'tc';
-    card.setAttribute('data-idx', i);
-    card.onclick = (function(tailor) {
-      return function() { GO('tailors'); };
-    })(t);
-
-    var top = document.createElement('div');
-    top.className = 'tc-top';
-
-    var av = document.createElement('div');
-    av.className = 'av';
-    av.style.cssText = 'width:48px;height:48px;background:' + t.bg + ';color:' + t.col + ';font-size:14px';
-    av.textContent = t.init;
-
-    var info = document.createElement('div');
-    var nameRow = document.createElement('div');
-    nameRow.style.cssText = 'display:flex;align-items:center;gap:7px;margin-bottom:2px';
-    var nameEl = document.createElement('div');
-    nameEl.className = 'tc-name';
-    nameEl.textContent = t.name;
-    var badgeEl = document.createElement('span');
-    badgeEl.className = 'badge ' + t.bc;
-    badgeEl.textContent = t.badge;
-    nameRow.appendChild(nameEl);
-    nameRow.appendChild(badgeEl);
-    var locEl = document.createElement('div');
-    locEl.className = 'tc-loc';
-    locEl.textContent = t.loc + ' - ' + t.her;
-    info.appendChild(nameRow);
-    info.appendChild(locEl);
-
-    top.appendChild(av);
-    top.appendChild(info);
-
-    var specs = document.createElement('div');
-    specs.className = 'specs';
-    for (var s = 0; s < t.specs.length; s++) {
-      var sp = document.createElement('span');
-      sp.className = 'spec';
-      sp.textContent = t.specs[s];
-      specs.appendChild(sp);
-    }
-
-    var bottom = document.createElement('div');
-    bottom.className = 'tc-bottom';
-    var ratingDiv = document.createElement('div');
-    var stars = document.createElement('span');
-    stars.className = 'stars';
-    stars.textContent = '★★★★★';
-    var ratingText = document.createElement('span');
-    ratingText.style.cssText = 'font-size:11px;color:#888';
-    ratingText.textContent = ' ' + t.rat + ' - ' + t.ord + ' orders';
-    ratingDiv.appendChild(stars);
-    ratingDiv.appendChild(ratingText);
-    var priceEl = document.createElement('div');
-    priceEl.className = 'price';
-    priceEl.textContent = t.price;
-    bottom.appendChild(ratingDiv);
-    bottom.appendChild(priceEl);
-
-    card.appendChild(top);
-    card.appendChild(specs);
-    card.appendChild(bottom);
-    grid.appendChild(card);
-  }
-}
-
-// =============================================
-// DASHBOARD PANELS
-// =============================================
-function PANEL(name, btn) {
-  var panels = document.querySelectorAll('.panel');
-  for (var i = 0; i < panels.length; i++) panels[i].classList.remove('on');
-  var p = document.getElementById('panel-' + name);
-  if (p) p.classList.add('on');
-  var sbBtns = document.querySelectorAll('.sb-btn');
-  for (var j = 0; j < sbBtns.length; j++) sbBtns[j].classList.remove('on');
-  if (btn) btn.classList.add('on');
-  if (name === 'messages') {
-    var firstThread = document.querySelectorAll('.thread')[0];
-    THREAD(0, firstThread);
-  }
-}
-
-// =============================================
-// MESSAGING
-// =============================================
-function THREAD(idx, el) {
-  CUR_THREAD = idx;
-  var t = TH[idx];
-  var allThreads = document.querySelectorAll('.thread');
-  for (var i = 0; i < allThreads.length; i++) allThreads[i].classList.remove('on');
-  if (el) el.classList.add('on');
-  var chAv = document.getElementById('ch-av');
-  if (chAv) { chAv.style.background = t.bg; chAv.style.color = t.col; chAv.textContent = t.init; }
-  var chName = document.getElementById('ch-name'); if (chName) chName.textContent = t.name;
-  var chSub = document.getElementById('ch-sub'); if (chSub) chSub.textContent = t.sub;
-  var area = document.getElementById('chat-msgs');
-  if (!area) return;
-  area.innerHTML = '';
-  for (var m = 0; m < t.msgs.length; m++) {
-    var msg = t.msgs[m];
-    var msgDiv = document.createElement('div');
-    msgDiv.className = 'msg ' + (msg.o ? 'msg-out' : 'msg-in');
-    var bub = document.createElement('div');
-    bub.className = 'bub';
-    bub.textContent = msg.t;
-    var timeDiv = document.createElement('div');
-    timeDiv.className = 'msg-time';
-    timeDiv.textContent = msg.time;
-    msgDiv.appendChild(bub);
-    msgDiv.appendChild(timeDiv);
-    area.appendChild(msgDiv);
-  }
-  area.scrollTop = area.scrollHeight;
-  CLEARWARN();
-}
-
-function SCANMSG(val) {
-  var risk = null;
-  for (var i = 0; i < BLOCKED_PATTERNS.length; i++) {
-    if (BLOCKED_PATTERNS[i].re.test(val)) { risk = BLOCKED_PATTERNS[i]; break; }
-  }
-  if (risk) {
-    BLOCKED = true;
-    var inp = document.getElementById('chat-inp'); if (inp) inp.style.borderColor = '#FAC775';
-    var wt = document.getElementById('warn-title'); if (wt) wt.textContent = 'Blocked: ' + risk.label + ' detected';
-    var wx = document.getElementById('warn-txt'); if (wx) wx.textContent = risk.msg;
-    var wb = document.getElementById('warn'); if (wb) wb.classList.add('on');
-  } else {
-    if (BLOCKED) CLEARWARN();
-  }
-}
-
-function CLEARWARN() {
-  BLOCKED = false;
-  var inp = document.getElementById('chat-inp');
-  if (inp) { inp.style.borderColor = ''; inp.value = ''; }
-  var wb = document.getElementById('warn'); if (wb) wb.classList.remove('on');
-}
-
-function TRYSEND() {
-  if (BLOCKED) return;
-  var inp = document.getElementById('chat-inp');
-  if (!inp || !inp.value.trim()) return;
-  var text = inp.value.trim();
-  TH[CUR_THREAD].msgs.push({o:1, t:text, time:'Just now'});
-  var allThreads = document.querySelectorAll('.thread');
-  THREAD(CUR_THREAD, allThreads[CUR_THREAD]);
-}
-
-// =============================================
-// MEASUREMENTS
-// =============================================
-function LOADM(btn, type) {
-  var allBtns = document.querySelectorAll('[onclick*="LOADM"]');
-  for (var i = 0; i < allBtns.length; i++) {
-    allBtns[i].className = allBtns[i] === btn ? 'btn btn-dark' : 'btn btn-outline';
-  }
-  var p = MP[type];
-  var lbl = document.getElementById('m-lbl'); if (lbl) lbl.textContent = p.label;
-  var fields = ['bust','waist','hips','shoulder','sleeve','height','dress','inseam','thigh'];
-  for (var f = 0; f < fields.length; f++) {
-    var el = document.getElementById('m-' + fields[f]);
-    if (el) el.value = p[fields[f]];
-  }
-}
-
-function SAVEM() {
-  var s = document.getElementById('saved');
-  if (s) { s.classList.add('on'); setTimeout(function(){ s.classList.remove('on'); }, 2500); }
-}
-
-// =============================================
-// JOIN AS TAILOR
-// =============================================
-function SELTYPE(type) {
-  OB_TYPE = type;
-  var ind = document.getElementById('t-ind'); var biz = document.getElementById('t-biz');
-  if (ind) ind.classList.toggle('sel', type === 'ind');
-  if (biz) biz.classList.toggle('sel', type === 'biz');
-}
-
-function OBGO(from, to) {
-  var fromEl = document.getElementById('ob' + from); if (fromEl) fromEl.style.display = 'none';
-  if (to <= 5) {
-    var toEl = document.getElementById('ob' + to); if (toEl) toEl.style.display = 'block';
-    if (to === 4) {
-      var sg = document.getElementById('spec-tags');
-      if (sg && sg.children.length === 0) {
-        for (var s = 0; s < SPECS_LIST.length; s++) {
-          var btn = document.createElement('button');
-          btn.className = 'tag';
-          btn.textContent = SPECS_LIST[s];
-          btn.onclick = (function(b){ return function(){ b.classList.toggle('on'); }; })(btn);
-          sg.appendChild(btn);
-        }
-      }
-    }
-    if (from === 4) {
-      var ot = document.getElementById('ob-type'); if (ot) ot.textContent = OB_TYPE === 'ind' ? 'Individual tailor' : 'Tailoring business';
-    }
-  }
-  window.scrollTo(0, 0);
-}
-
-function OBDONE() {
-  var ob5 = document.getElementById('ob5'); if (ob5) ob5.style.display = 'none';
-  var ok = document.getElementById('ob-ok'); if (ok) ok.style.display = 'block';
-}
-
-function MARKUP(id, label) {
-  var box = document.getElementById(id); if (!box) return;
-  box.classList.add('done');
-  var t = box.querySelector('.up-title'); if (t) t.textContent = '✓ ' + label;
-  var s = box.querySelector('.up-sub'); if (s) s.textContent = '';
-}
-
-// =============================================
-// ADMIN
-// =============================================
-function ADMTAB(btn, panelId) {
-  var tabs = document.querySelectorAll('.adm-tab');
-  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
-  var panels = document.querySelectorAll('.adm-panel');
-  for (var j = 0; j < panels.length; j++) panels[j].classList.remove('on');
-  btn.classList.add('on');
-  var p = document.getElementById(panelId); if (p) p.classList.add('on');
-}
-
-function setTag(el) {
-  var tags = document.querySelectorAll('.filter-row .tag');
-  for (var i = 0; i < tags.length; i++) tags[i].classList.remove('on');
-  el.classList.add('on');
-}
-
-// =============================================
-// MODAL / AUTH
-// =============================================
-function MODAL(tab) {
-  var ov = document.getElementById('overlay'); if (ov) ov.classList.add('on');
-  document.body.style.overflow = 'hidden';
-  SWITCHMODAL(tab || 'signin');
-}
-
-function CLOSEMODAL() {
-  var ov = document.getElementById('overlay'); if (ov) ov.classList.remove('on');
-  document.body.style.overflow = '';
-}
-
-function SWITCHMODAL(tab) {
-  var forms = document.querySelectorAll('.af');
-  for (var i = 0; i < forms.length; i++) forms[i].classList.remove('on');
-  var ok = document.getElementById('auth-ok'); if (ok) ok.classList.remove('on');
-  var mts = document.querySelectorAll('.modal-tab');
-  for (var j = 0; j < mts.length; j++) mts[j].classList.remove('on');
-  if (tab === 'signin') {
-    var f = document.getElementById('af-signin'); if (f) f.classList.add('on');
-    var t = document.getElementById('mt-si'); if (t) t.classList.add('on');
-  } else if (tab === 'signup') {
-    var f2 = document.getElementById('af-signup'); if (f2) f2.classList.add('on');
-    var t2 = document.getElementById('mt-su'); if (t2) t2.classList.add('on');
-  } else if (tab === 'forgot') {
-    var f3 = document.getElementById('af-forgot'); if (f3) f3.classList.add('on');
-  }
-}
-
-function SELAT(type) {
-  AT_TYPE = type;
-  var cu = document.getElementById('at-cu'); var ta = document.getElementById('at-ta');
-  if (cu) cu.classList.toggle('sel', type === 'customer');
-  if (ta) ta.classList.toggle('sel', type === 'tailor');
-}
-
-function SHOWOK(title, msg) {
-  var forms = document.querySelectorAll('.af');
-  for (var i = 0; i < forms.length; i++) forms[i].classList.remove('on');
-  var ok = document.getElementById('auth-ok');
-  var t = document.getElementById('ok-title');
-  var m = document.getElementById('ok-msg');
-  if (ok) ok.classList.add('on');
-  if (t) t.textContent = title;
-  if (m) m.textContent = msg;
-}
-
-function DOSIGNIN() {
-  var e = document.getElementById('si-email');
-  var p = document.getElementById('si-pw');
-  if (!e || !e.value || !p || !p.value) { alert('Please enter your email and password.'); return; }
-  var btn = document.getElementById('si-btn');
-  if (typeof supa !== 'undefined') {
-    if (btn) { btn.textContent = 'Signing in...'; btn.disabled = true; }
-    supa.auth.signInWithPassword({email: e.value, password: p.value}).then(function(r) {
-      if (btn) { btn.textContent = 'Sign in to SewBridge'; btn.disabled = false; }
-      if (r.error) { alert(r.error.message); return; }
-      SHOWOK('Welcome back!', 'You are now signed in.');
-      setTimeout(function(){ CLOSEMODAL(); GO('dashboard'); }, 1500);
-    });
-  } else {
-    SHOWOK('Welcome back!', 'You are now signed in to SewBridge.');
-    setTimeout(function(){ CLOSEMODAL(); GO('dashboard'); }, 1500);
-  }
-}
-
-function DOSIGNUP() {
-  var fname = document.getElementById('su-fname');
-  var lname = document.getElementById('su-lname');
-  var email = document.getElementById('su-email');
-  var pw = document.getElementById('su-pw');
-  if (!fname || !fname.value) { alert('Please enter your first name.'); return; }
-  if (!email || !email.value) { alert('Please enter your email.'); return; }
-  if (!pw || !pw.value || pw.value.length < 8) { alert('Password must be at least 8 characters.'); return; }
-  var fullName = fname.value + ' ' + (lname ? lname.value : '');
-  var btn = document.getElementById('su-btn');
-  if (typeof supa !== 'undefined') {
-    if (btn) { btn.textContent = 'Creating account...'; btn.disabled = true; }
-    supa.auth.signUp({
-      email: email.value, password: pw.value,
-      options: { data: { full_name: fullName, role: AT_TYPE } }
-    }).then(function(r) {
-      if (btn) { btn.textContent = 'Create my SewBridge account'; btn.disabled = false; }
-      if (r.error) { alert(r.error.message); return; }
-      if (r.data && r.data.user) {
-        supa.from('profiles').upsert({id: r.data.user.id, full_name: fullName, email: email.value, role: AT_TYPE, created_at: new Date().toISOString()});
-      }
-      if (AT_TYPE === 'tailor') {
-        SHOWOK('Welcome, tailor!', 'Account created! Check your email then complete your profile.');
-        setTimeout(function(){ CLOSEMODAL(); GO('join'); }, 2500);
-      } else {
-        SHOWOK('Welcome to SewBridge!', 'Account created! Check your email to confirm.');
-        setTimeout(function(){ CLOSEMODAL(); GO('tailors'); }, 2500);
-      }
-    });
-  } else {
-    SHOWOK('Welcome to SewBridge!', 'Account created successfully!');
-    setTimeout(function(){ CLOSEMODAL(); }, 2000);
-  }
-}
-
-function DORESET() {
-  var email = document.getElementById('reset-email');
-  if (!email || !email.value) { alert('Please enter your email.'); return; }
-  if (typeof supa !== 'undefined') {
-    supa.auth.resetPasswordForEmail(email.value).then(function(r) {
-      if (r.error) { alert(r.error.message); return; }
-      SHOWOK('Reset link sent!', 'Check your email for a password reset link.');
-    });
-  } else {
-    SHOWOK('Reset link sent!', 'Check your email for a password reset link.');
-  }
-}
-
-// =============================================
-// INIT
-// =============================================
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') CLOSEMODAL(); });
-
-window.onload = function() {
-  GO('home');
-};
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-var supa = supabase.createClient(
-  'https://prypgbyuwszdjtftouzj.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY'
-);
-supa.auth.onAuthStateChange(function(event, session) {
-  if (session && session.user) {
-    CURRENT_USER = session.user;
-    supa.from('profiles').select('*').eq('id', session.user.id).single().then(function(r) {
-      if (r.data) {
-        CURRENT_PROFILE = r.data;
-        var n = r.data.full_name || '';
-        var parts = n.split(' ');
-        var initials = ((parts[0] || '')[0] || '') + ((parts[1] || '')[0] || '');
-        initials = initials.toUpperCase() || 'SB';
-        var sbAv = document.getElementById('sb-av'); if (sbAv) sbAv.textContent = initials;
-        var sbName = document.getElementById('sb-name'); if (sbName) sbName.textContent = n || 'My Account';
-        var sbRole = document.getElementById('sb-role'); if (sbRole) sbRole.textContent = r.data.role === 'tailor' ? 'Tailor' : 'Customer';
-        var siBtn = document.getElementById('btn-signin'); if (siBtn) siBtn.textContent = initials;
-        var suBtn = document.getElementById('btn-signup');
-        if (suBtn) {
-          suBtn.textContent = 'Sign out';
-          suBtn.onclick = function() {
-            supa.auth.signOut();
-            CURRENT_USER = null;
-            CURRENT_PROFILE = null;
-            GO('home');
-          };
-        }
-      }
-    });
-  } else {
-    CURRENT_USER = null;
-    CURRENT_PROFILE = null;
-    var siBtn = document.getElementById('btn-signin');
-    if (siBtn) { siBtn.textContent = 'Sign in'; siBtn.onclick = function(){ MODAL('signin'); }; }
-    var suBtn = document.getElementById('btn-signup');
-    if (suBtn) { suBtn.textContent = 'Sign up free'; suBtn.onclick = function(){ MODAL('signup'); }; }
-  }
-});
-</script>
+const SUPABASE_URL='https://prypgbyuwszdjtftouzj.supabase.co';const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY';const STRIPE_KEY='pk_test_YOUR_KEY_HERE';const supa=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);let CURRENT_USER=null;let CURRENT_PAGE='home';let SELECTED_TAILOR=null;let ALL_TAILORS=[];let FILTERED_TAILORS=[];let ACTIVE_SPEC_FILTERS=[];let JOIN_STEP=1;let SIGNUP_ROLE='customer';const STATIC_TAILORS=[{id:'tailor-1',full_name:'Adaeze Anioke',location:'Atlanta, GA',heritage:'Nigerian',specialties:['Ankara','Bridal'],rating:4.9,orders_completed:87,starting_price:120,turnaround_days:14,bio:'Passionate about authentic African textiles and modern bridal design.',is_verified:true,role:'tailor'},{id:'tailor-2',full_name:'Grace Owusu',location:'New York, NY',heritage:'Ghanaian',specialties:['Kente','Kids'],rating:5.0,orders_completed:64,starting_price:95,turnaround_days:12,bio:'Expert in traditional Kente cloth and kids wear.',is_verified:true,role:'tailor'},{id:'tailor-3',full_name:'Sofia Reyes',location:'Miami, FL',heritage:'Mexican',specialties:['Quinceañera','Formal'],rating:4.8,orders_completed:51,starting_price:105,turnaround_days:18,bio:'Specializing in beautiful quinceañera gowns and formal wear.',is_verified:true,role:'tailor'},{id:'tailor-4',full_name:'Priya Sharma',location:'Dallas, TX',heritage:'Indian',specialties:['Sari','Salwar','Bridal'],rating:5.0,orders_completed:73,starting_price:115,turnaround_days:16,bio:'Master of traditional Indian garments with impeccable draping.',is_verified:true,role:'tailor'},{id:'tailor-5',full_name:'Fatou Diallo',location:'Houston, TX',heritage:'Senegalese',specialties:['Boubou','Wax print'],rating:4.7,orders_completed:43,starting_price:75,turnaround_days:14,bio:'Creating stunning traditional Senegalese outfits with vibrant wax prints.',is_verified:true,role:'tailor'},{id:'tailor-6',full_name:'Chen Wei',location:'San Francisco, CA',heritage:'Chinese',specialties:['Qipao','Cheongsam','Modern'],rating:4.9,orders_completed:38,starting_price:130,turnaround_days:15,bio:'Elegant qipao and cheongsam tailoring with contemporary flair.',is_verified:true,role:'tailor'}];document.addEventListener('DOMContentLoaded',async()=>{LOADFEATURED();LOADTAILORS();AUTHSTATELISTENER();SETUPSCROLLREVEAL();});function AUTHSTATELISTENER(){supa.auth.onAuthStateChange(async(event,session)=>{if(session){CURRENT_USER=session.user;await LOADPROFILE();UPDATENAV();}else{CURRENT_USER=null;UPDATENAV();}});}function UPDATENAV(){const authBtns=document.getElementById('authBtns');const userMenu=document.getElementById('userMenu');if(CURRENT_USER){authBtns.style.display='none';userMenu.classList.add('active');const initials=GETINITIALS(CURRENT_USER.user_metadata?.full_name||'User');document.getElementById('userAvatar').textContent=initials;if(CURRENT_USER.user_metadata?.role==='admin'){document.getElementById('adminLink').style.display='block';}}else{authBtns.style.display='flex';userMenu.classList.remove('active');}}async function SIGNIN(){const email=document.getElementById('signinEmail').value;const password=document.getElementById('signinPassword').value;if(!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signInWithPassword({email,password});if(error){alert('Sign in failed: '+error.message);}else{CLOSEMODAL();GO('dashboard');}}async function SIGNUP(){const firstName=document.getElementById('signupFirstName').value;const lastName=document.getElementById('signupLastName').value;const email=document.getElementById('signupEmail').value;const password=document.getElementById('signupPassword').value;if(!firstName||!lastName||!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signUp({email,password,options:{data:{full_name:firstName+' '+lastName,role:SIGNUP_ROLE}}});if(error){alert('Sign up failed: '+error.message);}else{await supa.from('profiles').upsert({id:data.user.id,full_name:firstName+' '+lastName,email,role:SIGNUP_ROLE,is_verified:false,created_at:new Date().toISOString()});alert('Sign up successful! Please check your email to confirm.');CLOSEMODAL();}}async function GOOGLESIGNIN(){const{error}=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});if(error){alert('Google sign in failed: '+error.message);}}function RESETPWD(){const email=prompt('Enter your email to reset password:');if(email){supa.auth.resetPasswordForEmail(email).then(({error})=>{if(error){alert('Error: '+error.message);}else{alert('Password reset link sent to '+email);}});}}async function LOGOUT(){await supa.auth.signOut();GO('home');}async function LOADPROFILE(){if(!CURRENT_USER)return;const{data,error}=await supa.from('profiles').select('*').eq('id',CURRENT_USER.id).single();if(data){document.getElementById('firstName').value=data.full_name?.split(' ')[0]||'';document.getElementById('lastName').value=data.full_name?.split(' ').slice(1).join(' ')||'';document.getElementById('profileEmail').value=data.email||'';document.getElementById('bio').value=data.bio||'';document.getElementById('location').value=data.location||'';if(data.role==='tailor'){document.getElementById('locationGroup').style.display='block';document.getElementById('specialtiesGroup').style.display='block';document.getElementById('priceGroup').style.display='block';document.getElementById('heritageGroup').style.display='block';document.getElementById('tailorOrders').style.display='block';document.getElementById('tailorEarnings').style.display='block';document.getElementById('specialties').value=(data.specialties||[]).join(', ');document.getElementById('price').value=data.starting_price||'';document.getElementById('heritage').value=data.heritage||'';LOADORDERS('tailor');LOADEARN();}else{LOADORDERS('customer');}}}async function SAVEPROFILE(){if(!CURRENT_USER){alert('Please sign in first');return;}const firstName=document.getElementById('firstName').value;const lastName=document.getElementById('lastName').value;const bio=document.getElementById('bio').value;const location=document.getElementById('location').value;const specialties=document.getElementById('specialties').value?document.getElementById('specialties').value.split(',').map(s=>s.trim()):[];const price=document.getElementById('price').value;const heritage=document.getElementById('heritage').value;const updates={id:CURRENT_USER.id,full_name:firstName+' '+lastName,bio,location,specialties:specialties.length>0?specialties:null,starting_price:price?parseInt(price):null,heritage:heritage||null,updated_at:new Date().toISOString()};const{error}=await supa.from('profiles').upsert(updates);if(error){alert('Error saving profile: '+error.message);}else{alert('Profile saved successfully!');}}async function LOADORDERS(type='customer'){if(!CURRENT_USER)return;const tbody=type==='customer'?document.getElementById('ordersBody'):document.getElementById('incomingBody');tbody.innerHTML='';let query=supa.from('orders').select('*');if(type==='customer'){query=query.eq('customer_id',CURRENT_USER.id);}else{query=query.eq('tailor_id',CURRENT_USER.id);}const{data,error}=await query;if(data&&data.length>0){data.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${type==='customer'?'Tailor':order.customer_id}</td><td>${order.item_name}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td><td>${new Date(order.created_at).toLocaleDateString()}</td>${type==='tailor'?'<td><button onclick="alert(\'Accept order\')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">Accept</button></td>':''}
+</tr>`;tbody.innerHTML+=row;});}else{tbody.innerHTML='<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--gray);">No orders yet</td></tr>';}}async function LOADEARN(){if(!CURRENT_USER)return;const{data,error}=await supa.from('orders').select('*').eq('tailor_id',CURRENT_USER.id).eq('status','completed');let total=0;const tbody=document.getElementById('earningsBody');tbody.innerHTML='';if(data&&data.length>0){data.forEach(order=>{const tailorCut=Math.round(order.amount*0.92);total+=tailorCut;const row=`<tr><td>${order.id}</td><td>Customer</td><td>$${order.amount}</td><td>$${tailorCut}</td><td><span class="status-badge status-completed">Completed</span></td></tr>`;tbody.innerHTML+=row;});}document.getElementById('totalEarnings').textContent='$'+total;}async function SAVEM(){if(!CURRENT_USER){alert('Please sign in first');return;}const measurements={user_id:CURRENT_USER.id,bust:parseFloat(document.getElementById('bust').value)||0,waist:parseFloat(document.getElementById('waist').value)||0,hips:parseFloat(document.getElementById('hips').value)||0,shoulders:parseFloat(document.getElementById('shoulders').value)||0,sleeves:parseFloat(document.getElementById('sleeves').value)||0,inseam:parseFloat(document.getElementById('inseam').value)||0,notes:document.getElementById('measurementNotes').value,updated_at:new Date().toISOString()};const{error}=await supa.from('measurements').upsert(measurements);if(error){alert('Error saving measurements: '+error.message);}else{alert('Measurements saved successfully!');}}async function LOADFEATURED(){const grid=document.getElementById('featuredGrid');const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true).limit(3);if(data&&data.length>0){BUILDGRID(data,'featuredGrid');}else{BUILDGRID(STATIC_TAILORS.slice(0,3),'featuredGrid');}}async function LOADTAILORS(){const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true);if(data&&data.length>0){ALL_TAILORS=data;}else{ALL_TAILORS=STATIC_TAILORS;}FILTERED_TAILORS=[...ALL_TAILORS];BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function BUILDGRID(tailors,gridId='tailorsGrid'){const grid=document.getElementById(gridId);grid.innerHTML='';tailors.forEach(tailor=>{const initials=GETINITIALS(tailor.full_name);const specs=Array.isArray(tailor.specialties)?tailor.specialties:[];const card=`<div class="tailor-card" onclick="OPENTAILORPROFILE('${tailor.id}')"><div class="tailor-header"><div class="tailor-avatar">${initials}</div><div class="tailor-name">${tailor.full_name}</div><div class="tailor-location">${tailor.location}</div></div><div class="tailor-body"><div class="tailor-badges">${tailor.is_verified?'<span class="tailor-badge verified">Verified</span>':''}</div><div class="tailor-specialties">${specs.map(s=>`<span class="spec-chip">${s}</span>`).join('')}</div><div class="tailor-rating"><span class="stars">${'★'.repeat(Math.round(tailor.rating||5))}</span><span>${tailor.rating||5} (${tailor.orders_completed||0} orders)</span></div><div class="tailor-price">Starting at $${tailor.starting_price||100}</div><button>View Profile</button></div></div>`;grid.innerHTML+=card;});if(tailors.length===0){document.getElementById('noResults').style.display='block';}else{document.getElementById('noResults').style.display='none';}}function FILTERTAILORS(){const search=document.getElementById('searchInput').value.toLowerCase();const location=document.getElementById('locationSelect').value.toLowerCase();FILTERED_TAILORS=ALL_TAILORS.filter(t=>{const matchSearch=!search||t.full_name.toLowerCase().includes(search)||(Array.isArray(t.specialties)&&t.specialties.some(s=>s.toLowerCase().includes(search)))||t.location.toLowerCase().includes(search);const matchLocation=!location||t.location.toLowerCase().includes(location);const matchSpecs=ACTIVE_SPEC_FILTERS.length===0||(Array.isArray(t.specialties)&&ACTIVE_SPEC_FILTERS.some(f=>t.specialties.includes(f)));return matchSearch&&matchLocation&&matchSpecs;});BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function TOGGLESPEC(el){const spec=el.dataset.spec;el.classList.toggle('active');if(el.classList.contains('active')){if(!ACTIVE_SPEC_FILTERS.includes(spec)){ACTIVE_SPEC_FILTERS.push(spec);}}else{ACTIVE_SPEC_FILTERS=ACTIVE_SPEC_FILTERS.filter(f=>f!==spec);}FILTERTAILORS();}function OPENTAILORPROFILE(tailorId){const tailor=ALL_TAILORS.find(t=>t.id===tailorId)||STATIC_TAILORS.find(t=>t.id===tailorId);if(tailor){SELECTED_TAILOR=tailor;const initials=GETINITIALS(tailor.full_name);document.getElementById('profileAvatar').textContent=initials;document.getElementById('profileNameDisplay').textContent=tailor.full_name;document.getElementById('profileLocationDisplay').textContent=tailor.location;document.getElementById('profileHeritage').textContent=tailor.heritage||'Not specified';document.getElementById('profileSpecs').textContent=(Array.isArray(tailor.specialties)?tailor.specialties:[]).join(', ')||'Various';document.getElementById('profileRating').textContent=tailor.rating||5;document.getElementById('profileOrders').textContent=tailor.orders_completed||0;document.getElementById('profileTurnaround').textContent=(tailor.turnaround_days||14)+'-'+((tailor.turnaround_days||14)+7)+' days';document.getElementById('profileBio').textContent=tailor.bio||'Skilled tailor';document.getElementById('profileStartPrice').textContent='$'+(tailor.starting_price||100);if(tailor.is_verified){document.getElementById('profileVerified').style.display='inline';}else{document.getElementById('profileVerified').style.display='none';}MODAL('profile');}}async function SENDMSG(){const content=document.getElementById('messageInput').value;if(!content){alert('Message cannot be empty');return;}if(SCANMSG(content)){document.getElementById('contactWarning').style.display='block';return;}if(!CURRENT_USER){alert('Please sign in first');return;}const{error}=await supa.from('messages').insert({sender_id:CURRENT_USER.id,recipient_id:document.getElementById('threadSelect').value,content,order_id:null,created_at:new Date().toISOString()});if(error){alert('Error sending message: '+error.message);}else{document.getElementById('messageInput').value='';alert('Message sent!');THREAD(document.getElementById('threadSelect').value);}}function SCANMSG(val){const phoneRegex=/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/;const emailRegex=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;const externalPaymentRegex=/paypal|venmo|cashapp|zelle/i;return phoneRegex.test(val)||emailRegex.test(val)||externalPaymentRegex.test(val);}async function THREAD(recipientId){if(!recipientId)return;const container=document.getElementById('messagesContainer');const form=document.getElementById('messageForm');const list=document.getElementById('messagesList');container.style.display='block';form.style.display='block';list.innerHTML='';const{data,error}=await supa.from('messages').select('*').or(`and(sender_id.eq.${CURRENT_USER.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${CURRENT_USER.id})`).order('created_at',{ascending:true});if(data){data.forEach(msg=>{const isOwn=msg.sender_id===CURRENT_USER.id;const msgEl=`<div style="margin-bottom: 1rem; text-align: ${isOwn?'right':'left'};"><div style="background: ${isOwn?'var(--green)':'var(--white)'}; color: ${isOwn?'white':'var(--dark)'}; padding: 0.75rem 1rem; border-radius: 8px; display: inline-block; max-width: 70%;">${msg.content}</div></div>`;list.innerHTML+=msgEl;});}}function JOINNAV(direction){JOIN_STEP+=direction;if(JOIN_STEP<1)JOIN_STEP=1;if(JOIN_STEP>5)JOIN_STEP=5;for(let i=1;i<=5;i++){document.getElementById(`step${i}`).classList.remove('active');}document.getElementById(`step${JOIN_STEP}`).classList.add('active');const steps=document.querySelectorAll('.progress-step');steps.forEach((step,idx)=>{if(idx+1<JOIN_STEP){step.classList.add('completed');}else if(idx+1===JOIN_STEP){step.classList.add('active');}else{step.classList.remove('active','completed');}});document.getElementById('backBtn').style.display=JOIN_STEP>1?'block':'none';document.getElementById('nextBtn').style.display=JOIN_STEP<5?'block':'none';document.getElementById('submitBtn').style.display=JOIN_STEP===5?'block':'none';if(JOIN_STEP===5){UPDATEREVIEWSUMMARY();}}function UPDATEREVIEWSUMMARY(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const summary=`<p><strong>Name:</strong> ${document.getElementById('joinFirstName').value} ${document.getElementById('joinLastName').value}</p><p><strong>Email:</strong> ${document.getElementById('joinEmail').value}</p><p><strong>Phone:</strong> ${document.getElementById('joinPhone').value}</p><p><strong>Experience:</strong> ${document.getElementById('yearsExp').value} years</p><p><strong>Heritage:</strong> ${document.getElementById('joinHeritage').value}</p><p><strong>Specialties:</strong> ${specs.join(', ')}</p><p><strong>Location:</strong> ${document.getElementById('joinCity').value}, ${document.getElementById('joinState').value}</p><p><strong>Starting Price:</strong> $${document.getElementById('joinPrice').value}</p><p><strong>Turnaround:</strong> ${document.getElementById('joinTurnaround').value} days</p>`;document.getElementById('reviewSummary').innerHTML=summary;}async function SUBMITJOIN(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const application={full_name:document.getElementById('joinFirstName').value+' '+document.getElementById('joinLastName').value,email:document.getElementById('joinEmail').value,phone:document.getElementById('joinPhone').value,years_experience:parseInt(document.getElementById('yearsExp').value),heritage:document.getElementById('joinHeritage').value,specialties:specs,location:document.getElementById('joinCity').value+', '+document.getElementById('joinState').value,starting_price:parseInt(document.getElementById('joinPrice').value),turnaround_days:parseInt(document.getElementById('joinTurnaround').value),bio:document.getElementById('joinBio').value,status:'pending',created_at:new Date().toISOString()};const{error}=await supa.from('tailor_applications').insert(application);if(error){alert('Error submitting application: '+error.message);}else{alert('Application submitted! We will review it within 3-5 business days.');GO('home');JOIN_STEP=1;}}async function COMPLETEPAYMENT(){if(!CURRENT_USER||!SELECTED_TAILOR){alert('Please sign in and select a tailor');return;}const itemDesc=document.getElementById('payItemDesc').value;const amount=SELECTED_TAILOR.starting_price||100;if(!itemDesc){alert('Please describe the item');return;}const orderRef='SB-'+Date.now();const{error}=await supa.from('orders').insert({customer_id:CURRENT_USER.id,tailor_id:SELECTED_TAILOR.id,item_name:itemDesc,amount,order_ref:orderRef,status:'pending',created_at:new Date().toISOString()});if(error){alert('Error creating order: '+error.message);}else{document.getElementById('successMsg').classList.add('show');setTimeout(()=>{CLOSEMODAL();GO('dashboard');},2000);}}function GO(page){const pages=document.querySelectorAll('.page');pages.forEach(p=>p.classList.remove('active'));document.getElementById(page).classList.add('active');CURRENT_PAGE=page;if(page==='tailors'){LOADTAILORS();}else if(page==='dashboard'&&CURRENT_USER){LOADPROFILE();}else if(page==='admin'&&CURRENT_USER?.user_metadata?.role==='admin'){LOADADMIN();}window.scrollTo(0,0);}async function LOADADMIN(){if(!CURRENT_USER||CURRENT_USER.user_metadata?.role!=='admin'){alert('Access denied');GO('home');return;}const{count:userCount}=await supa.from('profiles').select('*',{count:'exact',head:true});const{count:tailorCount}=await supa.from('profiles').select('*',{count:'exact',head:true}).eq('role','tailor');const{count:orderCount}=await supa.from('orders').select('*',{count:'exact',head:true});const{data:orders}=await supa.from('orders').select('amount');let revenue=0;if(orders){revenue=orders.reduce((sum,o)=>sum+(o.amount||0),0)*0.08;}document.getElementById('adminUsers').textContent=userCount||0;document.getElementById('adminTailors').textContent=tailorCount||0;document.getElementById('adminOrders').textContent=orderCount||0;document.getElementById('adminRevenue').textContent='$'+Math.round(revenue);const{data:apps}=await supa.from('tailor_applications').select('*').eq('status','pending');const verifBody=document.getElementById('verificationsBody');verifBody.innerHTML='';if(apps&&apps.length>0){apps.forEach(app=>{const row=`<tr><td>${app.full_name}</td><td>${app.email}</td><td><span class="status-badge status-pending">Pending</span></td><td>${new Date(app.created_at).toLocaleDateString()}</td><td><button onclick="alert('Verify user')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">Verify</button></td></tr>`;verifBody.innerHTML+=row;});}const{data:recentOrders}=await supa.from('orders').select('*').order('created_at',{ascending:false}).limit(10);const adminOrdersBody=document.getElementById('adminOrdersBody');adminOrdersBody.innerHTML='';if(recentOrders){recentOrders.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${order.customer_id}</td><td>${order.tailor_id}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td></tr>`;adminOrdersBody.innerHTML+=row;});}}function PANEL(name){const panels=document.querySelectorAll('.panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('.sidebar-menu button');buttons.forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}function MODAL(type){if(type==='auth'){document.getElementById('authModal').classList.add('active');}else if(type==='profile'){document.getElementById('profileModal').classList.add('active');}else if(type==='payment'){if(!CURRENT_USER){alert('Please sign in first');MODAL('auth');return;}document.getElementById('payTailorName').textContent=SELECTED_TAILOR.full_name;document.getElementById('payStartPrice').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('payTotal').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('paymentModal').classList.add('active');CLOSEMODAL();}}function CLOSEMODAL(){document.querySelectorAll('.modal').forEach(m=>{m.classList.remove('active');});document.getElementById('successMsg').classList.remove('show');}function SWITCHMODAL(tab){const tabs=document.querySelectorAll('.tab-content');const btns=document.querySelectorAll('.tab-btn');tabs.forEach(t=>t.classList.remove('active'));btns.forEach(b=>b.classList.remove('active'));if(tab==='signin'){document.getElementById('signinTab').classList.add('active');btns[0].classList.add('active');}else{document.getElementById('signupTab').classList.add('active');btns[1].classList.add('active');}}function TOGGLEROLE(btn,role){const buttons=btn.parentElement.querySelectorAll('button');buttons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');SIGNUP_ROLE=role;}function toggleDropdown(){document.getElementById('dropdownContent').classList.toggle('active');}function GETINITIALS(name){if(!name)return'JD';const parts=name.split(' ');return(parts[0][0]+(parts[1]?.[0]||'')).toUpperCase();}function SETUPSCROLLREVEAL(){const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');}});},{threshold:0.1});document.querySelectorAll('.scroll-reveal').forEach(el=>{observer.observe(el);});}</script>
 
 </body>
 </html>
