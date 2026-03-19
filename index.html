@@ -4,313 +4,217 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>SewBridge</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPA_URL = 'https://prypgbyuwszdjtftouzj.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY';
-const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
-let CURRENT_USER = null;
-let CURRENT_PROFILE = null;
-
-// Auth state listener
-supa.auth.onAuthStateChange(async (event, session) => {
-  if (session && session.user) {
-    CURRENT_USER = session.user;
-    await loadProfile(session.user.id);
-    updateNavForLoggedIn();
-  } else {
-    CURRENT_USER = null;
-    CURRENT_PROFILE = null;
-    updateNavForLoggedOut();
-  }
-});
-
-async function loadProfile(userId) {
-  const { data, error } = await supa.from('profiles').select('*').eq('id', userId).single();
-  if (data) {
-    CURRENT_PROFILE = data;
-    updateDashboardUI(data);
-  }
-}
-
-function updateNavForLoggedIn() {
-  var signInBtn = document.querySelector('.btn-white');
-  var signUpBtn = document.querySelector('.btn-green');
-  if (CURRENT_PROFILE) {
-    if (signInBtn) signInBtn.textContent = CURRENT_PROFILE.full_name ? CURRENT_PROFILE.full_name.split(' ')[0] : 'Account';
-    if (signUpBtn) { signUpBtn.textContent = 'Sign out'; signUpBtn.onclick = DOSIGNOUT; }
-  }
-}
-
-function updateNavForLoggedOut() {
-  var signInBtn = document.querySelector('.btn-white');
-  var signUpBtn = document.querySelector('.btn-green');
-  if (signInBtn) { signInBtn.textContent = 'Sign in'; signInBtn.onclick = function(){MODAL('signin');}; }
-  if (signUpBtn) { signUpBtn.textContent = 'Sign up free'; signUpBtn.onclick = function(){MODAL('signup');}; }
-}
-
-function updateDashboardUI(profile) {
-  var sbAv = document.querySelector('.sb-av');
-  var sbName = document.querySelector('.sb-name');
-  var sbRole = document.querySelector('.sb-role');
-  if (sbAv) sbAv.textContent = getInitials(profile.full_name || 'User');
-  if (sbName) sbName.textContent = profile.full_name ? profile.full_name.split(' ')[0] + ' ' + (profile.full_name.split(' ')[1]||'').charAt(0) + '.' : 'User';
-  if (sbRole) sbRole.textContent = profile.role === 'tailor' ? 'Tailor' : 'Customer';
-}
-
-function getInitials(name) {
-  return name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-}
-
-async function DOSIGNOUT() {
-  await supa.auth.signOut();
-  CURRENT_USER = null;
-  CURRENT_PROFILE = null;
-  SHOWOK('Signed out', 'You have been signed out successfully.');
-  setTimeout(function(){ CLOSEMODAL(); GO('home'); }, 1500);
-  MODAL('signin');
-}
-</script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:#faf9f7;color:#1a1a1a;font-size:15px;line-height:1.7;}
-.wrap{max-width:1100px;margin:0 auto;padding:0 28px;}
-hr{border:none;border-top:1px solid #e8e8e8;margin:2.5rem 0;}
-.nav{background:#1a1a1a;position:sticky;top:0;z-index:999;}
-.nav-inner{max-width:1100px;margin:0 auto;padding:0 28px;height:68px;display:flex;align-items:center;justify-content:space-between;}
-.logo{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0;}
-.logo img{height:52px;width:auto;object-fit:contain;}
-.logo-text{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:#fff;letter-spacing:0.05em;white-space:nowrap;}
-.logo-text em{font-style:italic;}
-.nav-links{display:flex;align-items:center;gap:2px;list-style:none;}
-.nb{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.8);background:none;border:none;cursor:pointer;padding:7px 12px;border-radius:6px;white-space:nowrap;}
-.nb:hover,.nb.on{color:#fff;background:rgba(255,255,255,0.12);}
-.nav-right{display:flex;gap:8px;flex-shrink:0;}
-.btn{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.03em;display:inline-block;}
-.btn-white{border:1.5px solid rgba(255,255,255,0.4);background:transparent;color:#fff;}
-.btn-white:hover{background:rgba(255,255,255,0.1);}
-.btn-green{background:#1D9E75;border:none;color:#fff;}
-.btn-green:hover{background:#178a64;}
-.btn-dark{background:#1a1a1a;border:1.5px solid #1a1a1a;color:#fff;}
-.btn-dark:hover{background:#333;}
-.btn-outline{background:transparent;border:1.5px solid #1a1a1a;color:#1a1a1a;}
-.btn-outline:hover{background:#1a1a1a;color:#fff;}
-.btn-lg{padding:12px 30px;font-size:14px;}
-.btn-block{width:100%;text-align:center;display:block;padding:13px;}
-.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;}
-.bg{background:#EAF3DE;color:#2d6a0a;}.ba{background:#FAEEDA;color:#854F0B;}.bb{background:#E6F1FB;color:#185FA5;}.br{background:#FCEBEB;color:#A32D2D;}
-.pg-title{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:500;margin-bottom:8px;}
-.pg-sub{font-size:16px;color:#555;margin-bottom:2rem;line-height:1.7;}
-.sec-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;margin-bottom:8px;}
-.sec-sub{font-size:15px;color:#555;margin-bottom:1.75rem;}
-.hero{text-align:center;padding:5rem 0 4rem;}
-.hero-logo{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1rem;}
-.hero-logo img{height:100px;width:auto;object-fit:contain;}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:500;letter-spacing:0.04em;line-height:1;}
-.hero-title em{font-style:italic;}
-.hero-tag{font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#1D9E75;margin:1rem 0 0.75rem;}
-.hero-desc{font-size:17px;color:#444;max-width:520px;margin:0 auto 2.5rem;line-height:1.8;}
-.hero-btns{display:flex;gap:14px;justify-content:center;margin-bottom:2.5rem;flex-wrap:wrap;}
-.hero-search{display:flex;max-width:520px;margin:0 auto;border:2px solid #1a1a1a;border-radius:10px;overflow:hidden;}
-.hero-search input{flex:1;border:none;outline:none;padding:13px 18px;font-family:'DM Sans',sans-serif;font-size:14px;background:#fff;}
-.search-btn{padding:11px 22px;background:#1a1a1a;color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;cursor:pointer;}
-.search-btn:hover{background:#1D9E75;}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid #e0e0e0;border-radius:14px;margin:3rem 0;background:#fff;}
-.stat{padding:26px;text-align:center;border-right:1px solid #e0e0e0;}
-.stat:last-child{border-right:none;}
-.stat-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;display:block;margin-bottom:4px;}
-.stat-label{font-size:13px;color:#666;font-weight:500;}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:2rem;}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:2rem 0;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.step{padding:24px;border:2px solid #e8e8e8;border-radius:14px;background:#fff;transition:all 0.2s;}
-.step:hover{border-color:#1D9E75;}
-.step-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;color:#1D9E75;margin-bottom:10px;line-height:1;}
-.step-title{font-size:15px;font-weight:600;margin-bottom:6px;}
-.step-desc{font-size:13px;color:#555;line-height:1.7;}
-.trust{text-align:center;padding:20px 14px;border:2px solid #e8e8e8;border-radius:14px;background:#fff;transition:all 0.2s;}
-.trust:hover{border-color:#1D9E75;}
-.trust-icon{font-size:26px;margin-bottom:8px;}
-.trust-title{font-size:14px;font-weight:600;margin-bottom:4px;}
-.trust-desc{font-size:12px;color:#666;line-height:1.6;}
-.cta-card{border:2px solid #e0e0e0;border-radius:14px;padding:30px 26px;background:#fff;}
-.cta-card.green{border-color:#1D9E75;background:#f8fdf9;}
-.cta-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px;}
-.cta-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;margin-bottom:8px;}
-.cta-desc{font-size:14px;color:#555;line-height:1.7;margin-bottom:18px;}
-.search-row{display:flex;gap:12px;margin-bottom:1.5rem;flex-wrap:wrap;}
-.inp{padding:10px 14px;border:1.5px solid #ddd;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;background:#fff;outline:none;}
-.inp:focus{border-color:#1D9E75;}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.75rem;align-items:center;}
-.fl{font-size:11px;font-weight:700;color:#888;letter-spacing:0.1em;text-transform:uppercase;}
-.tag{font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;border:1.5px solid #ddd;color:#555;cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
-.tag:hover,.tag.on{border-color:#1D9E75;color:#1D9E75;background:#EAF3DE;}
-.tailor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
-.tc{border:2px solid #e0e0e0;border-radius:14px;padding:18px;cursor:pointer;transition:all 0.2s;background:#fff;}
-.tc:hover{border-color:#1D9E75;transform:translateY(-2px);}
-.tc-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
-.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;}
-.tc-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;margin-bottom:2px;}
-.tc-loc{font-size:12px;color:#666;}
-.specs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
-.spec{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;border:1px solid #ddd;color:#555;}
-.tc-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid #eee;}
-.stars{font-size:12px;color:#d4a00a;}
-.price{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;}
-.aud-lbl{font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#1D9E75;margin-bottom:14px;display:block;}
-.dash{display:grid;grid-template-columns:210px 1fr;gap:24px;min-height:70vh;}
-.sidebar{border-right:2px solid #eee;padding-right:20px;}
-.sb-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;margin:0 auto 8px;}
-.sb-name{font-family:'Cormorant Garamond',serif;font-size:18px;text-align:center;margin-bottom:2px;}
-.sb-role{font-size:11px;color:#888;text-align:center;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:18px;}
-.sb-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-size:14px;cursor:pointer;color:#555;margin-bottom:2px;background:none;border:none;font-family:'DM Sans',sans-serif;width:100%;text-align:left;font-weight:500;transition:all 0.15s;}
-.sb-btn:hover,.sb-btn.on{background:#EAF3DE;color:#1D9E75;}
-.panel{display:none;}
-.panel.on{display:block;}
-.oc{border:2px solid #e0e0e0;border-radius:14px;padding:16px 18px;margin-bottom:12px;background:#fff;cursor:pointer;}
-.oc:hover{border-color:#1D9E75;}
-.oc-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;margin-bottom:3px;}
-.oc-meta{font-size:12px;color:#666;margin-bottom:10px;}
-.pb{height:4px;background:#eee;border-radius:2px;margin-bottom:6px;overflow:hidden;}
-.pf{height:100%;background:#1D9E75;border-radius:2px;}
-.ps{display:flex;justify-content:space-between;font-size:11px;color:#aaa;}
-.ps .d{color:#1D9E75;font-weight:600;}
-.msg-wrap{display:grid;grid-template-columns:230px 1fr;border:2px solid #e0e0e0;border-radius:14px;overflow:hidden;min-height:480px;background:#fff;}
-.tl{border-right:2px solid #eee;}
-.tl-head{padding:12px 14px;border-bottom:1px solid #eee;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#888;}
-.thread{padding:12px 14px;border-bottom:1px solid #eee;cursor:pointer;}
-.thread:hover,.thread.on{background:#f5fdf9;}
-.th-name{font-size:13px;font-weight:600;margin-bottom:2px;}
-.th-prev{font-size:12px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
-.th-time{font-size:11px;color:#aaa;}
-.udot{width:7px;height:7px;border-radius:50%;background:#D85A30;flex-shrink:0;}
-.chat{display:flex;flex-direction:column;}
-.safe-bar{padding:7px 16px;background:#EAF3DE;font-size:12px;color:#2d6a0a;font-weight:600;border-bottom:1px solid #c3dfa0;display:flex;align-items:center;gap:8px;}
-.chat-top{padding:12px 16px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:12px;}
-.chat-name{font-size:14px;font-weight:600;}
-.chat-sub{font-size:12px;color:#888;}
-.msgs{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:260px;min-height:140px;}
-.msg{max-width:74%;}
-.bub{padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.6;}
-.msg-in .bub{background:#f0f0f0;border-radius:4px 14px 14px 14px;}
-.msg-out{align-self:flex-end;}
-.msg-out .bub{background:#1a1a1a;color:#fff;border-radius:14px 4px 14px 14px;}
-.msg-time{font-size:11px;color:#aaa;margin-top:3px;padding:0 4px;}
-.msg-out .msg-time{text-align:right;}
-.warn{margin:0 14px 8px;border-radius:12px;padding:13px 15px;border:2px solid #FAC775;background:#FAEEDA;display:none;gap:10px;align-items:flex-start;}
-.warn.on{display:flex;}
-.warn-title{font-size:13px;font-weight:700;color:#633806;margin-bottom:3px;}
-.warn-text{font-size:12px;color:#854F0B;line-height:1.6;}
-.warn-clear{font-size:12px;font-weight:600;color:#854F0B;cursor:pointer;text-decoration:underline;background:none;border:none;font-family:'DM Sans',sans-serif;margin-top:6px;display:block;}
-.chat-foot{padding:10px 14px;border-top:1px solid #eee;display:flex;gap:8px;}
-.chat-inp{flex:1;padding:9px 14px;border:1.5px solid #ddd;border-radius:22px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;outline:none;}
-.chat-inp.blocked{border-color:#FAC775;background:#FAEEDA20;}
-.send{width:36px;height:36px;border-radius:50%;background:#1a1a1a;color:#fff;border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
-.send.off{background:#ddd;color:#aaa;cursor:not-allowed;}
-.mg{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.ms{background:#f5f5f5;border-radius:12px;padding:16px;}
-.mr{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid #e8e8e8;}
-.mr:last-child{border-bottom:none;}
-.saved{display:none;font-size:12px;font-weight:600;color:#2d6a0a;background:#EAF3DE;padding:4px 12px;border-radius:20px;}
-.saved.on{display:inline-block;}
-.fc{background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:26px;margin-bottom:16px;}
-.fs-title{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #eee;}
-.field{margin-bottom:14px;}
-.lbl{font-size:13px;font-weight:600;color:#444;display:block;margin-bottom:5px;}
-.finp{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;background:#fff;outline:none;transition:border-color 0.2s;}
-.finp:focus{border-color:#1D9E75;}
-textarea.finp{resize:vertical;min-height:80px;}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-.ob-steps{display:flex;align-items:center;margin-bottom:2.5rem;}
-.ob-step{display:flex;align-items:center;gap:8px;flex:1;}
-.ob-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;border:2px solid #ddd;color:#aaa;flex-shrink:0;}
-.ob-step.act .ob-num{background:#1a1a1a;color:#fff;border-color:#1a1a1a;}
-.ob-step.done .ob-num{background:#1D9E75;color:#fff;border-color:#1D9E75;}
-.ob-lbl{font-size:12px;color:#aaa;font-weight:500;}
-.ob-step.act .ob-lbl{color:#1a1a1a;font-weight:600;}
-.ob-step.done .ob-lbl{color:#1D9E75;}
-.ob-line{flex:1;height:2px;background:#eee;margin:0 8px;}
-.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem;}
-.type-card{border:2px solid #ddd;border-radius:14px;padding:20px;cursor:pointer;transition:all 0.2s;}
-.type-card.sel{border-color:#1a1a1a;background:#fafafa;}
-.type-card:hover{border-color:#1D9E75;}
-.type-icon{font-size:28px;margin-bottom:10px;}
-.type-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;margin-bottom:5px;}
-.type-desc{font-size:13px;color:#666;line-height:1.6;}
-.type-req{font-size:11px;color:#aaa;margin-top:8px;}
-.ck-list{display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem;}
-.ck-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:#f5f5f5;font-size:14px;}
-.ck-icon{font-size:17px;flex-shrink:0;margin-top:2px;}
-.up-box{border:2px dashed #ddd;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:10px;}
-.up-box:hover{border-color:#1D9E75;background:#f8fdf9;}
-.up-box.done{border-color:#1D9E75;background:#EAF3DE;}
-.up-title{font-size:14px;font-weight:600;margin-bottom:3px;}
-.up-sub{font-size:12px;color:#888;}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem;}
-.metric{background:#f5f5f5;border-radius:12px;padding:16px;}
-.met-num{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;display:block;margin-bottom:2px;}
-.met-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.1em;}
-.met-chg{font-size:12px;color:#1D9E75;margin-top:4px;}
-.adm-tabs{display:flex;border-bottom:2px solid #eee;margin-bottom:1.5rem;}
-.adm-tab{padding:9px 18px;font-size:14px;font-weight:500;cursor:pointer;color:#888;border-bottom:3px solid transparent;margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;}
-.adm-tab.on{color:#1a1a1a;border-bottom-color:#1D9E75;}
-.adm-panel{display:none;}
-.adm-panel.on{display:block;overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th{text-align:left;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;padding:9px 12px;border-bottom:2px solid #eee;}
-td{padding:11px 12px;border-bottom:1px solid #eee;vertical-align:middle;}
-tr:hover td{background:#fafafa;}
-.act-btn{font-size:12px;color:#555;cursor:pointer;text-decoration:underline;margin-right:8px;background:none;border:none;font-family:'DM Sans',sans-serif;font-weight:500;}
-.act-btn:hover{color:#1D9E75;}
-.act-btn.red{color:#A32D2D;}
-.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;}
-.overlay.on{display:flex;}
-.modal{background:#fff;border-radius:18px;width:100%;max-width:440px;margin:20px;overflow:hidden;}
-.modal-top{background:#1a1a1a;padding:26px 30px 22px;text-align:center;position:relative;}
-.modal-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px;}
-.modal-logo img{height:48px;width:auto;object-fit:contain;}
-.modal-logo-text{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:#fff;letter-spacing:0.05em;}
-.modal-logo-text em{font-style:italic;}
-.modal-tabs{display:flex;border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;overflow:hidden;}
-.modal-tab{flex:1;padding:8px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;border:none;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;text-transform:uppercase;}
-.modal-tab.on{background:#fff;color:#1a1a1a;}
-.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:rgba(255,255,255,0.6);}
-.modal-close:hover{color:#fff;}
-.modal-body{padding:26px 30px 30px;}
-.af{display:none;}
-.af.on{display:block;}
-.auth-lbl{font-size:13px;font-weight:600;color:#444;display:block;margin-bottom:5px;}
-.auth-inp{width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;outline:none;margin-bottom:12px;}
-.auth-inp:focus{border-color:#1D9E75;}
-.auth-btn{width:100%;padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;margin-bottom:12px;}
-.auth-btn:hover{background:#1D9E75;}
-.auth-div{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.auth-div span{font-size:12px;color:#aaa;}
-.auth-div-line{flex:1;height:1px;background:#eee;}
-.g-btn{width:100%;padding:11px;background:#fff;color:#333;border:1.5px solid #ddd;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:12px;}
-.g-btn:hover{border-color:#1D9E75;}
-.auth-switch{text-align:center;font-size:13px;color:#888;}
-.auth-switch a{color:#1D9E75;font-weight:600;cursor:pointer;}
-.auth-forgot{text-align:right;margin-top:-6px;margin-bottom:12px;}
-.auth-forgot a{font-size:12px;color:#1D9E75;cursor:pointer;font-weight:600;}
-.at-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
-.at-card{padding:12px;border:1.5px solid #ddd;border-radius:10px;cursor:pointer;text-align:center;transition:all 0.2s;background:#fff;}
-.at-card.sel{border-color:#1D9E75;background:#f8fdf9;}
-.at-card:hover{border-color:#1D9E75;}
-.at-icon{font-size:20px;margin-bottom:5px;}
-.at-lbl{font-size:13px;font-weight:600;}
-.at-sub{font-size:11px;color:#888;margin-top:1px;}
-.auth-ok{text-align:center;padding:1.5rem 0;display:none;}
-.auth-ok.on{display:block;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#faf9f7;color:#1a1a1a;font-size:15px;line-height:1.7}
+.wrap{max-width:1100px;margin:0 auto;padding:0 28px}
+hr{border:none;border-top:1px solid #e8e8e8;margin:2.5rem 0}
+.nav{background:#1a1a1a;position:sticky;top:0;z-index:999}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 28px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0}
+.logo img{height:52px;width:auto;object-fit:contain}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:#fff;letter-spacing:.05em;white-space:nowrap}
+.logo-text em{font-style:italic}
+.nav-links{display:flex;align-items:center;gap:2px;list-style:none}
+.nb{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,.8);background:none;border:none;cursor:pointer;padding:7px 12px;border-radius:6px;white-space:nowrap}
+.nb:hover,.nb.on{color:#fff;background:rgba(255,255,255,.12)}
+.nav-right{display:flex;gap:8px;flex-shrink:0}
+.btn{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:all .15s;text-transform:uppercase;letter-spacing:.03em;display:inline-block}
+.btn-white{border:1.5px solid rgba(255,255,255,.4);background:transparent;color:#fff}
+.btn-white:hover{background:rgba(255,255,255,.1)}
+.btn-green{background:#1D9E75;border:none;color:#fff}
+.btn-green:hover{background:#178a64}
+.btn-dark{background:#1a1a1a;border:1.5px solid #1a1a1a;color:#fff}
+.btn-dark:hover{background:#333}
+.btn-outline{background:transparent;border:1.5px solid #1a1a1a;color:#1a1a1a}
+.btn-outline:hover{background:#1a1a1a;color:#fff}
+.btn-lg{padding:12px 30px;font-size:14px}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.bg{background:#EAF3DE;color:#2d6a0a}.ba{background:#FAEEDA;color:#854F0B}.bb{background:#E6F1FB;color:#185FA5}
+.pg-title{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:500;margin-bottom:8px}
+.pg-sub{font-size:16px;color:#555;margin-bottom:2rem;line-height:1.7}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;margin-bottom:8px}
+.sec-sub{font-size:15px;color:#555;margin-bottom:1.75rem}
+.hero{text-align:center;padding:5rem 0 4rem}
+.hero-logo{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1rem}
+.hero-logo img{height:100px;width:auto;object-fit:contain}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:500;letter-spacing:.04em;line-height:1}
+.hero-title em{font-style:italic}
+.hero-tag{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#1D9E75;margin:1rem 0 .75rem}
+.hero-desc{font-size:17px;color:#444;max-width:520px;margin:0 auto 2.5rem;line-height:1.8}
+.hero-btns{display:flex;gap:14px;justify-content:center;margin-bottom:2.5rem;flex-wrap:wrap}
+.hero-search{display:flex;max-width:520px;margin:0 auto;border:2px solid #1a1a1a;border-radius:10px;overflow:hidden}
+.hero-search input{flex:1;border:none;outline:none;padding:13px 18px;font-family:'DM Sans',sans-serif;font-size:14px;background:#fff}
+.search-btn{padding:11px 22px;background:#1a1a1a;color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;cursor:pointer}
+.search-btn:hover{background:#1D9E75}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid #e0e0e0;border-radius:14px;margin:3rem 0;background:#fff}
+.stat{padding:26px;text-align:center;border-right:1px solid #e0e0e0}
+.stat:last-child{border-right:none}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;display:block;margin-bottom:4px}
+.stat-label{font-size:13px;color:#666;font-weight:500}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:2rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:2rem 0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.step{padding:24px;border:2px solid #e8e8e8;border-radius:14px;background:#fff;transition:all .2s}
+.step:hover{border-color:#1D9E75}
+.step-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;color:#1D9E75;margin-bottom:10px;line-height:1}
+.step-title{font-size:15px;font-weight:600;margin-bottom:6px}
+.step-desc{font-size:13px;color:#555;line-height:1.7}
+.trust{text-align:center;padding:20px 14px;border:2px solid #e8e8e8;border-radius:14px;background:#fff}
+.trust-icon{font-size:26px;margin-bottom:8px}
+.trust-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.trust-desc{font-size:12px;color:#666;line-height:1.6}
+.cta-card{border:2px solid #e0e0e0;border-radius:14px;padding:30px 26px;background:#fff}
+.cta-card.green{border-color:#1D9E75;background:#f8fdf9}
+.cta-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+.cta-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;margin-bottom:8px}
+.cta-desc{font-size:14px;color:#555;line-height:1.7;margin-bottom:18px}
+.inp{padding:10px 14px;border:1.5px solid #ddd;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;background:#fff;outline:none}
+.inp:focus{border-color:#1D9E75}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.75rem;align-items:center}
+.fl{font-size:11px;font-weight:700;color:#888;letter-spacing:.1em;text-transform:uppercase}
+.tag{font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;border:1.5px solid #ddd;color:#555;cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
+.tag:hover,.tag.on{border-color:#1D9E75;color:#1D9E75;background:#EAF3DE}
+.tailor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.tc{border:2px solid #e0e0e0;border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;background:#fff}
+.tc:hover{border-color:#1D9E75;transform:translateY(-2px)}
+.tc-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0}
+.tc-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;margin-bottom:2px}
+.tc-loc{font-size:12px;color:#666}
+.specs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.spec{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;border:1px solid #ddd;color:#555}
+.tc-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid #eee}
+.stars{font-size:12px;color:#d4a00a}
+.price{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500}
+.aud-lbl{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#1D9E75;margin-bottom:14px;display:block}
+.dash{display:grid;grid-template-columns:210px 1fr;gap:24px;min-height:70vh}
+.sidebar{border-right:2px solid #eee;padding-right:20px}
+.sb-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;margin:0 auto 8px;background:#FBEAF0;color:#993556}
+.sb-name{font-family:'Cormorant Garamond',serif;font-size:18px;text-align:center;margin-bottom:2px}
+.sb-role{font-size:11px;color:#888;text-align:center;text-transform:uppercase;letter-spacing:.08em;margin-bottom:18px}
+.sb-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-size:14px;cursor:pointer;color:#555;margin-bottom:2px;background:none;border:none;font-family:'DM Sans',sans-serif;width:100%;text-align:left;font-weight:500;transition:all .15s}
+.sb-btn:hover,.sb-btn.on{background:#EAF3DE;color:#1D9E75}
+.panel{display:none}
+.panel.on{display:block}
+.msg-wrap{display:grid;grid-template-columns:230px 1fr;border:2px solid #e0e0e0;border-radius:14px;overflow:hidden;min-height:480px;background:#fff}
+.tl{border-right:2px solid #eee}
+.tl-head{padding:12px 14px;border-bottom:1px solid #eee;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888}
+.thread{padding:12px 14px;border-bottom:1px solid #eee;cursor:pointer}
+.thread:hover,.thread.on{background:#f5fdf9}
+.th-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.th-prev{font-size:12px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+.th-time{font-size:11px;color:#aaa}
+.chat{display:flex;flex-direction:column}
+.safe-bar{padding:7px 16px;background:#EAF3DE;font-size:12px;color:#2d6a0a;font-weight:600;border-bottom:1px solid #c3dfa0;display:flex;align-items:center;gap:8px}
+.chat-top{padding:12px 16px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:12px}
+.chat-name{font-size:14px;font-weight:600}
+.chat-sub{font-size:12px;color:#888}
+.msgs{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:260px;min-height:140px}
+.msg{max-width:74%}
+.bub{padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.6}
+.msg-in .bub{background:#f0f0f0;border-radius:4px 14px 14px 14px}
+.msg-out{align-self:flex-end}
+.msg-out .bub{background:#1a1a1a;color:#fff;border-radius:14px 4px 14px 14px}
+.msg-time{font-size:11px;color:#aaa;margin-top:3px;padding:0 4px}
+.msg-out .msg-time{text-align:right}
+.warn{margin:0 14px 8px;border-radius:12px;padding:13px 15px;border:2px solid #FAC775;background:#FAEEDA;display:none;gap:10px;align-items:flex-start}
+.warn.on{display:flex}
+.warn-title{font-size:13px;font-weight:700;color:#633806;margin-bottom:3px}
+.warn-text{font-size:12px;color:#854F0B;line-height:1.6}
+.chat-foot{padding:10px 14px;border-top:1px solid #eee;display:flex;gap:8px}
+.chat-inp{flex:1;padding:9px 14px;border:1.5px solid #ddd;border-radius:22px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;outline:none}
+.send{width:36px;height:36px;border-radius:50%;background:#1a1a1a;color:#fff;border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.saved{display:none;font-size:12px;font-weight:600;color:#2d6a0a;background:#EAF3DE;padding:4px 12px;border-radius:20px}
+.saved.on{display:inline-block}
+.fc{background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:26px;margin-bottom:16px}
+.fs-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #eee}
+.field{margin-bottom:14px}
+.lbl{font-size:13px;font-weight:600;color:#444;display:block;margin-bottom:5px}
+.finp{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;background:#fff;outline:none}
+.finp:focus{border-color:#1D9E75}
+textarea.finp{resize:vertical;min-height:80px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.ob-steps{display:flex;align-items:center;margin-bottom:2.5rem}
+.ob-step{display:flex;align-items:center;gap:8px;flex:1}
+.ob-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;border:2px solid #ddd;color:#aaa;flex-shrink:0}
+.ob-step.act .ob-num{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.ob-step.done .ob-num{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.ob-lbl{font-size:12px;color:#aaa;font-weight:500}
+.ob-step.act .ob-lbl{color:#1a1a1a;font-weight:600}
+.ob-step.done .ob-lbl{color:#1D9E75}
+.ob-line{flex:1;height:2px;background:#eee;margin:0 8px}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem}
+.type-card{border:2px solid #ddd;border-radius:14px;padding:20px;cursor:pointer;transition:all .2s}
+.type-card.sel{border-color:#1a1a1a;background:#fafafa}
+.type-card:hover{border-color:#1D9E75}
+.type-icon{font-size:28px;margin-bottom:10px}
+.type-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;margin-bottom:5px}
+.type-desc{font-size:13px;color:#666;line-height:1.6}
+.ck-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:#f5f5f5;font-size:14px;margin-bottom:8px}
+.up-box{border:2px dashed #ddd;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.up-box:hover{border-color:#1D9E75;background:#f8fdf9}
+.up-box.done{border-color:#1D9E75;background:#EAF3DE}
+.up-title{font-size:14px;font-weight:600;margin-bottom:3px}
+.up-sub{font-size:12px;color:#888}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem}
+.metric{background:#f5f5f5;border-radius:12px;padding:16px}
+.met-num{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;display:block;margin-bottom:2px}
+.met-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.1em}
+.met-chg{font-size:12px;color:#1D9E75;margin-top:4px}
+.adm-tabs{display:flex;border-bottom:2px solid #eee;margin-bottom:1.5rem}
+.adm-tab{padding:9px 18px;font-size:14px;font-weight:500;cursor:pointer;color:#888;border-bottom:3px solid transparent;margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif}
+.adm-tab.on{color:#1a1a1a;border-bottom-color:#1D9E75}
+.adm-panel{display:none}
+.adm-panel.on{display:block;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;padding:9px 12px;border-bottom:2px solid #eee}
+td{padding:11px 12px;border-bottom:1px solid #eee;vertical-align:middle}
+tr:hover td{background:#fafafa}
+.act-btn{font-size:12px;color:#555;cursor:pointer;text-decoration:underline;margin-right:8px;background:none;border:none;font-family:'DM Sans',sans-serif;font-weight:500}
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center}
+.overlay.on{display:flex}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:440px;margin:20px;overflow:hidden}
+.modal-top{background:#1a1a1a;padding:26px 30px 22px;text-align:center;position:relative}
+.modal-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}
+.modal-logo img{height:48px;width:auto;object-fit:contain}
+.modal-logo-text{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:#fff;letter-spacing:.05em}
+.modal-logo-text em{font-style:italic}
+.modal-tabs{display:flex;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;overflow:hidden}
+.modal-tab{flex:1;padding:8px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;border:none;color:rgba(255,255,255,.6);font-family:'DM Sans',sans-serif;text-transform:uppercase}
+.modal-tab.on{background:#fff;color:#1a1a1a}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:rgba(255,255,255,.6)}
+.modal-body{padding:26px 30px 30px}
+.af{display:none}
+.af.on{display:block}
+.auth-lbl{font-size:13px;font-weight:600;color:#444;display:block;margin-bottom:5px}
+.auth-inp{width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;outline:none;margin-bottom:12px}
+.auth-inp:focus{border-color:#1D9E75}
+.auth-btn{width:100%;padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;margin-bottom:12px}
+.auth-btn:hover{background:#1D9E75}
+.auth-div{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.auth-div span{font-size:12px;color:#aaa}
+.auth-div-line{flex:1;height:1px;background:#eee}
+.auth-switch{text-align:center;font-size:13px;color:#888}
+.auth-switch a{color:#1D9E75;font-weight:600;cursor:pointer}
+.auth-forgot{text-align:right;margin-top:-6px;margin-bottom:12px}
+.auth-forgot a{font-size:12px;color:#1D9E75;cursor:pointer;font-weight:600}
+.at-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.at-card{padding:12px;border:1.5px solid #ddd;border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;background:#fff}
+.at-card.sel{border-color:#1D9E75;background:#f8fdf9}
+.at-icon{font-size:20px;margin-bottom:5px}
+.at-lbl{font-size:13px;font-weight:600}
+.at-sub{font-size:11px;color:#888;margin-top:1px}
+.auth-ok{text-align:center;padding:1.5rem 0;display:none}
+.auth-ok.on{display:block}
 @media(max-width:768px){
-  .nav-links{display:none;}
-  .hero-title{font-size:46px;}
-  .stats,.g3,.g4,.g2,.type-grid,.r2,.r3,.metrics,.mg{grid-template-columns:1fr;}
-  .dash,.msg-wrap{grid-template-columns:1fr;}
-  .sidebar{border-right:none;border-bottom:2px solid #eee;padding-right:0;padding-bottom:12px;margin-bottom:12px;}
-  .tl{border-right:none;border-bottom:2px solid #eee;max-height:160px;overflow-y:auto;}
+  .nav-links{display:none}
+  .hero-title{font-size:46px}
+  .stats,.g3,.g4,.g2,.type-grid,.r2,.r3,.metrics{grid-template-columns:1fr}
+  .dash,.msg-wrap{grid-template-columns:1fr}
+  .sidebar{border-right:none;border-bottom:2px solid #eee;padding-right:0;padding-bottom:12px;margin-bottom:12px}
 }
 </style>
 </head>
@@ -319,670 +223,982 @@ tr:hover td{background:#fafafa;}
 <nav class="nav">
   <div class="nav-inner">
     <div class="logo" onclick="GO('home')">
-      <!-- UPDATED: New logo file + increased size -->
       <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge"/>
       <span class="logo-text">Sew<em>Bridge</em></span>
     </div>
     <ul class="nav-links">
-      <li><button class="nb on" id="n0" onclick="GO('home',this)">Home</button></li>
-      <li><button class="nb" id="n1" onclick="GO('tailors',this)">Find a tailor</button></li>
-      <li><button class="nb" id="n2" onclick="GO('how',this)">How it works</button></li>
-      <li><button class="nb" id="n3" onclick="GO('dashboard',this)">Dashboard</button></li>
-      <li><button class="nb" id="n4" onclick="GO('join',this)">Join as tailor</button></li>
-      <li><button class="nb" id="n5" onclick="GO('admin',this)">Admin</button></li>
+      <li><button class="nb on" id="n0" onclick="GO('home')">Home</button></li>
+      <li><button class="nb" id="n1" onclick="GO('tailors')">Find a tailor</button></li>
+      <li><button class="nb" id="n2" onclick="GO('how')">How it works</button></li>
+      <li><button class="nb" id="n3" onclick="GO('dashboard')">Dashboard</button></li>
+      <li><button class="nb" id="n4" onclick="GO('join')">Join as tailor</button></li>
+      <li><button class="nb" id="n5" onclick="GO('admin')">Admin</button></li>
     </ul>
     <div class="nav-right">
-      <button class="btn btn-white" onclick="MODAL('signin')">Sign in</button>
-      <button class="btn btn-green" onclick="MODAL('signup')">Sign up free</button>
+      <button class="btn btn-white" id="btn-signin" onclick="MODAL('signin')">Sign in</button>
+      <button class="btn btn-green" id="btn-signup" onclick="MODAL('signup')">Sign up free</button>
     </div>
   </div>
 </nav>
 
-<div id="P-home" style="display:none;">
+<!-- HOME -->
+<div id="P-home" style="display:none">
 <div class="wrap">
   <div class="hero">
     <div class="hero-logo">
-      <!-- UPDATED: New logo file + increased size -->
       <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge"/>
       <div class="hero-title">Sew<em>Bridge</em></div>
     </div>
     <div class="hero-tag">Trusted Tailoring Marketplace</div>
     <div class="hero-desc">Clothes that fit your body. Tailors who honor your story.<br/>Handcrafted with care, for every culture and every occasion.</div>
     <div class="hero-btns">
-      <button class="btn btn-dark btn-lg" onclick="GO('tailors')">Find a tailor ↗</button>
-      <button class="btn btn-outline btn-lg" onclick="GO('join')">Join as tailor ↗</button>
+      <button class="btn btn-dark btn-lg" onclick="GO('tailors')">Find a tailor &#8599;</button>
+      <button class="btn btn-outline btn-lg" onclick="GO('join')">Join as tailor &#8599;</button>
     </div>
     <div class="hero-search">
-      <input type="text" placeholder="Search by specialty, city — Ankara, Kente, Bridal..."/>
+      <input type="text" placeholder="Search by specialty, city - Ankara, Kente, Bridal..."/>
       <button class="search-btn" onclick="GO('tailors')">Search</button>
     </div>
   </div>
   <div class="stats">
     <div class="stat"><span class="stat-num">62</span><span class="stat-label">Verified tailors across America</span></div>
     <div class="stat"><span class="stat-num">1,200+</span><span class="stat-label">Happy customers served</span></div>
-    <div class="stat"><span class="stat-num">4.9 ★</span><span class="stat-label">Average tailor rating</span></div>
+    <div class="stat"><span class="stat-num">4.9 &#9733;</span><span class="stat-label">Average tailor rating</span></div>
   </div>
   <hr/>
   <div class="sec-title">How SewBridge works</div>
   <div class="sec-sub">Three simple steps to get your perfect custom outfit.</div>
   <div class="g3">
-    <div class="step"><div class="step-num">01</div><div class="step-title">Find your tailor</div><div class="step-desc">Browse verified African tailors by specialty and location. Read real reviews before you commit.</div></div>
+    <div class="step"><div class="step-num">01</div><div class="step-title">Find your tailor</div><div class="step-desc">Browse verified tailors by specialty and location. Read real reviews before you commit.</div></div>
     <div class="step"><div class="step-num">02</div><div class="step-title">Place a custom order</div><div class="step-desc">Share your saved measurements and style. Your tailor crafts your outfit to your exact specifications.</div></div>
-    <div class="step"><div class="step-num">03</div><div class="step-title">Pay safely and receive</div><div class="step-desc">Payment held in escrow — only released when you confirm your order is perfect.</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-title">Pay safely and receive</div><div class="step-desc">Payment held in escrow - only released when you confirm your order is perfect.</div></div>
   </div>
   <div class="g4">
-    <div class="trust"><div class="trust-icon">🔒</div><div class="trust-title">Secure payments</div><div class="trust-desc">Escrow until you confirm delivery</div></div>
-    <div class="trust"><div class="trust-icon">✅</div><div class="trust-title">Verified tailors</div><div class="trust-desc">Every tailor identity-verified</div></div>
-    <div class="trust"><div class="trust-icon">📐</div><div class="trust-title">Saved measurements</div><div class="trust-desc">Easy repeat orders</div></div>
-    <div class="trust"><div class="trust-icon">💬</div><div class="trust-title">Protected messaging</div><div class="trust-desc">All chats stay in SewBridge</div></div>
+    <div class="trust"><div class="trust-icon">&#128274;</div><div class="trust-title">Secure payments</div><div class="trust-desc">Escrow until you confirm delivery</div></div>
+    <div class="trust"><div class="trust-icon">&#9989;</div><div class="trust-title">Verified tailors</div><div class="trust-desc">Every tailor identity-verified</div></div>
+    <div class="trust"><div class="trust-icon">&#128208;</div><div class="trust-title">Saved measurements</div><div class="trust-desc">Easy repeat orders</div></div>
+    <div class="trust"><div class="trust-icon">&#128172;</div><div class="trust-title">Protected messaging</div><div class="trust-desc">All chats stay in SewBridge</div></div>
   </div>
   <hr/>
   <div class="sec-title">Featured tailors</div>
   <div class="sec-sub">Verified, highly rated tailors ready for your order.</div>
-  <div class="tailor-grid" style="margin-bottom:2rem;">
-    <div class="tc" onclick="GO('tailors')"><div class="tc-top"><div class="av" style="width:48px;height:48px;background:#FBEAF0;color:#993556;font-size:14px;">AA</div><div><div style="display:flex;align-items:center;gap:7px;margin-bottom:2px;"><div class="tc-name">Adaeze Anioke</div><span class="badge ba">Top tailor</span></div><div class="tc-loc">Atlanta, GA · Nigerian heritage</div></div></div><div class="specs"><span class="spec">Ankara</span><span class="spec">Aso-ebi</span><span class="spec">Bridal</span></div><div class="tc-bottom"><div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#888;">4.9 · 87 orders</span></div><div class="price">From $120</div></div></div>
-    <div class="tc" onclick="GO('tailors')"><div class="tc-top"><div class="av" style="width:48px;height:48px;background:#E1F5EE;color:#0F6E56;font-size:14px;">GO</div><div><div style="display:flex;align-items:center;gap:7px;margin-bottom:2px;"><div class="tc-name">Grace Owusu</div><span class="badge bg">Verified</span></div><div class="tc-loc">New York, NY · Ghanaian heritage</div></div></div><div class="specs"><span class="spec">Kente</span><span class="spec">Kaba &amp; Slit</span><span class="spec">Kids</span></div><div class="tc-bottom"><div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#888;">5.0 · 64 orders</span></div><div class="price">From $95</div></div></div>
-    <div class="tc" onclick="GO('tailors')"><div class="tc-top"><div class="av" style="width:48px;height:48px;background:#EAF3DE;color:#3B6D11;font-size:14px;">BA</div><div><div style="display:flex;align-items:center;gap:7px;margin-bottom:2px;"><div class="tc-name">Blessing Abiodun</div><span class="badge ba">Top tailor</span></div><div class="tc-loc">Chicago, IL · Nigerian heritage</div></div></div><div class="specs"><span class="spec">Ankara</span><span class="spec">Lace</span><span class="spec">Kids</span></div><div class="tc-bottom"><div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#888;">4.9 · 102 orders</span></div><div class="price">From $90</div></div></div>
-  </div>
-  <div style="text-align:center;margin-bottom:3rem;"><button class="btn btn-dark" onclick="GO('tailors')">View all tailors ↗</button></div>
-  <div class="g2" style="margin-bottom:3rem;">
-    <div class="cta-card"><div class="cta-icon" style="background:#EAF3DE;">✂️</div><div class="cta-title">Looking for a tailor?</div><div class="cta-desc">Browse verified African tailors across America. Find your perfect match by specialty and location.</div><button class="btn btn-dark" onclick="GO('tailors')">Find a tailor ↗</button></div>
-    <div class="cta-card green"><div class="cta-icon" style="background:#1D9E75;color:#fff;">🪡</div><div class="cta-title">Are you a tailor?</div><div class="cta-desc">Join SewBridge and reach hundreds of customers. Get verified and grow your tailoring business.</div><button class="btn btn-dark" onclick="GO('join')">Join as tailor ↗</button></div>
+  <div class="tailor-grid" id="home-grid" style="margin-bottom:2rem"></div>
+  <div style="text-align:center;margin-bottom:3rem"><button class="btn btn-dark" onclick="GO('tailors')">View all tailors &#8599;</button></div>
+  <div class="g2" style="margin-bottom:3rem">
+    <div class="cta-card"><div class="cta-icon" style="background:#EAF3DE">&#9986;</div><div class="cta-title">Looking for a tailor?</div><div class="cta-desc">Browse verified tailors across America and Canada. Find your perfect match by specialty and location.</div><button class="btn btn-dark" onclick="GO('tailors')">Find a tailor &#8599;</button></div>
+    <div class="cta-card green"><div class="cta-icon" style="background:#1D9E75;color:#fff">&#129521;</div><div class="cta-title">Are you a tailor?</div><div class="cta-desc">Join SewBridge and reach hundreds of customers. Get verified and grow your tailoring business.</div><button class="btn btn-dark" onclick="GO('join')">Join as tailor &#8599;</button></div>
   </div>
 </div>
 </div>
 
-<div id="P-tailors" style="display:none;">
-<div class="wrap" style="padding:3rem 0 4rem;">
+<!-- FIND A TAILOR -->
+<div id="P-tailors" style="display:none">
+<div class="wrap" style="padding:3rem 0 4rem">
   <div class="pg-title">Find a tailor</div>
   <div class="pg-sub">All tailors are identity-verified before joining SewBridge.</div>
-  <div class="search-row"><input class="inp" style="flex:1;min-width:180px;" type="text" placeholder="Search by name, specialty, or city..."/><select class="inp" style="width:180px;"><option>All locations</option><option>Georgia</option><option>New York</option><option>Texas</option><option>Illinois</option><option>California</option><option>Washington DC</option><option disabled>── Canada ──</option><option>Ontario</option><option>British Columbia</option><option>Alberta</option><option>Quebec</option></select></div>
-  <div class="filter-row"><span class="fl">Specialty:</span>
-<button class="tag on" onclick="setTag(this)">All</button>
-<button class="tag" onclick="setTag(this)">African traditional wear</button>
-<button class="tag" onclick="setTag(this)">Bridal &amp; wedding</button>
-<button class="tag" onclick="setTag(this)">Alterations &amp; resizing</button>
-<button class="tag" onclick="setTag(this)">Custom fitting</button>
-<button class="tag" onclick="setTag(this)">Formal &amp; event wear</button>
-<button class="tag" onclick="setTag(this)">Kids clothing</button>
-<button class="tag" onclick="setTag(this)">Men's wear</button>
-<button class="tag" onclick="setTag(this)">Modest fashion</button>
-<button class="tag" onclick="setTag(this)">Matching family outfits</button>
-<button class="tag" onclick="setTag(this)">Embroidery &amp; embellishments</button>
-<button class="tag" onclick="setTag(this)">Fast turnaround</button>
-<button class="tag" onclick="setTag(this)">Uniform tailoring</button>
-<button class="tag" onclick="setTag(this)">Sustainable tailoring</button>
-</div>
+  <div style="display:flex;gap:12px;margin-bottom:1.5rem;flex-wrap:wrap">
+    <input class="inp" style="flex:1;min-width:180px" type="text" placeholder="Search by name, specialty, or city..."/>
+    <select class="inp" style="width:200px">
+      <option>All locations</option><option>Georgia</option><option>New York</option><option>Texas</option><option>Illinois</option><option>California</option><option>Washington DC</option>
+      <option disabled>-- Canada --</option><option>Ontario</option><option>British Columbia</option><option>Alberta</option><option>Quebec</option>
+    </select>
+  </div>
+  <div class="filter-row">
+    <span class="fl">Specialty:</span>
+    <button class="tag on" onclick="setTag(this)">All</button>
+    <button class="tag" onclick="setTag(this)">African wear</button>
+    <button class="tag" onclick="setTag(this)">Bridal</button>
+    <button class="tag" onclick="setTag(this)">Alterations</button>
+    <button class="tag" onclick="setTag(this)">Formal wear</button>
+    <button class="tag" onclick="setTag(this)">Kids clothing</button>
+    <button class="tag" onclick="setTag(this)">Men's wear</button>
+    <button class="tag" onclick="setTag(this)">Fast turnaround</button>
+  </div>
   <div class="tailor-grid" id="tailor-grid"></div>
 </div>
 </div>
 
-<div id="P-how" style="display:none;">
-<div class="wrap" style="padding:3rem 0 4rem;">
+<!-- HOW IT WORKS -->
+<div id="P-how" style="display:none">
+<div class="wrap" style="padding:3rem 0 4rem">
   <div class="pg-title">How SewBridge works</div>
-  <div class="pg-sub">Everything you need to know — whether you are a customer or a tailor.</div>
+  <div class="pg-sub">Everything you need to know - whether you are a customer or a tailor.</div>
   <span class="aud-lbl">For customers</span>
-  <div class="g3" style="margin-bottom:2.5rem;">
+  <div class="g3" style="margin-bottom:2.5rem">
     <div class="step"><div class="step-num">01</div><div class="step-title">Find a verified tailor</div><div class="step-desc">Browse by specialty and heritage. Every tailor is identity-verified and reviewed by real customers.</div></div>
     <div class="step"><div class="step-num">02</div><div class="step-title">Place your custom order</div><div class="step-desc">Share your saved measurements, fabric preference, and style inspiration. Message your tailor safely inside SewBridge.</div></div>
     <div class="step"><div class="step-num">03</div><div class="step-title">Pay securely and receive</div><div class="step-desc">Payment held in escrow until you confirm the order is perfect. Full refund protection.</div></div>
   </div>
   <span class="aud-lbl">For tailors</span>
-  <div class="g3" style="margin-bottom:2.5rem;">
+  <div class="g3" style="margin-bottom:2.5rem">
     <div class="step"><div class="step-num">01</div><div class="step-title">Apply and get verified</div><div class="step-desc">Submit your identity documents and portfolio. Reviewed within 1 to 3 business days.</div></div>
     <div class="step"><div class="step-num">02</div><div class="step-title">Receive orders</div><div class="step-desc">Customers find you and place custom orders. Communicate and manage everything in one place.</div></div>
     <div class="step"><div class="step-num">03</div><div class="step-title">Get paid reliably</div><div class="step-desc">Payment released when the customer confirms delivery. No chasing, no risk.</div></div>
   </div>
-  <div style="text-align:center;display:flex;gap:14px;justify-content:center;"><button class="btn btn-dark" onclick="GO('tailors')">Find a tailor ↗</button><button class="btn btn-outline" onclick="GO('join')">Join as tailor ↗</button></div>
+  <div style="display:flex;gap:14px;justify-content:center">
+    <button class="btn btn-dark" onclick="GO('tailors')">Find a tailor &#8599;</button>
+    <button class="btn btn-outline" onclick="GO('join')">Join as tailor &#8599;</button>
+  </div>
 </div>
 </div>
 
-<div id="P-dashboard" style="display:none;">
-<div class="wrap" style="padding:3rem 0 4rem;">
+<!-- DASHBOARD -->
+<div id="P-dashboard" style="display:none">
+<div class="wrap" style="padding:3rem 0 4rem">
   <div class="dash">
     <aside class="sidebar">
-      <div class="sb-av" style="background:#FBEAF0;color:#993556;">AN</div>
-      <div class="sb-name">Adaeze N.</div>
-      <div class="sb-role">Customer</div>
-      <button class="sb-btn on" onclick="PANEL('orders',this)">📦 My orders</button>
-      <button class="sb-btn" onclick="PANEL('messages',this)">💬 Messages <span style="background:#D85A30;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;margin-left:auto;">3</span></button>
-      <button class="sb-btn" onclick="PANEL('measurements',this)">📐 Measurements</button>
-      <button class="sb-btn" onclick="PANEL('profile',this)">👤 Profile</button>
-      <hr style="margin:12px 0;"/>
-      <button class="sb-btn" onclick="GO('tailors')">✂️ Find a tailor ↗</button>
+      <div class="sb-av" id="sb-av">SB</div>
+      <div class="sb-name" id="sb-name">My Account</div>
+      <div class="sb-role" id="sb-role">Customer</div>
+      <button class="sb-btn on" id="sb0" onclick="PANEL('orders',this)">&#128230; My orders</button>
+      <button class="sb-btn" id="sb1" onclick="PANEL('messages',this)">&#128172; Messages</button>
+      <button class="sb-btn" id="sb2" onclick="PANEL('measurements',this)">&#128208; Measurements</button>
+      <button class="sb-btn" id="sb3" onclick="PANEL('profile',this)">&#128100; Profile</button>
+      <hr style="margin:12px 0"/>
+      <button class="sb-btn" onclick="GO('tailors')">&#9986; Find a tailor &#8599;</button>
     </aside>
     <main>
       <div class="panel on" id="panel-orders">
-        <div class="sec-title" style="margin-bottom:1.25rem;">My orders</div>
-        <div class="oc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div><div class="oc-title">Ankara Bridal Gown</div><div class="oc-meta">Adaeze Anioke · Atlanta, GA · #SL-2841</div></div><span class="badge bb">In progress</span></div><div class="pb"><div class="pf" style="width:60%;"></div></div><div class="ps"><span class="d">Confirmed</span><span class="d">Cutting</span><span class="d">Sewing</span><span>Finishing</span><span>Shipped</span></div></div>
-        <div class="oc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div><div class="oc-title">Family Kente Set</div><div class="oc-meta">Grace Owusu · New York, NY · #SL-2756</div></div><span class="badge ba">Ready for review</span></div><div class="pb"><div class="pf" style="width:90%;"></div></div><div class="ps"><span class="d">Confirmed</span><span class="d">Cutting</span><span class="d">Sewing</span><span class="d">Finishing</span><span>Shipped</span></div></div>
-        <div class="oc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div><div class="oc-title">Embroidered Boubou</div><div class="oc-meta">Fatou Diallo · Houston, TX · #SL-2698</div></div><span class="badge bg">Delivered</span></div><div class="pb"><div class="pf" style="width:100%;"></div></div><div class="ps"><span class="d">Confirmed</span><span class="d">Cutting</span><span class="d">Sewing</span><span class="d">Finishing</span><span class="d">Shipped</span></div></div>
+        <div class="sec-title" style="margin-bottom:1.25rem">My orders</div>
+        <div style="text-align:center;padding:3rem;border:2px dashed #ddd;border-radius:14px;background:#fff">
+          <div style="font-size:36px;margin-bottom:10px">&#128230;</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;margin-bottom:8px">No orders yet</div>
+          <div style="font-size:14px;color:#888;margin-bottom:18px">Find a tailor and place your first custom order!</div>
+          <button class="btn btn-dark" onclick="GO('tailors')">Find a tailor &#8599;</button>
+        </div>
       </div>
       <div class="panel" id="panel-messages">
-        <div class="sec-title" style="margin-bottom:1.25rem;">Messages</div>
+        <div class="sec-title" style="margin-bottom:1.25rem">Messages</div>
         <div class="msg-wrap">
           <div class="tl">
             <div class="tl-head">Conversations</div>
-            <div class="thread on" onclick="THREAD(0,this)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;"><div style="display:flex;align-items:center;gap:5px;"><span class="th-name">Adaeze Anioke</span><span class="udot"></span></div><span class="th-time">2m ago</span></div><div class="th-prev">Your gown is looking beautiful!</div></div>
-            <div class="thread" onclick="THREAD(1,this)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;"><div style="display:flex;align-items:center;gap:5px;"><span class="th-name">Grace Owusu</span><span class="udot"></span></div><span class="th-time">1h ago</span></div><div class="th-prev">All 4 pieces complete!</div></div>
-            <div class="thread" onclick="THREAD(2,this)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;"><span class="th-name">Blessing Abiodun</span><span class="th-time">5h ago</span></div><div class="th-prev">Confirming measurements...</div></div>
+            <div class="thread on" onclick="THREAD(0,this)">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px"><span class="th-name">Adaeze Anioke</span><span class="th-time">2m ago</span></div>
+              <div class="th-prev">Your gown is looking beautiful!</div>
+            </div>
+            <div class="thread" onclick="THREAD(1,this)">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px"><span class="th-name">Grace Owusu</span><span class="th-time">1h ago</span></div>
+              <div class="th-prev">All 4 pieces complete!</div>
+            </div>
+            <div class="thread" onclick="THREAD(2,this)">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px"><span class="th-name">Blessing Abiodun</span><span class="th-time">5h ago</span></div>
+              <div class="th-prev">Confirming measurements...</div>
+            </div>
           </div>
           <div class="chat">
-            <div class="safe-bar">🔒 All conversations are protected by SewBridge.</div>
-            <div class="chat-top"><div class="av" id="ch-av" style="width:34px;height:34px;background:#FBEAF0;color:#993556;font-size:11px;">AA</div><div><div class="chat-name" id="ch-name">Adaeze Anioke</div><div class="chat-sub" id="ch-sub">Atlanta, GA · Verified tailor</div></div><button class="btn btn-green" style="margin-left:auto;font-size:12px;padding:6px 12px;">Pay securely 🔒</button></div>
+            <div class="safe-bar">&#128274; All conversations protected by SewBridge.</div>
+            <div class="chat-top">
+              <div class="av" id="ch-av" style="width:34px;height:34px;background:#FBEAF0;color:#993556;font-size:11px">AA</div>
+              <div><div class="chat-name" id="ch-name">Adaeze Anioke</div><div class="chat-sub" id="ch-sub">Atlanta, GA - Verified tailor</div></div>
+              <button class="btn btn-green" style="margin-left:auto;font-size:12px;padding:6px 12px">Pay securely &#128274;</button>
+            </div>
             <div class="msgs" id="chat-msgs"></div>
-            <div class="warn" id="warn"><div style="font-size:20px;flex-shrink:0;">💛</div><div style="flex:1;"><div class="warn-title" id="warn-title">Message not sent</div><div class="warn-text" id="warn-txt"></div><button class="warn-clear" onclick="CLEARWARN()">Clear and start over</button></div><button onclick="CLEARWARN()" style="background:none;border:none;font-size:17px;color:#BA7517;cursor:pointer;">✕</button></div>
-            <div class="chat-foot"><input class="chat-inp" id="chat-inp" placeholder="Message your tailor... (protected)" oninput="SCANMSG(this.value)" onkeydown="if(event.key==='Enter')TRYSEND()"/><button class="send off" id="send-btn" onclick="TRYSEND()">›</button></div>
+            <div class="warn" id="warn">
+              <div style="font-size:20px;flex-shrink:0">&#128155;</div>
+              <div style="flex:1"><div class="warn-title" id="warn-title">Message blocked</div><div class="warn-text" id="warn-txt"></div><button style="font-size:12px;font-weight:600;color:#854F0B;cursor:pointer;text-decoration:underline;background:none;border:none;margin-top:6px" onclick="CLEARWARN()">Clear and start over</button></div>
+              <button onclick="CLEARWARN()" style="background:none;border:none;font-size:17px;color:#BA7517;cursor:pointer">&#10005;</button>
+            </div>
+            <div class="chat-foot">
+              <input class="chat-inp" id="chat-inp" placeholder="Message your tailor... (protected)" oninput="SCANMSG(this.value)" onkeydown="if(event.key==='Enter')TRYSEND()"/>
+              <button class="send" id="send-btn" onclick="TRYSEND()">&#8250;</button>
+            </div>
           </div>
         </div>
       </div>
       <div class="panel" id="panel-measurements">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;"><div class="sec-title" style="margin-bottom:0;">My measurements</div><span class="saved" id="saved">✓ Saved!</span></div>
-        <p style="font-size:14px;color:#666;margin-bottom:1.25rem;">Saved and shared with tailors when you place an order.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;"><button class="btn btn-dark" onclick="LOADM(this,'adult')">My measurements</button><button class="btn btn-outline" onclick="LOADM(this,'child1')">Amara (6 yrs)</button><button class="btn btn-outline" onclick="LOADM(this,'child2')">Temi (9 yrs)</button></div>
-        <div class="fc">
-          <div style="font-size:14px;font-weight:600;margin-bottom:14px;" id="m-lbl">My measurements</div>
-          <div class="fs-title">Upper body (inches)</div>
-          <div class="r3" style="margin-bottom:12px;"><div class="field"><label class="lbl">Bust</label><input class="finp" id="m-bust" type="number" value="38"/></div><div class="field"><label class="lbl">Waist</label><input class="finp" id="m-waist" type="number" value="30"/></div><div class="field"><label class="lbl">Hips</label><input class="finp" id="m-hips" type="number" value="42"/></div></div>
-          <div class="r3" style="margin-bottom:12px;"><div class="field"><label class="lbl">Shoulder</label><input class="finp" id="m-shoulder" type="number" value="15"/></div><div class="field"><label class="lbl">Sleeve</label><input class="finp" id="m-sleeve" type="number" value="24"/></div><div class="field"><label class="lbl">Height</label><input class="finp" id="m-height" type="number" value="65"/></div></div>
-          <div class="fs-title">Lower body (inches)</div>
-          <div class="r3"><div class="field"><label class="lbl">Dress length</label><input class="finp" id="m-dress" type="number" value="55"/></div><div class="field"><label class="lbl">Inseam</label><input class="finp" id="m-inseam" type="number" value="29"/></div><div class="field"><label class="lbl">Thigh</label><input class="finp" id="m-thigh" type="number" value="24"/></div></div>
-          <div style="display:flex;justify-content:flex-end;margin-top:12px;"><button class="btn btn-dark" onclick="SAVEM()">Save measurements</button></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+          <div class="sec-title" style="margin-bottom:0">My measurements</div>
+          <span class="saved" id="saved">&#10003; Saved!</span>
         </div>
-        <div style="background:#f5f5f5;border-radius:14px;padding:18px;"><div class="fs-title" style="margin-bottom:12px;">Saved snapshot — visible to tailors</div><div class="mg"><div class="ms"><div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:8px;">Upper body</div><div class="mr"><span style="color:#666;">Bust</span><span style="font-weight:600;" id="s-bust">38"</span></div><div class="mr"><span style="color:#666;">Waist</span><span style="font-weight:600;" id="s-waist">30"</span></div><div class="mr"><span style="color:#666;">Hips</span><span style="font-weight:600;" id="s-hips">42"</span></div><div class="mr"><span style="color:#666;">Shoulder</span><span style="font-weight:600;" id="s-shoulder">15"</span></div><div class="mr"><span style="color:#666;">Sleeve</span><span style="font-weight:600;" id="s-sleeve">24"</span></div></div><div class="ms"><div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:8px;">Lower body</div><div class="mr"><span style="color:#666;">Height</span><span style="font-weight:600;" id="s-height">65"</span></div><div class="mr"><span style="color:#666;">Dress</span><span style="font-weight:600;" id="s-dress">55"</span></div><div class="mr"><span style="color:#666;">Inseam</span><span style="font-weight:600;" id="s-inseam">29"</span></div><div class="mr"><span style="color:#666;">Thigh</span><span style="font-weight:600;" id="s-thigh">24"</span></div></div></div></div>
+        <p style="font-size:14px;color:#666;margin-bottom:1.25rem">Saved and shared with tailors when you place an order.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem">
+          <button class="btn btn-dark" onclick="LOADM(this,'adult')">My measurements</button>
+          <button class="btn btn-outline" onclick="LOADM(this,'child1')">Child 1</button>
+          <button class="btn btn-outline" onclick="LOADM(this,'child2')">Child 2</button>
+        </div>
+        <div class="fc">
+          <div style="font-size:14px;font-weight:600;margin-bottom:14px" id="m-lbl">My measurements</div>
+          <div class="fs-title">Upper body (inches)</div>
+          <div class="r3" style="margin-bottom:12px">
+            <div class="field"><label class="lbl">Bust</label><input class="finp" id="m-bust" type="number" value="38"/></div>
+            <div class="field"><label class="lbl">Waist</label><input class="finp" id="m-waist" type="number" value="30"/></div>
+            <div class="field"><label class="lbl">Hips</label><input class="finp" id="m-hips" type="number" value="42"/></div>
+          </div>
+          <div class="r3" style="margin-bottom:12px">
+            <div class="field"><label class="lbl">Shoulder</label><input class="finp" id="m-shoulder" type="number" value="15"/></div>
+            <div class="field"><label class="lbl">Sleeve</label><input class="finp" id="m-sleeve" type="number" value="24"/></div>
+            <div class="field"><label class="lbl">Height</label><input class="finp" id="m-height" type="number" value="65"/></div>
+          </div>
+          <div class="fs-title">Lower body (inches)</div>
+          <div class="r3">
+            <div class="field"><label class="lbl">Dress length</label><input class="finp" id="m-dress" type="number" value="55"/></div>
+            <div class="field"><label class="lbl">Inseam</label><input class="finp" id="m-inseam" type="number" value="29"/></div>
+            <div class="field"><label class="lbl">Thigh</label><input class="finp" id="m-thigh" type="number" value="24"/></div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:12px">
+            <button class="btn btn-dark" onclick="SAVEM()">Save measurements</button>
+          </div>
+        </div>
       </div>
       <div class="panel" id="panel-profile">
-        <div class="sec-title" style="margin-bottom:1.25rem;">My profile</div>
-        <div class="fc"><div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;"><div class="av" style="width:60px;height:60px;background:#FBEAF0;color:#993556;font-size:19px;">AN</div><div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;">Adaeze Nwosu</div><div style="font-size:13px;color:#888;">Atlanta, GA · Member since 2024</div></div></div><hr style="margin:0 0 16px;"/><div class="r2"><div class="field"><label class="lbl">First name</label><input class="finp" value="Adaeze"/></div><div class="field"><label class="lbl">Last name</label><input class="finp" value="Nwosu"/></div></div><div class="r2"><div class="field"><label class="lbl">Email</label><input class="finp" value="adaeze.n@email.com"/></div><div class="field"><label class="lbl">Phone</label><input class="finp" value="+1 (404) 555-0182"/></div></div><div class="r2"><div class="field"><label class="lbl">City</label><input class="finp" value="Atlanta"/></div><div class="field"><label class="lbl">State</label><select class="finp"><option>Georgia</option><option>New York</option><option>Texas</option></select></div></div><div style="display:flex;justify-content:flex-end;margin-top:6px;"><button class="btn btn-dark" onclick="alert('Profile saved!')">Save profile</button></div></div>
+        <div class="sec-title" style="margin-bottom:1.25rem">My profile</div>
+        <div class="fc">
+          <div class="r2">
+            <div class="field"><label class="lbl">First name</label><input class="finp" id="p-fname" placeholder="First name"/></div>
+            <div class="field"><label class="lbl">Last name</label><input class="finp" id="p-lname" placeholder="Last name"/></div>
+          </div>
+          <div class="r2">
+            <div class="field"><label class="lbl">Email</label><input class="finp" id="p-email" placeholder="Email"/></div>
+            <div class="field"><label class="lbl">Phone</label><input class="finp" id="p-phone" placeholder="Phone"/></div>
+          </div>
+          <div class="r2">
+            <div class="field"><label class="lbl">City</label><input class="finp" id="p-city" placeholder="City"/></div>
+            <div class="field"><label class="lbl">State / Province</label><input class="finp" id="p-state" placeholder="State"/></div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:6px">
+            <button class="btn btn-dark" onclick="alert('Profile saved!')">Save profile</button>
+          </div>
+        </div>
       </div>
     </main>
   </div>
 </div>
 </div>
 
-<div id="P-join" style="display:none;">
-<div class="wrap" style="padding:3rem 0 4rem;">
+<!-- JOIN AS TAILOR -->
+<div id="P-join" style="display:none">
+<div class="wrap" style="padding:3rem 0 4rem">
   <div class="pg-title">Join SewBridge as a tailor</div>
   <div class="pg-sub">Reach hundreds of customers. Verified, trusted, and growing.</div>
-  <div id="ob1"><div class="ob-steps"><div class="ob-step act"><div class="ob-num">1</div><div class="ob-lbl">Account type</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">2</div><div class="ob-lbl">Basic info</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">3</div><div class="ob-lbl">Verification</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div></div><div class="type-grid"><div class="type-card sel" id="t-ind" onclick="SELTYPE('ind')"><div class="type-icon">🧵</div><div class="type-title">Individual tailor</div><div class="type-desc">Solo tailor offering your own custom services.</div><div class="type-req">Requires: Government ID · Selfie · Proof of address</div></div><div class="type-card" id="t-biz" onclick="SELTYPE('biz')"><div class="type-icon">🏪</div><div class="type-title">Tailoring business</div><div class="type-desc">A registered tailoring studio or brand.</div><div class="type-req">Requires: Business registration · EIN · Owner ID</div></div></div><div style="display:flex;justify-content:flex-end;"><button class="btn btn-dark" onclick="OBGO(1,2)">Continue →</button></div></div>
-  <div id="ob2" style="display:none;"><div class="ob-steps"><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Account type</div></div><div class="ob-line"></div><div class="ob-step act"><div class="ob-num">2</div><div class="ob-lbl">Basic info</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">3</div><div class="ob-lbl">Verification</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div></div><div class="fc"><div class="r2"><div class="field"><label class="lbl">First name</label><input class="finp" placeholder="e.g. Blessing"/></div><div class="field"><label class="lbl">Last name</label><input class="finp" placeholder="e.g. Abiodun"/></div></div><div class="r2"><div class="field"><label class="lbl">Email</label><input class="finp" type="email" placeholder="you@email.com"/></div><div class="field"><label class="lbl">Phone</label><input class="finp" placeholder="+1 (___) ___-____"/></div></div><div class="r2"><div class="field"><label class="lbl">City</label><input class="finp" placeholder="e.g. Chicago"/></div><div class="field"><label class="lbl">State</label><select class="finp"><option>Select state...</option><option>Georgia</option><option>New York</option><option>Texas</option><option>Illinois</option><option>California</option><option disabled>── Canada ──</option><option>Ontario</option><option>British Columbia</option><option>Alberta</option><option>Quebec</option></select></div></div><div class="r2"><div class="field"><label class="lbl">Years of experience</label><select class="finp"><option>1-3 years</option><option>3-5 years</option><option selected>5-10 years</option><option>10+ years</option></select></div><div class="field"><label class="lbl">Heritage (optional)</label><input class="finp" placeholder="e.g. Nigerian, Ghanaian..."/></div></div></div><div style="display:flex;justify-content:space-between;margin-top:12px;"><button class="btn btn-outline" onclick="OBGO(2,1)">← Back</button><button class="btn btn-dark" onclick="OBGO(2,3)">Continue →</button></div></div>
-  <div id="ob3" style="display:none;"><div class="ob-steps"><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Account type</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Basic info</div></div><div class="ob-line"></div><div class="ob-step act"><div class="ob-num">3</div><div class="ob-lbl">Verification</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div></div><p style="font-size:14px;color:#666;margin-bottom:1.25rem;line-height:1.7;">SewBridge verifies every tailor before going live. All documents are reviewed securely.</p><div class="fc"><div class="ck-list"><div class="ck-row"><span class="ck-icon">🪪</span><div><strong>Government-issued photo ID</strong><div style="font-size:13px;color:#666;margin-top:2px;">Driver's license, state ID, or passport.</div></div></div><div class="ck-row"><span class="ck-icon">🤳</span><div><strong>Selfie verification</strong><div style="font-size:13px;color:#666;margin-top:2px;">A photo of you holding your ID.</div></div></div><div class="ck-row"><span class="ck-icon">📍</span><div><strong>Proof of US address</strong><div style="font-size:13px;color:#666;margin-top:2px;">Utility bill or bank statement within 90 days.</div></div></div></div><div class="up-box" id="ub1" onclick="MARKUP('ub1','Government ID uploaded')"><div class="up-title">📄 Upload government ID</div><div class="up-sub">JPG, PNG, or PDF · Max 10MB</div></div><div class="up-box" id="ub2" onclick="MARKUP('ub2','Selfie uploaded')"><div class="up-title">📷 Upload selfie with ID</div><div class="up-sub">JPG or PNG</div></div><div class="up-box" id="ub3" onclick="MARKUP('ub3','Proof of address uploaded')"><div class="up-title">🏠 Upload proof of address</div><div class="up-sub">PDF, JPG, or PNG</div></div></div><div style="display:flex;justify-content:space-between;margin-top:12px;"><button class="btn btn-outline" onclick="OBGO(3,2)">← Back</button><button class="btn btn-dark" onclick="OBGO(3,4)">Continue →</button></div></div>
-  <div id="ob4" style="display:none;"><div class="ob-steps"><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Account type</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Basic info</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Verification</div></div><div class="ob-line"></div><div class="ob-step act"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div><div class="ob-line"></div><div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div></div><div class="fc"><div class="field">
-<label class="lbl">Specialties <span style="font-size:11px;color:#888;font-weight:400;">(select all that apply)</span></label>
-
-<div style="margin-top:10px;margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1D9E75;">✂️ Fit & Alterations</div>
-<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-<button class="tag" onclick="this.classList.toggle('on')">Custom fitting</button>
-<button class="tag" onclick="this.classList.toggle('on')">Alterations &amp; resizing</button>
+  <div id="ob1">
+    <div class="ob-steps">
+      <div class="ob-step act"><div class="ob-num">1</div><div class="ob-lbl">Account type</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">2</div><div class="ob-lbl">Basic info</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">3</div><div class="ob-lbl">Verification</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
+    </div>
+    <div class="type-grid">
+      <div class="type-card sel" id="t-ind" onclick="SELTYPE('ind')"><div class="type-icon">&#129525;</div><div class="type-title">Individual tailor</div><div class="type-desc">Solo tailor offering your own custom services.</div></div>
+      <div class="type-card" id="t-biz" onclick="SELTYPE('biz')"><div class="type-icon">&#127978;</div><div class="type-title">Tailoring business</div><div class="type-desc">A registered tailoring studio or brand.</div></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-dark" onclick="OBGO(1,2)">Continue &#8594;</button></div>
+  </div>
+  <div id="ob2" style="display:none">
+    <div class="ob-steps">
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Account type</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step act"><div class="ob-num">2</div><div class="ob-lbl">Basic info</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">3</div><div class="ob-lbl">Verification</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
+    </div>
+    <div class="fc">
+      <div class="r2">
+        <div class="field"><label class="lbl">First name</label><input class="finp" id="j-fname" placeholder="e.g. Blessing"/></div>
+        <div class="field"><label class="lbl">Last name</label><input class="finp" id="j-lname" placeholder="e.g. Abiodun"/></div>
+      </div>
+      <div class="r2">
+        <div class="field"><label class="lbl">Email</label><input class="finp" id="j-email" type="email" placeholder="you@email.com"/></div>
+        <div class="field"><label class="lbl">Phone</label><input class="finp" id="j-phone" placeholder="+1 (___) ___-____"/></div>
+      </div>
+      <div class="r2">
+        <div class="field"><label class="lbl">City</label><input class="finp" id="j-city" placeholder="e.g. Chicago"/></div>
+        <div class="field"><label class="lbl">State / Province</label>
+          <select class="finp">
+            <option>Select...</option><option>Georgia</option><option>New York</option><option>Texas</option><option>Illinois</option><option>California</option><option>Washington DC</option>
+            <option disabled>-- Canada --</option><option>Ontario</option><option>British Columbia</option><option>Alberta</option><option>Quebec</option>
+          </select>
+        </div>
+      </div>
+      <div class="r2">
+        <div class="field"><label class="lbl">Years of experience</label><select class="finp"><option>1-3 years</option><option>3-5 years</option><option selected>5-10 years</option><option>10+ years</option></select></div>
+        <div class="field"><label class="lbl">Heritage (optional)</label><input class="finp" placeholder="e.g. Nigerian, Ghanaian..."/></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px">
+      <button class="btn btn-outline" onclick="OBGO(2,1)">&#8592; Back</button>
+      <button class="btn btn-dark" onclick="OBGO(2,3)">Continue &#8594;</button>
+    </div>
+  </div>
+  <div id="ob3" style="display:none">
+    <div class="ob-steps">
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Account type</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Basic info</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step act"><div class="ob-num">3</div><div class="ob-lbl">Verification</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
+    </div>
+    <div class="fc">
+      <div class="ck-row"><span>&#129306;</span><div><strong>Government-issued photo ID</strong><div style="font-size:13px;color:#666;margin-top:2px">Driver's license, state ID, or passport.</div></div></div>
+      <div class="ck-row"><span>&#129335;</span><div><strong>Selfie verification</strong><div style="font-size:13px;color:#666;margin-top:2px">A photo of you holding your ID.</div></div></div>
+      <div class="ck-row"><span>&#128205;</span><div><strong>Proof of address</strong><div style="font-size:13px;color:#666;margin-top:2px">Utility bill or bank statement within 90 days.</div></div></div>
+      <div style="margin-top:14px">
+        <div class="up-box" id="ub1" onclick="MARKUP('ub1','Government ID uploaded')"><div class="up-title">&#128196; Upload government ID</div><div class="up-sub">JPG, PNG, or PDF</div></div>
+        <div class="up-box" id="ub2" onclick="MARKUP('ub2','Selfie uploaded')"><div class="up-title">&#128247; Upload selfie with ID</div><div class="up-sub">JPG or PNG</div></div>
+        <div class="up-box" id="ub3" onclick="MARKUP('ub3','Proof of address uploaded')"><div class="up-title">&#127968; Upload proof of address</div><div class="up-sub">PDF, JPG, or PNG</div></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px">
+      <button class="btn btn-outline" onclick="OBGO(3,2)">&#8592; Back</button>
+      <button class="btn btn-dark" onclick="OBGO(3,4)">Continue &#8594;</button>
+    </div>
+  </div>
+  <div id="ob4" style="display:none">
+    <div class="ob-steps">
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Account type</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Basic info</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Verification</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step act"><div class="ob-num">4</div><div class="ob-lbl">Portfolio</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
+    </div>
+    <div class="fc">
+      <p style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#1D9E75;margin-bottom:10px">Select your specialties</p>
+      <div id="spec-tags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
+      <div class="r2">
+        <div class="field"><label class="lbl">Starting price</label><input class="finp" placeholder="e.g. $90"/></div>
+        <div class="field"><label class="lbl">Turnaround time</label><select class="finp"><option>1 week</option><option selected>2 weeks</option><option>3 weeks</option><option>4+ weeks</option></select></div>
+      </div>
+      <div class="field"><label class="lbl">Bio</label><textarea class="finp" placeholder="Tell customers about yourself..."></textarea></div>
+      <div class="up-box" id="ub4" onclick="MARKUP('ub4','Portfolio uploaded')"><div class="up-title">&#128444; Upload portfolio photos</div><div class="up-sub">3-6 photos - JPG or PNG</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px">
+      <button class="btn btn-outline" onclick="OBGO(4,3)">&#8592; Back</button>
+      <button class="btn btn-dark" onclick="OBGO(4,5)">Continue &#8594;</button>
+    </div>
+  </div>
+  <div id="ob5" style="display:none">
+    <div class="ob-steps">
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Account type</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Basic info</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Verification</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step done"><div class="ob-num">&#10003;</div><div class="ob-lbl">Portfolio</div></div>
+      <div class="ob-line"></div>
+      <div class="ob-step act"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div>
+    </div>
+    <div style="background:#f5f5f5;border-radius:14px;padding:18px;margin-bottom:16px">
+      <p style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Summary</p>
+      <p style="font-size:14px;color:#555;margin-bottom:6px">&#10003; Type: <strong id="ob-type">Individual tailor</strong></p>
+      <p style="font-size:14px;color:#555;margin-bottom:6px">&#10003; Documents uploaded</p>
+      <p style="font-size:14px;color:#555">&#10003; Review: 1-3 business days</p>
+    </div>
+    <div class="fc">
+      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:14px;color:#555;margin-bottom:10px"><input type="checkbox" style="margin-top:3px"/> I confirm all information is genuine and accurate.</label>
+      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:14px;color:#555;margin-bottom:10px"><input type="checkbox" style="margin-top:3px"/> I agree to SewBridge's Tailor Code of Conduct.</label>
+      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:14px;color:#555"><input type="checkbox" style="margin-top:3px"/> I agree to SewBridge's Terms of Service and Privacy Policy.</label>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px">
+      <button class="btn btn-outline" onclick="OBGO(5,4)">&#8592; Back</button>
+      <button class="btn btn-dark" onclick="OBDONE()">Submit application &#8599;</button>
+    </div>
+  </div>
+  <div id="ob-ok" style="display:none;text-align:center;padding:4rem 0">
+    <div style="font-size:52px;margin-bottom:1rem">&#127881;</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;margin-bottom:8px">Application submitted!</div>
+    <p style="font-size:15px;color:#666;max-width:420px;margin:0 auto 1.5rem;line-height:1.8">Our team will review your documents within <strong>1-3 business days</strong>.</p>
+    <button class="btn btn-dark" onclick="GO('home')">Back to home &#8599;</button>
+  </div>
+</div>
 </div>
 
-<div style="margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1D9E75;">👗 Women's Wear</div>
-<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-<button class="tag" onclick="this.classList.toggle('on')">Bridal &amp; wedding garments</button>
-<button class="tag" onclick="this.classList.toggle('on')">Formal &amp; event wear</button>
-<button class="tag" onclick="this.classList.toggle('on')">Feminine dresses</button>
-<button class="tag" onclick="this.classList.toggle('on')">Jumpsuits &amp; statement outfits</button>
-<button class="tag" onclick="this.classList.toggle('on')">Modest fashion</button>
-<button class="tag" onclick="this.classList.toggle('on')">Loose &amp; flowing garments</button>
-<button class="tag" onclick="this.classList.toggle('on')">Body-contouring tailoring</button>
-<button class="tag" onclick="this.classList.toggle('on')">Casual wear</button>
-</div>
-
-<div style="margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1D9E75;">🌍 African & Cultural Wear</div>
-<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-<button class="tag" onclick="this.classList.toggle('on')">African traditional wear</button>
-<button class="tag" onclick="this.classList.toggle('on')">Cultural &amp; traditional outfits</button>
-<button class="tag" onclick="this.classList.toggle('on')">Modern + traditional fusion</button>
-<button class="tag" onclick="this.classList.toggle('on')">Ankara / Kitenge / Kente</button>
-<button class="tag" onclick="this.classList.toggle('on')">Headwrap &amp; accessory coordination</button>
-</div>
-
-<div style="margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1D9E75;">👨 Men's Wear</div>
-<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-<button class="tag" onclick="this.classList.toggle('on')">Men's suit tailoring</button>
-<button class="tag" onclick="this.classList.toggle('on')">Smart casual men's wear</button>
-<button class="tag" onclick="this.classList.toggle('on')">Custom shirts &amp; pants</button>
-<button class="tag" onclick="this.classList.toggle('on')">Traditional men's outfits</button>
-</div>
-
-<div style="margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1D9E75;">👶 Family & Kids</div>
-<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-<button class="tag" onclick="this.classList.toggle('on')">Matching family outfits</button>
-<button class="tag" onclick="this.classList.toggle('on')">Kids clothing tailoring</button>
-</div>
-
-<div style="margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1D9E75;">✨ Style & Finishing</div>
-<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-<button class="tag" onclick="this.classList.toggle('on')">Embroidery &amp; embellishments</button>
-<button class="tag" onclick="this.classList.toggle('on')">Luxury finishing &amp; beading</button>
-<button class="tag" onclick="this.classList.toggle('on')">Fabric selection &amp; consultation</button>
-<button class="tag" onclick="this.classList.toggle('on')">Minimalist tailoring</button>
-<button class="tag" onclick="this.classList.toggle('on')">Capsule wardrobe tailoring</button>
-<button class="tag" onclick="this.classList.toggle('on')">Streetwear customization</button>
-<button class="tag" onclick="this.classList.toggle('on')">Oversized &amp; layered outfits</button>
-<button class="tag" onclick="this.classList.toggle('on')">Trend-based fashion</button>
-<button class="tag" onclick="this.classList.toggle('on')">Luxury / high-end construction</button>
-<button class="tag" onclick="this.classList.toggle('on')">Fast turnaround / express</button>
-</div>
-
-<div style="margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1D9E75;">🏢 Special Services</div>
-<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;">
-<button class="tag" onclick="this.classList.toggle('on')">Uniform tailoring</button>
-<button class="tag" onclick="this.classList.toggle('on')">Clothing repair &amp; restoration</button>
-<button class="tag" onclick="this.classList.toggle('on')">Sustainable / eco-friendly</button>
-<button class="tag" onclick="this.classList.toggle('on')">Bulk tailoring</button>
-<button class="tag" onclick="this.classList.toggle('on')">Remote / digital measurements</button>
-<button class="tag" onclick="this.classList.toggle('on')">Bridal consultation</button>
-</div>
-</div><hr/><div class="r2"><div class="field"><label class="lbl">Starting price</label><input class="finp" placeholder="e.g. $90"/></div><div class="field"><label class="lbl">Turnaround time</label><select class="finp"><option>1 week</option><option selected>2 weeks</option><option>3 weeks</option><option>4+ weeks</option></select></div></div><div class="field"><label class="lbl">Bio</label><textarea class="finp" placeholder="Tell customers about yourself..."></textarea></div><div class="up-box" id="ub4" onclick="MARKUP('ub4','Portfolio uploaded')"><div class="up-title">🖼️ Upload portfolio photos</div><div class="up-sub">3-6 photos · JPG or PNG</div></div></div><div style="display:flex;justify-content:space-between;margin-top:12px;"><button class="btn btn-outline" onclick="OBGO(4,3)">← Back</button><button class="btn btn-dark" onclick="OBGO(4,5)">Continue →</button></div></div>
-  <div id="ob5" style="display:none;"><div class="ob-steps"><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Account type</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Basic info</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Verification</div></div><div class="ob-line"></div><div class="ob-step done"><div class="ob-num">✓</div><div class="ob-lbl">Portfolio</div></div><div class="ob-line"></div><div class="ob-step act"><div class="ob-num">5</div><div class="ob-lbl">Submit</div></div></div><div style="background:#f5f5f5;border-radius:14px;padding:18px;margin-bottom:16px;"><div class="fs-title" style="margin-bottom:10px;">Summary</div><div style="font-size:14px;display:flex;flex-direction:column;gap:6px;color:#555;"><div>✓ Type: <strong style="color:#1a1a1a;" id="ob-type">Individual tailor</strong></div><div>✓ Documents: <strong style="color:#1a1a1a;">Uploaded</strong></div><div>✓ Review: <strong style="color:#1a1a1a;">1-3 business days</strong></div></div></div><div class="fc"><div class="field"><label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:14px;color:#555;line-height:1.6;"><input type="checkbox" style="margin-top:3px;"/> I confirm all information is genuine and accurate.</label></div><div class="field"><label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:14px;color:#555;line-height:1.6;"><input type="checkbox" style="margin-top:3px;"/> I agree to SewBridge's Tailor Code of Conduct.</label></div><div class="field"><label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:14px;color:#555;line-height:1.6;"><input type="checkbox" style="margin-top:3px;"/> I agree to SewBridge's Terms of Service and Privacy Policy.</label></div></div><div style="display:flex;justify-content:space-between;margin-top:12px;"><button class="btn btn-outline" onclick="OBGO(5,4)">← Back</button><button class="btn btn-dark" onclick="OBDONE()">Submit application ↗</button></div></div>
-  <div id="ob-ok" style="display:none;text-align:center;padding:4rem 0;"><div style="font-size:52px;margin-bottom:1rem;">🎉</div><div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;margin-bottom:8px;">Application submitted!</div><p style="font-size:15px;color:#666;max-width:420px;margin:0 auto 1.5rem;line-height:1.8;">Our team will review your documents within <strong>1-3 business days</strong>.</p><div style="display:inline-flex;align-items:center;gap:8px;background:#EAF3DE;color:#2d6a0a;padding:10px 18px;border-radius:10px;font-size:14px;font-weight:600;margin-bottom:1.5rem;">✓ Application ID: SB-T-20260317-0042</div><br/><button class="btn btn-dark" onclick="GO('admin')">View admin ↗</button></div>
+<!-- ADMIN -->
+<div id="P-admin" style="display:none">
+<div class="wrap" style="padding:3rem 0 4rem">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem">
+    <div class="pg-title">Admin dashboard</div>
+    <span style="font-size:13px;color:#888">SewBridge 2026</span>
+  </div>
+  <div class="metrics">
+    <div class="metric"><span class="met-num">1,248</span><span class="met-lbl">Total users</span><div class="met-chg">+84 this month</div></div>
+    <div class="metric"><span class="met-num">62</span><span class="met-lbl">Active tailors</span><div class="met-chg">+7 this month</div></div>
+    <div class="metric"><span class="met-num">$38,420</span><span class="met-lbl">GMV this month</span><div class="met-chg">+22%</div></div>
+    <div class="metric"><span class="met-num">8</span><span class="met-lbl">Pending reviews</span><div style="font-size:12px;color:#854F0B;margin-top:4px">Needs review</div></div>
+  </div>
+  <div class="adm-tabs">
+    <button class="adm-tab on" onclick="ADMTAB(this,'adm1')">Verifications</button>
+    <button class="adm-tab" onclick="ADMTAB(this,'adm2')">Orders</button>
+    <button class="adm-tab" onclick="ADMTAB(this,'adm3')">Users</button>
+    <button class="adm-tab" onclick="ADMTAB(this,'adm4')">Disputes</button>
+  </div>
+  <div class="adm-panel on" id="adm1">
+    <table><thead><tr><th>Tailor</th><th>Type</th><th>Location</th><th>Applied</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody><tr><td><div style="font-weight:600">Blessing Abiodun</div><div style="font-size:12px;color:#888">b.abiodun@email.com</div></td><td>Individual</td><td>Chicago, IL</td><td>Mar 16</td><td><span class="badge ba">Pending</span></td><td><button class="act-btn">Review</button><button class="act-btn" onclick="alert('Approved!')">Approve</button><button class="act-btn" style="color:#A32D2D">Reject</button></td></tr></tbody></table>
+  </div>
+  <div class="adm-panel" id="adm2">
+    <table><thead><tr><th>Order ID</th><th>Customer</th><th>Tailor</th><th>Item</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody><tr><td>#SB-2841</td><td>Adaeze N.</td><td>Adaeze Anioke</td><td>Ankara Bridal Gown</td><td>$265</td><td><span class="badge bb">In progress</span></td></tr></tbody></table>
+  </div>
+  <div class="adm-panel" id="adm3">
+    <table><thead><tr><th>Name</th><th>Role</th><th>Location</th><th>Joined</th><th>Orders</th><th>Status</th></tr></thead>
+    <tbody><tr><td><strong>Adaeze Nwosu</strong></td><td>Customer</td><td>Atlanta, GA</td><td>Jan 2024</td><td>4</td><td><span class="badge bg">Active</span></td></tr></tbody></table>
+  </div>
+  <div class="adm-panel" id="adm4">
+    <table><thead><tr><th>ID</th><th>Customer</th><th>Tailor</th><th>Issue</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody><tr><td>#D-0041</td><td>Yemi O.</td><td>Fatou Diallo</td><td>Wrong measurements</td><td>$110</td><td><span class="badge ba">Open</span></td></tr></tbody></table>
+  </div>
 </div>
 </div>
 
-<div id="P-admin" style="display:none;">
-<div class="wrap" style="padding:3rem 0 4rem;">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;"><div class="pg-title">Admin dashboard</div><span style="font-size:13px;color:#888;">SewBridge · March 2026</span></div>
-  <div class="metrics"><div class="metric"><span class="met-num">1,248</span><span class="met-lbl">Total users</span><div class="met-chg">+84 this month</div></div><div class="metric"><span class="met-num">62</span><span class="met-lbl">Active tailors</span><div class="met-chg">+7 this month</div></div><div class="metric"><span class="met-num">$38,420</span><span class="met-lbl">GMV this month</span><div class="met-chg">+22% vs last month</div></div><div class="metric"><span class="met-num">8</span><span class="met-lbl">Pending verifications</span><div style="font-size:12px;color:#854F0B;margin-top:4px;">Needs review</div></div></div>
-  <div class="adm-tabs"><button class="adm-tab on" onclick="ADMTAB(this,'adm1')">Verifications</button><button class="adm-tab" onclick="ADMTAB(this,'adm2')">Orders</button><button class="adm-tab" onclick="ADMTAB(this,'adm3')">Users</button><button class="adm-tab" onclick="ADMTAB(this,'adm4')">Disputes</button></div>
-  <div class="adm-panel on" id="adm1"><table><thead><tr><th>Tailor</th><th>Type</th><th>Location</th><th>Applied</th><th>Documents</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr><td><div style="font-weight:600;">Blessing Abiodun</div><div style="font-size:12px;color:#888;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="284a06494a41474c5d46684d45494144064b4745">[email&#160;protected]</a></div></td><td>Individual</td><td>Chicago, IL</td><td>Mar 16</td><td><span style="color:#2d6a0a;font-size:13px;font-weight:600;">✓ All uploaded</span></td><td><span class="badge ba">Pending</span></td><td><button class="act-btn">Review</button><button class="act-btn" onclick="alert('Approved!')">Approve</button><button class="act-btn red">Reject</button></td></tr><tr><td><div style="font-weight:600;">Adaeze Anioke</div><div style="font-size:12px;color:#888;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e2838683879887cc83a2878f838b8ecc818d8f">[email&#160;protected]</a></div></td><td>Individual</td><td>Atlanta, GA</td><td>Feb 10</td><td><span style="color:#2d6a0a;font-size:13px;font-weight:600;">✓ All uploaded</span></td><td><span class="badge bg">Approved</span></td><td><button class="act-btn">View</button><button class="act-btn red">Suspend</button></td></tr></tbody></table></div>
-  <div class="adm-panel" id="adm2"><table><thead><tr><th>Order ID</th><th>Customer</th><th>Tailor</th><th>Item</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td>#SB-2841</td><td>Adaeze N.</td><td>Adaeze Anioke</td><td>Ankara Bridal Gown</td><td>$265</td><td><span class="badge bb">In progress</span></td></tr><tr><td>#SB-2756</td><td>Adaeze N.</td><td>Grace Owusu</td><td>Family Kente Set</td><td>$420</td><td><span class="badge ba">Ready to ship</span></td></tr><tr><td>#SB-2698</td><td>Adaeze N.</td><td>Fatou Diallo</td><td>Embroidered Boubou</td><td>$130</td><td><span class="badge bg">Delivered</span></td></tr></tbody></table></div>
-  <div class="adm-panel" id="adm3"><table><thead><tr><th>Name</th><th>Role</th><th>Location</th><th>Joined</th><th>Orders</th><th>Status</th></tr></thead><tbody><tr><td><div style="font-weight:600;">Adaeze Nwosu</div><div style="font-size:12px;color:#888;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="90f1f4f1f5eaf5befed0f5fdf1f9fcbef3fffd">[email&#160;protected]</a></div></td><td>Customer</td><td>Atlanta, GA</td><td>Jan 2024</td><td>4</td><td><span class="badge bg">Active</span></td></tr><tr><td><div style="font-weight:600;">Blessing Abiodun</div><div style="font-size:12px;color:#888;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="690b47080b00060d1c07290c04080005470a0604">[email&#160;protected]</a></div></td><td>Tailor</td><td>Chicago, IL</td><td>Mar 2021</td><td>102</td><td><span class="badge bg">Verified</span></td></tr></tbody></table></div>
-  <div class="adm-panel" id="adm4"><table><thead><tr><th>ID</th><th>Customer</th><th>Tailor</th><th>Issue</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td>#D-0041</td><td>Yemi O.</td><td>Fatou Diallo</td><td>Wrong measurements</td><td>$110</td><td><span class="badge ba">Open</span></td></tr><tr><td>#D-0038</td><td>Sandra K.</td><td>Aminata K.</td><td>Late delivery</td><td>$85</td><td><span class="badge bb">Under review</span></td></tr></tbody></table></div>
-</div>
-</div>
-
+<!-- MODAL -->
 <div class="overlay" id="overlay" onclick="if(event.target===this)CLOSEMODAL()">
   <div class="modal">
     <div class="modal-top">
-      <button class="modal-close" onclick="CLOSEMODAL()">✕</button>
-      <!-- UPDATED: New logo file + increased size -->
-      <div class="modal-logo"><img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge"/><span class="modal-logo-text">Sew<em>Bridge</em></span></div>
-      <div class="modal-tabs"><button class="modal-tab on" id="mt-si" onclick="SWITCHMODAL('signin')">Sign in</button><button class="modal-tab" id="mt-su" onclick="SWITCHMODAL('signup')">Sign up</button></div>
+      <button class="modal-close" onclick="CLOSEMODAL()">&#10005;</button>
+      <div class="modal-logo">
+        <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge"/>
+        <span class="modal-logo-text">Sew<em>Bridge</em></span>
+      </div>
+      <div class="modal-tabs">
+        <button class="modal-tab on" id="mt-si" onclick="SWITCHMODAL('signin')">Sign in</button>
+        <button class="modal-tab" id="mt-su" onclick="SWITCHMODAL('signup')">Sign up</button>
+      </div>
     </div>
     <div class="modal-body">
       <div class="af on" id="af-signin">
-        <button class="g-btn" onclick="GAUTH()"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Continue with Google</button>
-        <div class="auth-div"><div class="auth-div-line"></div><span>or sign in with email</span><div class="auth-div-line"></div></div>
-        <label class="auth-lbl">Email</label><input class="auth-inp" type="email" id="si-email" placeholder="you@email.com"/>
-        <label class="auth-lbl">Password</label><input class="auth-inp" type="password" id="si-pw" placeholder="Your password"/>
+        <label class="auth-lbl">Email</label>
+        <input class="auth-inp" type="email" id="si-email" placeholder="you@email.com"/>
+        <label class="auth-lbl">Password</label>
+        <input class="auth-inp" type="password" id="si-pw" placeholder="Your password"/>
         <div class="auth-forgot"><a onclick="SWITCHMODAL('forgot')">Forgot password?</a></div>
-        <button class="auth-btn" onclick="DOSIGNIN()">Sign in to SewBridge</button>
+        <button class="auth-btn" id="si-btn" onclick="DOSIGNIN()">Sign in to SewBridge</button>
         <div class="auth-switch">No account? <a onclick="SWITCHMODAL('signup')">Create one free</a></div>
       </div>
       <div class="af" id="af-signup">
-        <div class="at-grid"><div class="at-card sel" id="at-cu" onclick="SELAT('customer')"><div class="at-icon">👗</div><div class="at-lbl">Customer</div><div class="at-sub">Find and order from tailors</div></div><div class="at-card" id="at-ta" onclick="SELAT('tailor')"><div class="at-icon">🧵</div><div class="at-lbl">Tailor</div><div class="at-sub">Offer your services</div></div></div>
-        <button class="g-btn" onclick="GAUTH()"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Sign up with Google</button>
-        <div class="auth-div"><div class="auth-div-line"></div><span>or sign up with email</span><div class="auth-div-line"></div></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div><label class="auth-lbl">First name</label><input class="auth-inp" type="text" placeholder="e.g. Adaeze"/></div><div><label class="auth-lbl">Last name</label><input class="auth-inp" type="text" placeholder="e.g. Nwosu"/></div></div>
-        <label class="auth-lbl">Email</label><input class="auth-inp" type="email" placeholder="you@email.com"/>
-        <label class="auth-lbl">Password</label><input class="auth-inp" type="password" placeholder="At least 8 characters"/>
-        <div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.6;">By creating an account you agree to our <a href="#" style="color:#1D9E75;font-weight:600;">Terms</a> and <a href="#" style="color:#1D9E75;font-weight:600;">Privacy Policy</a>.</div>
-        <button class="auth-btn" onclick="DOSIGNUP()">Create my SewBridge account</button>
+        <div class="at-grid">
+          <div class="at-card sel" id="at-cu" onclick="SELAT('customer')"><div class="at-icon">&#128541;</div><div class="at-lbl">Customer</div><div class="at-sub">Find and order</div></div>
+          <div class="at-card" id="at-ta" onclick="SELAT('tailor')"><div class="at-icon">&#129525;</div><div class="at-lbl">Tailor</div><div class="at-sub">Offer services</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div><label class="auth-lbl">First name</label><input class="auth-inp" id="su-fname" type="text" placeholder="First name"/></div>
+          <div><label class="auth-lbl">Last name</label><input class="auth-inp" id="su-lname" type="text" placeholder="Last name"/></div>
+        </div>
+        <label class="auth-lbl">Email</label>
+        <input class="auth-inp" id="su-email" type="email" placeholder="you@email.com"/>
+        <label class="auth-lbl">Password</label>
+        <input class="auth-inp" id="su-pw" type="password" placeholder="At least 8 characters"/>
+        <button class="auth-btn" id="su-btn" onclick="DOSIGNUP()">Create my SewBridge account</button>
         <div class="auth-switch">Already have an account? <a onclick="SWITCHMODAL('signin')">Sign in</a></div>
       </div>
       <div class="af" id="af-forgot">
-        <div style="text-align:center;margin-bottom:18px;"><div style="font-size:34px;margin-bottom:8px;">🔑</div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;margin-bottom:5px;">Reset your password</div><div style="font-size:13px;color:#888;">Enter your email and we will send a reset link.</div></div>
-        <label class="auth-lbl">Email</label><input class="auth-inp" type="email" placeholder="you@email.com"/>
+        <div style="text-align:center;margin-bottom:18px">
+          <div style="font-size:34px;margin-bottom:8px">&#128273;</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;margin-bottom:5px">Reset password</div>
+          <div style="font-size:13px;color:#888">Enter your email for a reset link.</div>
+        </div>
+        <label class="auth-lbl">Email</label>
+        <input class="auth-inp" id="reset-email" type="email" placeholder="you@email.com"/>
         <button class="auth-btn" onclick="DORESET()">Send reset link</button>
-        <div class="auth-switch"><a onclick="SWITCHMODAL('signin')">← Back to sign in</a></div>
+        <div class="auth-switch"><a onclick="SWITCHMODAL('signin')">&#8592; Back to sign in</a></div>
       </div>
       <div class="auth-ok" id="auth-ok">
-        <div style="font-size:44px;margin-bottom:10px;">🎉</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;margin-bottom:6px;" id="ok-title">Welcome to SewBridge!</div>
-        <div style="font-size:14px;color:#666;margin-bottom:18px;" id="ok-msg">Your account is ready.</div>
-        <button class="auth-btn" onclick="CLOSEMODAL()">Get started ↗</button>
+        <div style="font-size:44px;margin-bottom:10px">&#127881;</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;margin-bottom:6px" id="ok-title">Welcome!</div>
+        <div style="font-size:14px;color:#666;margin-bottom:18px" id="ok-msg">Your account is ready.</div>
+        <button class="auth-btn" onclick="CLOSEMODAL()">Get started &#8599;</button>
       </div>
     </div>
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-var TD=[
-  {name:'Adaeze Anioke',init:'AA',bg:'#FBEAF0',col:'#993556',loc:'Atlanta, GA',her:'Nigerian heritage',badge:'Top tailor',bc:'ba',specs:['Ankara','Aso-ebi','Bridal','Lace'],price:'From $120',rating:'4.9',orders:87,turn:'2-3 weeks'},
-  {name:'Grace Owusu',init:'GO',bg:'#E1F5EE',col:'#0F6E56',loc:'New York, NY',her:'Ghanaian heritage',badge:'Verified',bc:'bg',specs:['Kente','Kaba & Slit','Kids & Family'],price:'From $95',rating:'5.0',orders:64,turn:'3-4 weeks'},
-  {name:'Fatou Diallo',init:'FD',bg:'#EEEDFE',col:'#534AB7',loc:'Houston, TX',her:'Senegalese heritage',badge:'Verified',bc:'bg',specs:['Boubou','Wax print','Embroidery'],price:'From $75',rating:'4.7',orders:43,turn:'2 weeks'},
-  {name:'Ngozi Eze',init:'NE',bg:'#FAECE7',col:'#993C1D',loc:'Washington, DC',her:'Nigerian heritage',badge:'New',bc:'bb',specs:['Iro & Buba','Agbada','Bridal'],price:'From $85',rating:'5.0',orders:12,turn:'3 weeks'},
-  {name:'Zainab Nkosi',init:'ZN',bg:'#E6F1FB',col:'#185FA5',loc:'Los Angeles, CA',her:'South African heritage',badge:'Verified',bc:'bg',specs:['Shweshwe','Ndebele','Modern African'],price:'From $110',rating:'4.8',orders:58,turn:'2-3 weeks'},
-  {name:'Blessing Abiodun',init:'BA',bg:'#EAF3DE',col:'#3B6D11',loc:'Chicago, IL',her:'Nigerian heritage',badge:'Top tailor',bc:'ba',specs:['Ankara','Lace','Aso-ebi','Kids & Family'],price:'From $90',rating:'4.9',orders:102,turn:'2 weeks'}
+<script>
+// =============================================
+// ALL DATA
+// =============================================
+var TD = [
+  {name:'Adaeze Anioke',init:'AA',bg:'#FBEAF0',col:'#993556',loc:'Atlanta, GA',her:'Nigerian heritage',badge:'Top tailor',bc:'ba',specs:['Ankara','Aso-ebi','Bridal'],price:'From $120',rat:'4.9',ord:87},
+  {name:'Grace Owusu',init:'GO',bg:'#E1F5EE',col:'#0F6E56',loc:'New York, NY',her:'Ghanaian heritage',badge:'Verified',bc:'bg',specs:['Kente','Kaba and Slit','Kids'],price:'From $95',rat:'5.0',ord:64},
+  {name:'Fatou Diallo',init:'FD',bg:'#EEEDFE',col:'#534AB7',loc:'Houston, TX',her:'Senegalese heritage',badge:'Verified',bc:'bg',specs:['Boubou','Wax print','Embroidery'],price:'From $75',rat:'4.7',ord:43},
+  {name:'Ngozi Eze',init:'NE',bg:'#FAECE7',col:'#993C1D',loc:'Washington, DC',her:'Nigerian heritage',badge:'New',bc:'bb',specs:['Iro and Buba','Agbada','Bridal'],price:'From $85',rat:'5.0',ord:12},
+  {name:'Zainab Nkosi',init:'ZN',bg:'#E6F1FB',col:'#185FA5',loc:'Los Angeles, CA',her:'South African heritage',badge:'Verified',bc:'bg',specs:['Shweshwe','Modern African'],price:'From $110',rat:'4.8',ord:58},
+  {name:'Blessing Abiodun',init:'BA',bg:'#EAF3DE',col:'#3B6D11',loc:'Chicago, IL',her:'Nigerian heritage',badge:'Top tailor',bc:'ba',specs:['Ankara','Lace','Kids'],price:'From $90',rat:'4.9',ord:102}
 ];
-var TH=[
-  {name:'Adaeze Anioke',init:'AA',bg:'#FBEAF0',col:'#993556',sub:'Atlanta, GA - Verified tailor',msgs:[{o:0,t:'Hello! I received your order for the Ankara bridal gown.',time:'Mon 10:14am'},{o:1,t:'Thank you! I want the bodice fitted.',time:'Mon 10:32am'},{o:0,t:'Perfect. I can see your saved measurements.',time:'Mon 11:05am'},{o:0,t:'Your gown is looking beautiful!',time:'Today 9:02am'}]},
-  {name:'Grace Owusu',init:'GO',bg:'#E1F5EE',col:'#0F6E56',sub:'New York, NY - Verified tailor',msgs:[{o:0,t:"Started on your family kente set. Could you confirm heights?",time:'Wed 3:10pm'},{o:1,t:'Amara is 44 inches, Temi is 52 inches.',time:'Wed 4:02pm'},{o:0,t:'All 4 pieces complete! Ready to ship.',time:'Today 8:30am'}]},
-  {name:'Blessing Abiodun',init:'BA',bg:'#EAF3DE',col:'#3B6D11',sub:'Chicago, IL - Verified tailor',msgs:[{o:0,t:"Shall I use Amara's saved measurements for the kids outfit?",time:'5h ago'},{o:1,t:"Yes please!",time:'4h ago'}]}
+
+var TH = [
+  {name:'Adaeze Anioke',init:'AA',bg:'#FBEAF0',col:'#993556',sub:'Atlanta, GA - Verified tailor',
+   msgs:[{o:0,t:'Hello! I received your order for the Ankara bridal gown.',time:'Mon 10:14am'},{o:1,t:'Thank you! I want the bodice fitted.',time:'Mon 10:32am'},{o:0,t:'Your gown is looking beautiful!',time:'Today 9:02am'}]},
+  {name:'Grace Owusu',init:'GO',bg:'#E1F5EE',col:'#0F6E56',sub:'New York, NY - Verified tailor',
+   msgs:[{o:0,t:'Started on your family kente set.',time:'Wed 3:10pm'},{o:0,t:'All 4 pieces complete! Ready to ship.',time:'Today 8:30am'}]},
+  {name:'Blessing Abiodun',init:'BA',bg:'#EAF3DE',col:'#3B6D11',sub:'Chicago, IL - Verified tailor',
+   msgs:[{o:0,t:'Shall I use your saved measurements?',time:'5h ago'},{o:1,t:'Yes please!',time:'4h ago'}]}
 ];
-var DT=[
-  {label:'phone number',p:/(\+?1?\s?)?(\(?\d{3}\)?[\s\-.]?\d{3}[\s\-.]?\d{4})/,msg:"We noticed a phone number. For your safety we cannot send personal contact details through SewBridge. Everything you need is right here and your order and payments stay protected."},
-  {label:'email address',p:/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/,msg:"We spotted an email address. Moving the conversation outside SewBridge means losing your buyer protection. Share everything you need right here safely."},
-  {label:'WhatsApp',p:/whatsapp|wa\.me|whats[\s\-.]?app/i,msg:"We noticed WhatsApp mentioned. Once the conversation moves off SewBridge we cannot protect your order. Stay here and you are always covered."},
-  {label:'Instagram',p:/instagram\.com|instagr\.am|\binstagram\b|\binsta\b/i,msg:"We spotted Instagram. Please keep your order conversations here in SewBridge so your buyer protection stays active."},
-  {label:'Facebook',p:/facebook\.com|fb\.com|\bfacebook\b/i,msg:"We noticed Facebook. Any orders arranged outside SewBridge are not protected under our buyer guarantee."},
-  {label:'Twitter or X',p:/twitter\.com|x\.com|\btwitter\b/i,msg:"We spotted Twitter or X. Conversations moved off SewBridge are not protected."},
-  {label:'outside payment',p:/venmo|cashapp|cash app|zelle|paypal|pay me|send money|wire transfer/i,msg:"We noticed an outside payment method. Payments outside SewBridge are not protected. Pay here and your money is held in escrow until delivery."}
+
+var BLOCKED_PATTERNS = [
+  {label:'phone number',re:/(\+?1\s?)?(\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4})/,msg:'Sharing phone numbers is not allowed. Keep all communication here for your safety.'},
+  {label:'email address',re:/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/,msg:'Sharing emails moves you outside SewBridge protection. Stay here to keep your order safe.'},
+  {label:'WhatsApp',re:/whatsapp/i,msg:'Keep your conversations in SewBridge so your buyer protection stays active.'},
+  {label:'outside payment',re:/venmo|cashapp|zelle|paypal/i,msg:'Outside payments are not protected. Pay here and your money is held in escrow until delivery.'}
 ];
-var CUR=0,BLK=false,OBT='ind',ATT='customer';
-var MP={
+
+var SPECS_LIST = ['Custom fitting','Alterations','Bridal','Formal wear','Modest fashion','Casual wear','African traditional wear','Ankara / Kente','Cultural outfits','Modern-traditional fusion','Mens suit tailoring','Smart casual','Custom shirts','Traditional mens outfits','Matching family outfits','Kids clothing','Embroidery','Luxury finishing','Fast turnaround','Uniform tailoring','Clothing repair','Remote measurements'];
+
+var MP = {
   adult:{label:'My measurements',bust:38,waist:30,hips:42,shoulder:15,sleeve:24,height:65,dress:55,inseam:29,thigh:24},
-  child1:{label:'Amara (6 yrs)',bust:22,waist:21,hips:23,shoulder:10,sleeve:14,height:44,dress:28,inseam:18,thigh:13},
-  child2:{label:'Temi (9 yrs)',bust:26,waist:24,hips:27,shoulder:12,sleeve:17,height:52,dress:34,inseam:22,thigh:15}
+  child1:{label:'Child 1',bust:22,waist:21,hips:23,shoulder:10,sleeve:14,height:44,dress:28,inseam:18,thigh:13},
+  child2:{label:'Child 2',bust:26,waist:24,hips:27,shoulder:12,sleeve:17,height:52,dress:34,inseam:22,thigh:15}
 };
 
-function GO(page,btn){
-  var pages=['home','tailors','how','dashboard','join','admin'];
-  for(var i=0;i<pages.length;i++){
-    var el=document.getElementById('P-'+pages[i]);
-    if(el) el.style.display='none';
+var CUR_THREAD = 0;
+var BLOCKED = false;
+var OB_TYPE = 'ind';
+var AT_TYPE = 'customer';
+var CURRENT_USER = null;
+var CURRENT_PROFILE = null;
+
+// =============================================
+// NAVIGATION - this is the core function
+// =============================================
+function GO(page) {
+  var allPages = ['home','tailors','how','dashboard','join','admin'];
+  for (var i = 0; i < allPages.length; i++) {
+    var el = document.getElementById('P-' + allPages[i]);
+    if (el) el.style.display = 'none';
   }
-  var target=document.getElementById('P-'+page);
-  if(target){target.style.display='block';window.scrollTo(0,0);}
-  var navMap={home:'n0',tailors:'n1',how:'n2',dashboard:'n3',join:'n4',admin:'n5'};
-  var nbs=document.querySelectorAll('.nb');
-  for(var j=0;j<nbs.length;j++) nbs[j].classList.remove('on');
-  var activeId=navMap[page];
-  if(activeId){var ab=document.getElementById(activeId);if(ab)ab.classList.add('on');}
-  if(page==='tailors') BUILDGRID();
-  if(page==='dashboard') PANEL('orders');
+  var show = document.getElementById('P-' + page);
+  if (show) {
+    show.style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+  var navIds = {home:'n0', tailors:'n1', how:'n2', dashboard:'n3', join:'n4', admin:'n5'};
+  var allNbs = document.querySelectorAll('.nb');
+  for (var j = 0; j < allNbs.length; j++) allNbs[j].classList.remove('on');
+  var activeNb = document.getElementById(navIds[page]);
+  if (activeNb) activeNb.classList.add('on');
+  if (page === 'tailors') BUILDGRID('tailor-grid', TD);
+  if (page === 'home') BUILDGRID('home-grid', TD.slice(0, 3));
 }
 
-function BUILDGRID(){
-  var g=document.getElementById('tailor-grid');
-  if(!g) return;
-  var h='';
-  for(var i=0;i<TD.length;i++){
-    var t=TD[i];
-    var sp='';
-    for(var s=0;s<t.specs.length;s++) sp+='<span class="spec">'+t.specs[s]+'</span>';
-    h+='<div class="tc" onclick="PANEL_MSG()">';
-    h+='<div class="tc-top"><div class="av" style="width:48px;height:48px;background:'+t.bg+';color:'+t.col+';font-size:14px;">'+t.init+'</div>';
-    h+='<div><div style="display:flex;align-items:center;gap:7px;margin-bottom:2px;"><div class="tc-name">'+t.name+'</div><span class="badge '+t.bc+'">'+t.badge+'</span></div>';
-    h+='<div class="tc-loc">'+t.loc+' - '+t.her+'</div></div></div>';
-    h+='<div class="specs">'+sp+'</div>';
-    h+='<div class="tc-bottom"><div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#888;">'+t.rating+' - '+t.orders+' orders</span></div><div class="price">'+t.price+'</div></div>';
-    h+='</div>';
+// =============================================
+// BUILD TAILOR GRID - uses DOM, not innerHTML
+// =============================================
+function BUILDGRID(gridId, data) {
+  var grid = document.getElementById(gridId);
+  if (!grid) return;
+  grid.innerHTML = '';
+  for (var i = 0; i < data.length; i++) {
+    var t = data[i];
+    var card = document.createElement('div');
+    card.className = 'tc';
+    card.setAttribute('data-idx', i);
+    card.onclick = (function(tailor) {
+      return function() { GO('tailors'); };
+    })(t);
+
+    var top = document.createElement('div');
+    top.className = 'tc-top';
+
+    var av = document.createElement('div');
+    av.className = 'av';
+    av.style.cssText = 'width:48px;height:48px;background:' + t.bg + ';color:' + t.col + ';font-size:14px';
+    av.textContent = t.init;
+
+    var info = document.createElement('div');
+    var nameRow = document.createElement('div');
+    nameRow.style.cssText = 'display:flex;align-items:center;gap:7px;margin-bottom:2px';
+    var nameEl = document.createElement('div');
+    nameEl.className = 'tc-name';
+    nameEl.textContent = t.name;
+    var badgeEl = document.createElement('span');
+    badgeEl.className = 'badge ' + t.bc;
+    badgeEl.textContent = t.badge;
+    nameRow.appendChild(nameEl);
+    nameRow.appendChild(badgeEl);
+    var locEl = document.createElement('div');
+    locEl.className = 'tc-loc';
+    locEl.textContent = t.loc + ' - ' + t.her;
+    info.appendChild(nameRow);
+    info.appendChild(locEl);
+
+    top.appendChild(av);
+    top.appendChild(info);
+
+    var specs = document.createElement('div');
+    specs.className = 'specs';
+    for (var s = 0; s < t.specs.length; s++) {
+      var sp = document.createElement('span');
+      sp.className = 'spec';
+      sp.textContent = t.specs[s];
+      specs.appendChild(sp);
+    }
+
+    var bottom = document.createElement('div');
+    bottom.className = 'tc-bottom';
+    var ratingDiv = document.createElement('div');
+    var stars = document.createElement('span');
+    stars.className = 'stars';
+    stars.textContent = '★★★★★';
+    var ratingText = document.createElement('span');
+    ratingText.style.cssText = 'font-size:11px;color:#888';
+    ratingText.textContent = ' ' + t.rat + ' - ' + t.ord + ' orders';
+    ratingDiv.appendChild(stars);
+    ratingDiv.appendChild(ratingText);
+    var priceEl = document.createElement('div');
+    priceEl.className = 'price';
+    priceEl.textContent = t.price;
+    bottom.appendChild(ratingDiv);
+    bottom.appendChild(priceEl);
+
+    card.appendChild(top);
+    card.appendChild(specs);
+    card.appendChild(bottom);
+    grid.appendChild(card);
   }
-  g.innerHTML=h;
 }
 
-function PANEL_MSG(){GO('dashboard');PANEL('messages');}
-
-function PANEL(name,btn){
-  var ps=document.querySelectorAll('.panel');
-  for(var i=0;i<ps.length;i++) ps[i].classList.remove('on');
-  var p=document.getElementById('panel-'+name);
-  if(p) p.classList.add('on');
-  var bs=document.querySelectorAll('.sb-btn');
-  for(var j=0;j<bs.length;j++) bs[j].classList.remove('on');
-  if(btn) btn.classList.add('on');
-  if(name==='messages') THREAD(0,document.querySelectorAll('.thread')[0]);
+// =============================================
+// DASHBOARD PANELS
+// =============================================
+function PANEL(name, btn) {
+  var panels = document.querySelectorAll('.panel');
+  for (var i = 0; i < panels.length; i++) panels[i].classList.remove('on');
+  var p = document.getElementById('panel-' + name);
+  if (p) p.classList.add('on');
+  var sbBtns = document.querySelectorAll('.sb-btn');
+  for (var j = 0; j < sbBtns.length; j++) sbBtns[j].classList.remove('on');
+  if (btn) btn.classList.add('on');
+  if (name === 'messages') {
+    var firstThread = document.querySelectorAll('.thread')[0];
+    THREAD(0, firstThread);
+  }
 }
 
-function THREAD(i,el){
-  CUR=i;
-  var t=TH[i];
-  var ths=document.querySelectorAll('.thread');
-  for(var x=0;x<ths.length;x++) ths[x].classList.remove('on');
-  if(el){el.classList.add('on');var dot=el.querySelector('.udot');if(dot)dot.remove();}
-  var av=document.getElementById('ch-av');
-  if(av){av.style.cssText='width:34px;height:34px;background:'+t.bg+';color:'+t.col+';font-size:11px;';av.textContent=t.init;}
-  var cn=document.getElementById('ch-name');if(cn)cn.textContent=t.name;
-  var cs=document.getElementById('ch-sub');if(cs)cs.textContent=t.sub;
-  var area=document.getElementById('chat-msgs');
-  if(!area)return;
-  var h='';
-  for(var m=0;m<t.msgs.length;m++){
-    var msg=t.msgs[m];
-    h+='<div class="msg '+(msg.o?'msg-out':'msg-in')+'"><div class="bub">'+msg.t+'</div><div class="msg-time">'+msg.time+'</div></div>';
+// =============================================
+// MESSAGING
+// =============================================
+function THREAD(idx, el) {
+  CUR_THREAD = idx;
+  var t = TH[idx];
+  var allThreads = document.querySelectorAll('.thread');
+  for (var i = 0; i < allThreads.length; i++) allThreads[i].classList.remove('on');
+  if (el) el.classList.add('on');
+  var chAv = document.getElementById('ch-av');
+  if (chAv) { chAv.style.background = t.bg; chAv.style.color = t.col; chAv.textContent = t.init; }
+  var chName = document.getElementById('ch-name'); if (chName) chName.textContent = t.name;
+  var chSub = document.getElementById('ch-sub'); if (chSub) chSub.textContent = t.sub;
+  var area = document.getElementById('chat-msgs');
+  if (!area) return;
+  area.innerHTML = '';
+  for (var m = 0; m < t.msgs.length; m++) {
+    var msg = t.msgs[m];
+    var msgDiv = document.createElement('div');
+    msgDiv.className = 'msg ' + (msg.o ? 'msg-out' : 'msg-in');
+    var bub = document.createElement('div');
+    bub.className = 'bub';
+    bub.textContent = msg.t;
+    var timeDiv = document.createElement('div');
+    timeDiv.className = 'msg-time';
+    timeDiv.textContent = msg.time;
+    msgDiv.appendChild(bub);
+    msgDiv.appendChild(timeDiv);
+    area.appendChild(msgDiv);
   }
-  area.innerHTML=h;
-  area.scrollTop=area.scrollHeight;
+  area.scrollTop = area.scrollHeight;
   CLEARWARN();
 }
 
-function SCANMSG(val){
-  var risk=null;
-  for(var i=0;i<DT.length;i++){if(DT[i].p.test(val)){risk=DT[i];break;}}
-  if(risk){
-    BLK=true;
-    var inp=document.getElementById('chat-inp');if(inp)inp.classList.add('blocked');
-    var btn=document.getElementById('send-btn');if(btn)btn.classList.add('off');
-    var wt=document.getElementById('warn-title');if(wt)wt.textContent='Message not sent - '+risk.label+' detected';
-    var wx=document.getElementById('warn-txt');if(wx)wx.textContent=risk.msg;
-    var wb=document.getElementById('warn');if(wb)wb.classList.add('on');
+function SCANMSG(val) {
+  var risk = null;
+  for (var i = 0; i < BLOCKED_PATTERNS.length; i++) {
+    if (BLOCKED_PATTERNS[i].re.test(val)) { risk = BLOCKED_PATTERNS[i]; break; }
+  }
+  if (risk) {
+    BLOCKED = true;
+    var inp = document.getElementById('chat-inp'); if (inp) inp.style.borderColor = '#FAC775';
+    var wt = document.getElementById('warn-title'); if (wt) wt.textContent = 'Blocked: ' + risk.label + ' detected';
+    var wx = document.getElementById('warn-txt'); if (wx) wx.textContent = risk.msg;
+    var wb = document.getElementById('warn'); if (wb) wb.classList.add('on');
   } else {
-    if(BLK)CLEARWARN();
+    if (BLOCKED) CLEARWARN();
   }
 }
 
-function CLEARWARN(){
-  BLK=false;
-  var inp=document.getElementById('chat-inp');if(inp){inp.classList.remove('blocked');inp.value='';}
-  var btn=document.getElementById('send-btn');if(btn)btn.classList.remove('off');
-  var wb=document.getElementById('warn');if(wb)wb.classList.remove('on');
+function CLEARWARN() {
+  BLOCKED = false;
+  var inp = document.getElementById('chat-inp');
+  if (inp) { inp.style.borderColor = ''; inp.value = ''; }
+  var wb = document.getElementById('warn'); if (wb) wb.classList.remove('on');
 }
 
-async function TRYSEND(){
-  if(BLK)return;
-  var inp=document.getElementById('chat-inp');
-  if(!inp)return;
-  var text=inp.value.trim();
-  if(!text)return;
-  // Save to Supabase if user is logged in
-  if(CURRENT_USER){
-    var thread=TH[CUR];
-    await supa.from('messages').insert({
-      sender_id:CURRENT_USER.id,
-      sender_name:CURRENT_PROFILE?CURRENT_PROFILE.full_name:'Customer',
-      recipient_name:thread.name,
-      content:text,
-      thread_index:CUR,
-      created_at:new Date().toISOString()
-    });
+function TRYSEND() {
+  if (BLOCKED) return;
+  var inp = document.getElementById('chat-inp');
+  if (!inp || !inp.value.trim()) return;
+  var text = inp.value.trim();
+  TH[CUR_THREAD].msgs.push({o:1, t:text, time:'Just now'});
+  var allThreads = document.querySelectorAll('.thread');
+  THREAD(CUR_THREAD, allThreads[CUR_THREAD]);
+}
+
+// =============================================
+// MEASUREMENTS
+// =============================================
+function LOADM(btn, type) {
+  var allBtns = document.querySelectorAll('[onclick*="LOADM"]');
+  for (var i = 0; i < allBtns.length; i++) {
+    allBtns[i].className = allBtns[i] === btn ? 'btn btn-dark' : 'btn btn-outline';
   }
-  TH[CUR].msgs.push({o:1,t:text,time:'Just now'});
-  THREAD(CUR,document.querySelectorAll('.thread')[CUR]);
-}
-
-function LOADM(btn,type){
-  var bs=document.querySelectorAll('[onclick*="LOADM"]');
-  for(var i=0;i<bs.length;i++){bs[i].className='btn btn-outline';}
-  btn.className='btn btn-dark';
-  var p=MP[type];
-  var lbl=document.getElementById('m-lbl');if(lbl)lbl.textContent=p.label;
-  var F=['bust','waist','hips','shoulder','sleeve','height','dress','inseam','thigh'];
-  for(var f=0;f<F.length;f++){
-    var inp=document.getElementById('m-'+F[f]);
-    var snap=document.getElementById('s-'+F[f]);
-    if(inp)inp.value=p[F[f]];
-    if(snap)snap.textContent=p[F[f]]+'"';
+  var p = MP[type];
+  var lbl = document.getElementById('m-lbl'); if (lbl) lbl.textContent = p.label;
+  var fields = ['bust','waist','hips','shoulder','sleeve','height','dress','inseam','thigh'];
+  for (var f = 0; f < fields.length; f++) {
+    var el = document.getElementById('m-' + fields[f]);
+    if (el) el.value = p[fields[f]];
   }
 }
 
-async function SAVEM(){
-  var F=['bust','waist','hips','shoulder','sleeve','height','dress','inseam','thigh'];
-  var measurements={};
-  for(var f=0;f<F.length;f++){
-    var v=document.getElementById('m-'+F[f]);
-    var snap=document.getElementById('s-'+F[f]);
-    if(v&&snap){snap.textContent=v.value+'"';measurements[F[f]]=v.value;}
+function SAVEM() {
+  var s = document.getElementById('saved');
+  if (s) { s.classList.add('on'); setTimeout(function(){ s.classList.remove('on'); }, 2500); }
+}
+
+// =============================================
+// JOIN AS TAILOR
+// =============================================
+function SELTYPE(type) {
+  OB_TYPE = type;
+  var ind = document.getElementById('t-ind'); var biz = document.getElementById('t-biz');
+  if (ind) ind.classList.toggle('sel', type === 'ind');
+  if (biz) biz.classList.toggle('sel', type === 'biz');
+}
+
+function OBGO(from, to) {
+  var fromEl = document.getElementById('ob' + from); if (fromEl) fromEl.style.display = 'none';
+  if (to <= 5) {
+    var toEl = document.getElementById('ob' + to); if (toEl) toEl.style.display = 'block';
+    if (to === 4) {
+      var sg = document.getElementById('spec-tags');
+      if (sg && sg.children.length === 0) {
+        for (var s = 0; s < SPECS_LIST.length; s++) {
+          var btn = document.createElement('button');
+          btn.className = 'tag';
+          btn.textContent = SPECS_LIST[s];
+          btn.onclick = (function(b){ return function(){ b.classList.toggle('on'); }; })(btn);
+          sg.appendChild(btn);
+        }
+      }
+    }
+    if (from === 4) {
+      var ot = document.getElementById('ob-type'); if (ot) ot.textContent = OB_TYPE === 'ind' ? 'Individual tailor' : 'Tailoring business';
+    }
   }
-  // Save to Supabase if logged in
-  if(CURRENT_USER){
-    await supa.from('measurements').upsert({
-      user_id:CURRENT_USER.id,
-      ...measurements,
-      updated_at:new Date().toISOString()
-    });
-  }
-  var s=document.getElementById('saved');
-  if(s){s.classList.add('on');setTimeout(function(){s.classList.remove('on');},2500);}
+  window.scrollTo(0, 0);
 }
 
-function SELTYPE(type){
-  OBT=type;
-  var ind=document.getElementById('t-ind');var biz=document.getElementById('t-biz');
-  if(ind)ind.classList.toggle('sel',type==='ind');
-  if(biz)biz.classList.toggle('sel',type==='biz');
+function OBDONE() {
+  var ob5 = document.getElementById('ob5'); if (ob5) ob5.style.display = 'none';
+  var ok = document.getElementById('ob-ok'); if (ok) ok.style.display = 'block';
 }
 
-function OBGO(from,to){
-  var f=document.getElementById('ob'+from);if(f)f.style.display='none';
-  if(to<=5){var t=document.getElementById('ob'+to);if(t)t.style.display='block';}
-  if(from===4){var ot=document.getElementById('ob-type');if(ot)ot.textContent=OBT==='ind'?'Individual tailor':'Tailoring business';}
-}
-
-function OBDONE(){
-  var ob5=document.getElementById('ob5');if(ob5)ob5.style.display='none';
-  var ok=document.getElementById('ob-ok');if(ok)ok.style.display='block';
-}
-
-function MARKUP(id,label){
-  var box=document.getElementById(id);if(!box)return;
+function MARKUP(id, label) {
+  var box = document.getElementById(id); if (!box) return;
   box.classList.add('done');
-  var t=box.querySelector('.up-title');if(t)t.textContent='✓ '+label;
-  var s=box.querySelector('.up-sub');if(s)s.textContent='';
+  var t = box.querySelector('.up-title'); if (t) t.textContent = '✓ ' + label;
+  var s = box.querySelector('.up-sub'); if (s) s.textContent = '';
 }
 
-function ADMTAB(btn,panelId){
-  var tabs=document.querySelectorAll('.adm-tab');
-  for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('on');
-  var panels=document.querySelectorAll('.adm-panel');
-  for(var j=0;j<panels.length;j++) panels[j].classList.remove('on');
+// =============================================
+// ADMIN
+// =============================================
+function ADMTAB(btn, panelId) {
+  var tabs = document.querySelectorAll('.adm-tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+  var panels = document.querySelectorAll('.adm-panel');
+  for (var j = 0; j < panels.length; j++) panels[j].classList.remove('on');
   btn.classList.add('on');
-  var p=document.getElementById(panelId);if(p)p.classList.add('on');
+  var p = document.getElementById(panelId); if (p) p.classList.add('on');
 }
 
-function setTag(el){
-  var tags=document.querySelectorAll('.filter-row .tag');
-  for(var i=0;i<tags.length;i++) tags[i].classList.remove('on');
+function setTag(el) {
+  var tags = document.querySelectorAll('.filter-row .tag');
+  for (var i = 0; i < tags.length; i++) tags[i].classList.remove('on');
   el.classList.add('on');
 }
 
-function MODAL(tab){
-  var ov=document.getElementById('overlay');if(ov)ov.classList.add('on');
-  document.body.style.overflow='hidden';
-  SWITCHMODAL(tab||'signin');
+// =============================================
+// MODAL / AUTH
+// =============================================
+function MODAL(tab) {
+  var ov = document.getElementById('overlay'); if (ov) ov.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  SWITCHMODAL(tab || 'signin');
 }
 
-function CLOSEMODAL(){
-  var ov=document.getElementById('overlay');if(ov)ov.classList.remove('on');
-  document.body.style.overflow='';
+function CLOSEMODAL() {
+  var ov = document.getElementById('overlay'); if (ov) ov.classList.remove('on');
+  document.body.style.overflow = '';
 }
 
-function SWITCHMODAL(tab){
-  var forms=document.querySelectorAll('.af');
-  for(var i=0;i<forms.length;i++) forms[i].classList.remove('on');
-  var ok=document.getElementById('auth-ok');if(ok)ok.classList.remove('on');
-  var mts=document.querySelectorAll('.modal-tab');
-  for(var j=0;j<mts.length;j++) mts[j].classList.remove('on');
-  if(tab==='signin'){
-    var f=document.getElementById('af-signin');if(f)f.classList.add('on');
-    var t=document.getElementById('mt-si');if(t)t.classList.add('on');
-  } else if(tab==='signup'){
-    var f2=document.getElementById('af-signup');if(f2)f2.classList.add('on');
-    var t2=document.getElementById('mt-su');if(t2)t2.classList.add('on');
-  } else if(tab==='forgot'){
-    var f3=document.getElementById('af-forgot');if(f3)f3.classList.add('on');
+function SWITCHMODAL(tab) {
+  var forms = document.querySelectorAll('.af');
+  for (var i = 0; i < forms.length; i++) forms[i].classList.remove('on');
+  var ok = document.getElementById('auth-ok'); if (ok) ok.classList.remove('on');
+  var mts = document.querySelectorAll('.modal-tab');
+  for (var j = 0; j < mts.length; j++) mts[j].classList.remove('on');
+  if (tab === 'signin') {
+    var f = document.getElementById('af-signin'); if (f) f.classList.add('on');
+    var t = document.getElementById('mt-si'); if (t) t.classList.add('on');
+  } else if (tab === 'signup') {
+    var f2 = document.getElementById('af-signup'); if (f2) f2.classList.add('on');
+    var t2 = document.getElementById('mt-su'); if (t2) t2.classList.add('on');
+  } else if (tab === 'forgot') {
+    var f3 = document.getElementById('af-forgot'); if (f3) f3.classList.add('on');
   }
 }
 
-function SELAT(type){
-  ATT=type;
-  var cu=document.getElementById('at-cu');var ta=document.getElementById('at-ta');
-  if(cu)cu.classList.toggle('sel',type==='customer');
-  if(ta)ta.classList.toggle('sel',type==='tailor');
+function SELAT(type) {
+  AT_TYPE = type;
+  var cu = document.getElementById('at-cu'); var ta = document.getElementById('at-ta');
+  if (cu) cu.classList.toggle('sel', type === 'customer');
+  if (ta) ta.classList.toggle('sel', type === 'tailor');
 }
 
-function SHOWOK(title,msg){
-  var forms=document.querySelectorAll('.af');
-  for(var i=0;i<forms.length;i++) forms[i].classList.remove('on');
-  var ok=document.getElementById('auth-ok');
-  var t=document.getElementById('ok-title');
-  var m=document.getElementById('ok-msg');
-  if(ok)ok.classList.add('on');
-  if(t)t.textContent=title;
-  if(m)m.textContent=msg;
+function SHOWOK(title, msg) {
+  var forms = document.querySelectorAll('.af');
+  for (var i = 0; i < forms.length; i++) forms[i].classList.remove('on');
+  var ok = document.getElementById('auth-ok');
+  var t = document.getElementById('ok-title');
+  var m = document.getElementById('ok-msg');
+  if (ok) ok.classList.add('on');
+  if (t) t.textContent = title;
+  if (m) m.textContent = msg;
 }
 
-async function DOSIGNIN(){
-  var e=document.getElementById('si-email');
-  var p=document.getElementById('si-pw');
-  if(!e||!e.value||!p||!p.value){alert('Please enter your email and password.');return;}
-  var btn=document.querySelector('#af-signin .auth-btn');
-  if(btn){btn.textContent='Signing in...';btn.disabled=true;}
-  var {data,error}=await supa.auth.signInWithPassword({email:e.value,password:p.value});
-  if(btn){btn.textContent='Sign in to SewBridge';btn.disabled=false;}
-  if(error){
-    alert('Error: '+error.message);return;
-  }
-  SHOWOK('Welcome back!','You are now signed in to SewBridge.');
-  setTimeout(function(){CLOSEMODAL();GO('dashboard');},1500);
-}
-
-async function DOSIGNUP(){
-  var fname=document.querySelector('#af-signup input[placeholder="e.g. Adaeze"]');
-  var lname=document.querySelector('#af-signup input[placeholder="e.g. Nwosu"]');
-  var email=document.querySelector('#af-signup input[type="email"]');
-  var pw=document.querySelector('#af-signup input[type="password"]');
-  if(!fname||!fname.value||!lname||!lname.value){alert('Please enter your first and last name.');return;}
-  if(!email||!email.value){alert('Please enter your email.');return;}
-  if(!pw||!pw.value||pw.value.length<8){alert('Password must be at least 8 characters.');return;}
-  var btn=document.querySelector('#af-signup .auth-btn');
-  if(btn){btn.textContent='Creating account...';btn.disabled=true;}
-  var fullName=fname.value.trim()+' '+lname.value.trim();
-  var {data,error}=await supa.auth.signUp({
-    email:email.value,
-    password:pw.value,
-    options:{data:{full_name:fullName,role:ATT}}
-  });
-  if(btn){btn.textContent='Create my SewBridge account';btn.disabled=false;}
-  if(error){alert('Error: '+error.message);return;}
-  // Insert profile into profiles table
-  if(data.user){
-    await supa.from('profiles').upsert({
-      id:data.user.id,
-      full_name:fullName,
-      email:email.value,
-      role:ATT,
-      created_at:new Date().toISOString()
+function DOSIGNIN() {
+  var e = document.getElementById('si-email');
+  var p = document.getElementById('si-pw');
+  if (!e || !e.value || !p || !p.value) { alert('Please enter your email and password.'); return; }
+  var btn = document.getElementById('si-btn');
+  if (typeof supa !== 'undefined') {
+    if (btn) { btn.textContent = 'Signing in...'; btn.disabled = true; }
+    supa.auth.signInWithPassword({email: e.value, password: p.value}).then(function(r) {
+      if (btn) { btn.textContent = 'Sign in to SewBridge'; btn.disabled = false; }
+      if (r.error) { alert(r.error.message); return; }
+      SHOWOK('Welcome back!', 'You are now signed in.');
+      setTimeout(function(){ CLOSEMODAL(); GO('dashboard'); }, 1500);
     });
-  }
-  if(ATT==='tailor'){
-    SHOWOK('Welcome, tailor!','Account created! Check your email to confirm, then complete your profile.');
-    setTimeout(function(){CLOSEMODAL();GO('join');},2500);
   } else {
-    SHOWOK('Welcome to SewBridge!','Account created! Check your email to confirm your address.');
-    setTimeout(function(){CLOSEMODAL();GO('tailors');},2500);
+    SHOWOK('Welcome back!', 'You are now signed in to SewBridge.');
+    setTimeout(function(){ CLOSEMODAL(); GO('dashboard'); }, 1500);
   }
 }
 
-async function GAUTH(){
-  var {data,error}=await supa.auth.signInWithOAuth({
-    provider:'google',
-    options:{redirectTo:window.location.href}
-  });
-  if(error){alert('Google sign in error: '+error.message);}
-}
-async function DORESET(){
-  var email=document.querySelector('#af-forgot input[type="email"]');
-  if(!email||!email.value){alert('Please enter your email address.');return;}
-  var btn=document.querySelector('#af-forgot .auth-btn');
-  if(btn){btn.textContent='Sending...';btn.disabled=true;}
-  var {error}=await supa.auth.resetPasswordForEmail(email.value,{
-    redirectTo:window.location.href
-  });
-  if(btn){btn.textContent='Send reset link';btn.disabled=false;}
-  if(error){alert('Error: '+error.message);return;}
-  SHOWOK('Reset link sent!','Check your email for a password reset link.');
+function DOSIGNUP() {
+  var fname = document.getElementById('su-fname');
+  var lname = document.getElementById('su-lname');
+  var email = document.getElementById('su-email');
+  var pw = document.getElementById('su-pw');
+  if (!fname || !fname.value) { alert('Please enter your first name.'); return; }
+  if (!email || !email.value) { alert('Please enter your email.'); return; }
+  if (!pw || !pw.value || pw.value.length < 8) { alert('Password must be at least 8 characters.'); return; }
+  var fullName = fname.value + ' ' + (lname ? lname.value : '');
+  var btn = document.getElementById('su-btn');
+  if (typeof supa !== 'undefined') {
+    if (btn) { btn.textContent = 'Creating account...'; btn.disabled = true; }
+    supa.auth.signUp({
+      email: email.value, password: pw.value,
+      options: { data: { full_name: fullName, role: AT_TYPE } }
+    }).then(function(r) {
+      if (btn) { btn.textContent = 'Create my SewBridge account'; btn.disabled = false; }
+      if (r.error) { alert(r.error.message); return; }
+      if (r.data && r.data.user) {
+        supa.from('profiles').upsert({id: r.data.user.id, full_name: fullName, email: email.value, role: AT_TYPE, created_at: new Date().toISOString()});
+      }
+      if (AT_TYPE === 'tailor') {
+        SHOWOK('Welcome, tailor!', 'Account created! Check your email then complete your profile.');
+        setTimeout(function(){ CLOSEMODAL(); GO('join'); }, 2500);
+      } else {
+        SHOWOK('Welcome to SewBridge!', 'Account created! Check your email to confirm.');
+        setTimeout(function(){ CLOSEMODAL(); GO('tailors'); }, 2500);
+      }
+    });
+  } else {
+    SHOWOK('Welcome to SewBridge!', 'Account created successfully!');
+    setTimeout(function(){ CLOSEMODAL(); }, 2000);
+  }
 }
 
-document.addEventListener('keydown',function(e){if(e.key==='Escape')CLOSEMODAL();});
+function DORESET() {
+  var email = document.getElementById('reset-email');
+  if (!email || !email.value) { alert('Please enter your email.'); return; }
+  if (typeof supa !== 'undefined') {
+    supa.auth.resetPasswordForEmail(email.value).then(function(r) {
+      if (r.error) { alert(r.error.message); return; }
+      SHOWOK('Reset link sent!', 'Check your email for a password reset link.');
+    });
+  } else {
+    SHOWOK('Reset link sent!', 'Check your email for a password reset link.');
+  }
+}
 
-window.onload=function(){
+// =============================================
+// INIT
+// =============================================
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') CLOSEMODAL(); });
+
+window.onload = function() {
   GO('home');
-  BUILDGRID();
-  var t=document.querySelectorAll('.thread')[0];
-  if(t) THREAD(0,t);
 };
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var supa = supabase.createClient(
+  'https://prypgbyuwszdjtftouzj.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY'
+);
+supa.auth.onAuthStateChange(function(event, session) {
+  if (session && session.user) {
+    CURRENT_USER = session.user;
+    supa.from('profiles').select('*').eq('id', session.user.id).single().then(function(r) {
+      if (r.data) {
+        CURRENT_PROFILE = r.data;
+        var n = r.data.full_name || '';
+        var parts = n.split(' ');
+        var initials = ((parts[0] || '')[0] || '') + ((parts[1] || '')[0] || '');
+        initials = initials.toUpperCase() || 'SB';
+        var sbAv = document.getElementById('sb-av'); if (sbAv) sbAv.textContent = initials;
+        var sbName = document.getElementById('sb-name'); if (sbName) sbName.textContent = n || 'My Account';
+        var sbRole = document.getElementById('sb-role'); if (sbRole) sbRole.textContent = r.data.role === 'tailor' ? 'Tailor' : 'Customer';
+        var siBtn = document.getElementById('btn-signin'); if (siBtn) siBtn.textContent = initials;
+        var suBtn = document.getElementById('btn-signup');
+        if (suBtn) {
+          suBtn.textContent = 'Sign out';
+          suBtn.onclick = function() {
+            supa.auth.signOut();
+            CURRENT_USER = null;
+            CURRENT_PROFILE = null;
+            GO('home');
+          };
+        }
+      }
+    });
+  } else {
+    CURRENT_USER = null;
+    CURRENT_PROFILE = null;
+    var siBtn = document.getElementById('btn-signin');
+    if (siBtn) { siBtn.textContent = 'Sign in'; siBtn.onclick = function(){ MODAL('signin'); }; }
+    var suBtn = document.getElementById('btn-signup');
+    if (suBtn) { suBtn.textContent = 'Sign up free'; suBtn.onclick = function(){ MODAL('signup'); }; }
+  }
+});
+</script>
+
 </body>
 </html>
