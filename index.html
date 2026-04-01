@@ -1827,6 +1827,191 @@
 
     .size-ref-table tr:nth-child(even) td { background: rgba(29,158,117,0.03); }
 
+    /* Draft result panel */
+    .mhub-draft-panel {
+      margin-top: 1.5rem;
+      background: #f0faf6;
+      border: 1.5px solid var(--green);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      animation: fadeIn 0.35s;
+    }
+    .mhub-draft-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+    .mhub-draft-subtitle {
+      font-size: 0.82rem;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+    .mhub-draft-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .mhub-draft-table th {
+      background: var(--green);
+      color: #fff;
+      padding: 0.45rem 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .mhub-draft-table th.highlight-col {
+      background: #145f47;
+    }
+    .mhub-draft-table td {
+      padding: 0.4rem 0.75rem;
+      border-bottom: 1px solid var(--lightgray);
+      color: var(--dark);
+    }
+    .mhub-draft-table tr:last-child td { border-bottom: none; }
+    .mhub-draft-table tr:nth-child(even) td { background: rgba(29,158,117,0.04); }
+    .mhub-draft-table td.highlight-col {
+      font-weight: 700;
+      color: var(--green);
+      background: rgba(29,158,117,0.08) !important;
+    }
+    .mhub-draft-table td.body-col {
+      color: var(--gray);
+      font-style: italic;
+    }
+    /* Pattern Cutting Specifications Table */
+    .mhub-cutting-panel {
+      margin-top: 1.5rem;
+      background: #f0f4ff;
+      border: 1.5px solid #4a6fa5;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      animation: fadeIn 0.35s;
+    }
+    .mhub-cutting-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+    }
+    .mhub-cutting-table thead th {
+      background: #3a5a8c;
+      color: #fff;
+      padding: 0.45rem 0.65rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.78rem;
+    }
+    .mhub-cutting-table thead th.highlight-col { background: #1e3a5f; }
+    .mhub-cutting-table td {
+      padding: 0.38rem 0.65rem;
+      border-bottom: 1px solid #dde3f0;
+      vertical-align: middle;
+      color: var(--dark);
+    }
+    .mhub-cutting-table tr:last-child td { border-bottom: none; }
+    .mhub-cutting-table tr:nth-child(even) td { background: rgba(74,111,165,0.04); }
+    .mhub-cutting-table td.highlight-col {
+      font-weight: 700;
+      color: #3a5a8c;
+      background: rgba(74,111,165,0.1) !important;
+    }
+    .cut-piece-name {
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: #1e3a5f;
+      background: rgba(74,111,165,0.07);
+      border-right: 2px solid #4a6fa5;
+      white-space: nowrap;
+    }
+    .cut-dim-label {
+      color: var(--dark);
+      font-size: 0.82rem;
+    }
+    .cut-formula-note {
+      display: block;
+      font-size: 0.72rem;
+      color: #6b7fa3;
+      font-style: italic;
+      margin-top: 0.1rem;
+    }
+    .cut-piece-col { min-width: 140px; }
+    .cut-dim-col   { min-width: 130px; }
+    .mhub-draft-note {
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--gray);
+    }
+    /* Edit profile modal overlay */
+    #mhubEditModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+    #mhubEditModal.open { display: flex; }
+    .mhub-edit-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 640px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+    .mhub-edit-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .mhub-edit-header h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      margin: 0;
+    }
+    .mhub-edit-close {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--gray);
+      line-height: 1;
+      padding: 0.25rem;
+    }
+    .mhub-edit-close:hover { color: var(--dark); }
+    .mhub-edit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    @media(max-width:500px){ .mhub-edit-grid { grid-template-columns: 1fr; } }
+    .mhub-edit-field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray);
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .mhub-edit-field input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1.5px solid var(--lightgray);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+    }
+    .mhub-edit-field input:focus {
+      outline: none;
+      border-color: var(--green);
+    }
     .mhub-section-title {
       font-size: 1rem;
       font-weight: 700;
@@ -2545,13 +2730,25 @@
             </div>
           </div>
 
-          <div class="form-group" style="margin-top:1rem;">
+          <!-- GENERATE BUTTON -->
+          <div style="margin-top:1.25rem;">
+            <button class="panel-button" onclick="GENERATEDRAFT()" style="background:#1a5c43; display:flex; align-items:center; gap:0.5rem;">
+              &#x2702;&#xFE0F; Generate Drafted Measurements
+            </button>
+            <p style="font-size:0.78rem; color:var(--gray); margin-top:0.4rem;">Applies professional ease allowances to produce cut-ready specs for all fit styles.</p>
+          </div>
+
+          <!-- DRAFT RESULT AREA -->
+          <div id="mhubDraftResult" style="display:none;"></div>
+
+          <div class="form-group" style="margin-top:1.25rem;">
             <label>Special Instructions</label>
             <textarea id="mhubNotes" placeholder="E.g., longer hem, extra room at shoulders, prefer non-stretchy fabric..."></textarea>
           </div>
 
           <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.5rem;">
-            <button class="panel-button" onclick="SAVEMHUB()">Save Profile</button>
+            <button class="panel-button" id="mhubSaveBtn" onclick="SAVEMHUB()">Save Profile</button>
+            <button class="panel-button" id="mhubCancelEditBtn" onclick="CANCELMHUBEDIT()" style="display:none; background:transparent; color:var(--dark); border:1.5px solid var(--lightgray);">Cancel Edit</button>
             <button class="panel-button" onclick="MHUBSHOWTAB('saved')" style="background:transparent; color:var(--dark); border:1.5px solid var(--lightgray);">View Saved</button>
           </div>
         </div>
@@ -2966,7 +3163,8 @@
           <label>Password</label>
           <input type="password" id="signinPassword" placeholder="••••••••">
         </div>
-        <button class="panel-button" style="width: 100%;" onclick="SIGNIN()">Sign In</button>
+        <div id="signinError" style="display:none;color:#c0392b;background:#fdf2f2;border:1px solid #e8b4b8;border-radius:8px;padding:0.75rem 1rem;margin-bottom:0.75rem;font-size:0.9rem;"></div>
+        <button class="panel-button" style="width: 100%;" id="signinBtn" onclick="SIGNIN()">Sign In</button>
         <button class="oauth-button" onclick="GOOGLESIGNIN()">
           <i class="fab fa-google"></i> Sign in with Google
         </button>
@@ -3101,6 +3299,42 @@
   </div>
 </div>
 
+<!-- M-HUB EDIT MODAL -->
+<div id="mhubEditModal">
+  <div class="mhub-edit-box">
+    <div class="mhub-edit-header">
+      <h3>&#x270F;&#xFE0F; Edit Measurement Profile</h3>
+      <button class="mhub-edit-close" onclick="CLOSEMHUBEDITMODAL()">&#x2715;</button>
+    </div>
+    <div class="form-group" style="margin-bottom:1rem;">
+      <label>Profile Name</label>
+      <input type="text" id="editProfileName" placeholder="Profile name">
+    </div>
+    <div class="mhub-section-title" style="margin-bottom:0.75rem;">Measurements (inches)</div>
+    <div class="mhub-edit-grid" id="editFieldsGrid"></div>
+    <div class="form-group" style="margin-top:1rem;">
+      <label>Fit Style</label>
+      <select id="editFitStyle" style="width:100%; padding:0.5rem 0.75rem; border:1.5px solid var(--lightgray); border-radius:8px; font-size:0.9rem;">
+        <option>Fitted</option>
+        <option>Slim</option>
+        <option>Relaxed</option>
+        <option>Loose</option>
+        <option>Modest</option>
+        <option>Structured</option>
+        <option>Flared</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin-top:0.75rem;">
+      <label>Special Instructions</label>
+      <textarea id="editNotes" placeholder="Any special instructions..." style="min-height:80px;"></textarea>
+    </div>
+    <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.25rem;">
+      <button class="panel-button" onclick="SAVEMHUBEDIT()">Save Changes</button>
+      <button class="panel-button" onclick="CLOSEMHUBEDITMODAL()" style="background:transparent; color:var(--dark); border:1.5px solid var(--lightgray);">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-content">
@@ -3138,8 +3372,11 @@
 </footer>
 
 <script>
-const SUPABASE_URL='https://prypgbyuwszdjtftouzj.supabase.co';const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY';const STRIPE_KEY='pk_test_YOUR_KEY_HERE';const supa=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);let CURRENT_USER=null;let CURRENT_PAGE='home';let SELECTED_TAILOR=null;let ALL_TAILORS=[];let FILTERED_TAILORS=[];let ACTIVE_SPEC_FILTERS=[];let JOIN_STEP=1;let SIGNUP_ROLE='customer';const STATIC_TAILORS=[{id:'tailor-1',full_name:'Adaeze Anioke',location:'Atlanta, GA',heritage:'Nigerian',specialties:['Ankara','Bridal'],rating:4.9,orders_completed:87,starting_price:120,turnaround_days:14,bio:'Passionate about authentic African textiles and modern bridal design.',is_verified:true,role:'tailor'},{id:'tailor-2',full_name:'Grace Owusu',location:'New York, NY',heritage:'Ghanaian',specialties:['Kente','Kids'],rating:5.0,orders_completed:64,starting_price:95,turnaround_days:12,bio:'Expert in traditional Kente cloth and kids wear.',is_verified:true,role:'tailor'},{id:'tailor-3',full_name:'Sofia Reyes',location:'Miami, FL',heritage:'Mexican',specialties:['Quinceañera','Formal'],rating:4.8,orders_completed:51,starting_price:105,turnaround_days:18,bio:'Specializing in beautiful quinceañera gowns and formal wear.',is_verified:true,role:'tailor'},{id:'tailor-4',full_name:'Priya Sharma',location:'Dallas, TX',heritage:'Indian',specialties:['Sari','Salwar','Bridal'],rating:5.0,orders_completed:73,starting_price:115,turnaround_days:16,bio:'Master of traditional Indian garments with impeccable draping.',is_verified:true,role:'tailor'},{id:'tailor-5',full_name:'Fatou Diallo',location:'Houston, TX',heritage:'Senegalese',specialties:['Boubou','Wax print'],rating:4.7,orders_completed:43,starting_price:75,turnaround_days:14,bio:'Creating stunning traditional Senegalese outfits with vibrant wax prints.',is_verified:true,role:'tailor'},{id:'tailor-6',full_name:'Chen Wei',location:'San Francisco, CA',heritage:'Chinese',specialties:['Qipao','Cheongsam','Modern'],rating:4.9,orders_completed:38,starting_price:130,turnaround_days:15,bio:'Elegant qipao and cheongsam tailoring with contemporary flair.',is_verified:true,role:'tailor'}];document.addEventListener('DOMContentLoaded',async()=>{LOADFEATURED();LOADTAILORS();AUTHSTATELISTENER();SETUPSCROLLREVEAL();});function AUTHSTATELISTENER(){supa.auth.onAuthStateChange(async(event,session)=>{if(session){CURRENT_USER=session.user;await LOADPROFILE();UPDATENAV();}else{CURRENT_USER=null;UPDATENAV();}});}function UPDATENAV(){const authBtns=document.getElementById('authBtns');const userMenu=document.getElementById('userMenu');if(CURRENT_USER){authBtns.style.display='none';userMenu.classList.add('active');const initials=GETINITIALS(CURRENT_USER.user_metadata?.full_name||'User');document.getElementById('userAvatar').textContent=initials;if(CURRENT_USER.user_metadata?.role==='admin'){document.getElementById('adminLink').style.display='block';}}else{authBtns.style.display='flex';userMenu.classList.remove('active');}}async function SIGNIN(){const email=document.getElementById('signinEmail').value;const password=document.getElementById('signinPassword').value;if(!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signInWithPassword({email,password});if(error){alert('Sign in failed: '+error.message);}else{CLOSEMODAL();GO('dashboard');}}async function SIGNUP(){const firstName=document.getElementById('signupFirstName').value;const lastName=document.getElementById('signupLastName').value;const email=document.getElementById('signupEmail').value;const password=document.getElementById('signupPassword').value;if(!firstName||!lastName||!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signUp({email,password,options:{data:{full_name:firstName+' '+lastName,role:SIGNUP_ROLE}}});if(error){alert('Sign up failed: '+error.message);}else{await supa.from('profiles').upsert({id:data.user.id,full_name:firstName+' '+lastName,email,role:SIGNUP_ROLE,is_verified:false,created_at:new Date().toISOString()});alert('Sign up successful! Please check your email to confirm.');CLOSEMODAL();}}async function GOOGLESIGNIN(){const{error}=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});if(error){alert('Google sign in failed: '+error.message);}}function RESETPWD(){const email=prompt('Enter your email to reset password:');if(email){supa.auth.resetPasswordForEmail(email).then(({error})=>{if(error){alert('Error: '+error.message);}else{alert('Password reset link sent to '+email);}});}}async function LOGOUT(){await supa.auth.signOut();GO('home');}async function LOADPROFILE(){if(!CURRENT_USER)return;const{data,error}=await supa.from('profiles').select('*').eq('id',CURRENT_USER.id).single();if(data){document.getElementById('firstName').value=data.full_name?.split(' ')[0]||'';document.getElementById('lastName').value=data.full_name?.split(' ').slice(1).join(' ')||'';document.getElementById('profileEmail').value=data.email||'';document.getElementById('bio').value=data.bio||'';document.getElementById('location').value=data.location||'';if(data.role==='tailor'){document.getElementById('locationGroup').style.display='block';document.getElementById('specialtiesGroup').style.display='block';document.getElementById('priceGroup').style.display='block';document.getElementById('heritageGroup').style.display='block';document.getElementById('tailorOrders').style.display='block';document.getElementById('tailorEarnings').style.display='block';document.getElementById('tailorPortfolio').style.display='block';document.getElementById('tierWidget').style.display='block';UPDATETIERWIDGET(data);document.getElementById('specialties').value=(data.specialties||[]).join(', ');document.getElementById('price').value=data.starting_price||'';document.getElementById('heritage').value=data.heritage||'';LOADORDERS('tailor');LOADEARN();}else{LOADORDERS('customer');document.getElementById('savedTailorsBtn').style.display='block';LOADSAVEDTAILORS();}}}async function SAVEPROFILE(){if(!CURRENT_USER){alert('Please sign in first');return;}const firstName=document.getElementById('firstName').value;const lastName=document.getElementById('lastName').value;const bio=document.getElementById('bio').value;const location=document.getElementById('location').value;const specialties=document.getElementById('specialties').value?document.getElementById('specialties').value.split(',').map(s=>s.trim()):[];const price=document.getElementById('price').value;const heritage=document.getElementById('heritage').value;const updates={id:CURRENT_USER.id,full_name:firstName+' '+lastName,bio,location,specialties:specialties.length>0?specialties:null,starting_price:price?parseInt(price):null,heritage:heritage||null,updated_at:new Date().toISOString()};const{error}=await supa.from('profiles').upsert(updates);if(error){alert('Error saving profile: '+error.message);}else{alert('Profile saved successfully!');}}async function LOADORDERS(type='customer'){if(!CURRENT_USER)return;const tbody=type==='customer'?document.getElementById('ordersBody'):document.getElementById('incomingBody');tbody.innerHTML='';let query=supa.from('orders').select('*');if(type==='customer'){query=query.eq('customer_id',CURRENT_USER.id);}else{query=query.eq('tailor_id',CURRENT_USER.id);}const{data,error}=await query;if(data&&data.length>0){data.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${type==='customer'?'Tailor':order.customer_id}</td><td>${order.item_name}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td><td>${new Date(order.created_at).toLocaleDateString()}</td>${type==='tailor'?'<td><button onclick="alert(\'Accept order\')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">Accept</button></td>':''}
-</tr>`;tbody.innerHTML+=row;});}else{tbody.innerHTML='<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--gray);">No orders yet</td></tr>';}}async function LOADEARN(){if(!CURRENT_USER)return;const{data,error}=await supa.from('orders').select('*').eq('tailor_id',CURRENT_USER.id).eq('status','completed');let total=0;const tbody=document.getElementById('earningsBody');tbody.innerHTML='';if(data&&data.length>0){data.forEach(order=>{const tailorCut=Math.round(order.amount*0.92);total+=tailorCut;const row=`<tr><td>${order.id}</td><td>Customer</td><td>$${order.amount}</td><td>$${tailorCut}</td><td><span class="status-badge status-completed">Completed</span></td></tr>`;tbody.innerHTML+=row;});}const avg=data&&data.length>0?Math.round(total/(data.length)):0;document.getElementById('totalEarnings').textContent='$'+total;document.getElementById('completedCount').textContent=data?data.length:0;document.getElementById('avgOrder').textContent='$'+avg;const thisMonth=data?data.filter(o=>{const d=new Date(o.created_at);const n=new Date();return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}).reduce((s,o)=>s+Math.round(o.amount*0.92),0):0;document.getElementById('monthEarnings').textContent='$'+thisMonth;}async function SAVEM(){if(!CURRENT_USER){alert('Please sign in first');return;}const measurements={user_id:CURRENT_USER.id,bust:parseFloat(document.getElementById('bust').value)||0,waist:parseFloat(document.getElementById('waist').value)||0,hips:parseFloat(document.getElementById('hips').value)||0,shoulders:parseFloat(document.getElementById('shoulders').value)||0,sleeves:parseFloat(document.getElementById('sleeves').value)||0,inseam:parseFloat(document.getElementById('inseam').value)||0,notes:document.getElementById('measurementNotes').value,updated_at:new Date().toISOString()};const{error}=await supa.from('measurements').upsert(measurements);if(error){alert('Error saving measurements: '+error.message);}else{alert('Measurements saved successfully!');}}async function LOADFEATURED(){const grid=document.getElementById('featuredGrid');const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true).limit(3);if(data&&data.length>0){BUILDGRID(data,'featuredGrid');}else{BUILDGRID(STATIC_TAILORS.slice(0,3),'featuredGrid');}}async function LOADTAILORS(){const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true);if(data&&data.length>0){ALL_TAILORS=data;}else{ALL_TAILORS=STATIC_TAILORS;}FILTERED_TAILORS=[...ALL_TAILORS];BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function BUILDGRID(tailors,gridId='tailorsGrid'){const grid=document.getElementById(gridId);grid.innerHTML='';tailors.forEach(tailor=>{const initials=GETINITIALS(tailor.full_name);const specs=Array.isArray(tailor.specialties)?tailor.specialties:[];const tierBadge=(tailor.tier==='pro'||tailor.orders_completed>50)?'<span class="tier-badge tier-pro"><i class="fas fa-star"></i> Pro</span>':(tailor.is_verified?'<span class="tier-badge tier-verified"><i class="fas fa-shield-alt"></i> Verified</span>':'');const savedList=JSON.parse(localStorage.getItem('sb_saved')||'[]');const isSaved=savedList.includes(tailor.id);const card=`<div class="tailor-card"><div class="tailor-header" onclick="OPENTAILORPROFILE('${tailor.id}')"><div class="tailor-avatar">${initials}</div><div class="tailor-name">${tailor.full_name}</div><div class="tailor-location">${tailor.location}</div><div style="margin-top:0.5rem;">${tierBadge}</div></div><div class="tailor-body"><div style="position:absolute; top:0.75rem; right:0.75rem;"><button class="heart-btn ${isSaved?'saved':''}" onclick="event.stopPropagation();SAVETAILOR('${tailor.id}',this)" title="${isSaved?'Saved':'Save tailor'}"><i class="${isSaved?'fas':'far'} fa-heart"></i></button></div><div class="tailor-specialties">${specs.map(s=>`<span class="spec-chip">${s}</span>`).join('')}</div><div class="tailor-rating"><span class="stars">${'★'.repeat(Math.round(tailor.rating||5))}</span><span>${tailor.rating||5} (${tailor.orders_completed||0} orders)</span></div><div class="tailor-price">Starting at $${tailor.starting_price||100}</div><button onclick="OPENTAILORPROFILE('${tailor.id}')">View Profile</button></div></div>`; grid.innerHTML+=card;});if(tailors.length===0){document.getElementById('noResults').style.display='block';}else{document.getElementById('noResults').style.display='none';}}function FILTERTAILORS(){const search=document.getElementById('searchInput').value.toLowerCase();const location=document.getElementById('locationSelect').value.toLowerCase();FILTERED_TAILORS=ALL_TAILORS.filter(t=>{const matchSearch=!search||t.full_name.toLowerCase().includes(search)||(Array.isArray(t.specialties)&&t.specialties.some(s=>s.toLowerCase().includes(search)))||t.location.toLowerCase().includes(search);const matchLocation=!location||t.location.toLowerCase().includes(location);const matchSpecs=ACTIVE_SPEC_FILTERS.length===0||(Array.isArray(t.specialties)&&ACTIVE_SPEC_FILTERS.some(f=>t.specialties.includes(f)));return matchSearch&&matchLocation&&matchSpecs;});BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function TOGGLESPEC(el){const spec=el.dataset.spec;el.classList.toggle('active');if(el.classList.contains('active')){if(!ACTIVE_SPEC_FILTERS.includes(spec)){ACTIVE_SPEC_FILTERS.push(spec);}}else{ACTIVE_SPEC_FILTERS=ACTIVE_SPEC_FILTERS.filter(f=>f!==spec);}FILTERTAILORS();}function OPENTAILORPROFILE(tailorId){const tailor=ALL_TAILORS.find(t=>t.id===tailorId)||STATIC_TAILORS.find(t=>t.id===tailorId);if(tailor){SELECTED_TAILOR=tailor;const initials=GETINITIALS(tailor.full_name);document.getElementById('profileAvatar').textContent=initials;document.getElementById('profileNameDisplay').textContent=tailor.full_name;document.getElementById('profileLocationDisplay').textContent=tailor.location;document.getElementById('profileHeritage').textContent=tailor.heritage||'Not specified';document.getElementById('profileSpecs').textContent=(Array.isArray(tailor.specialties)?tailor.specialties:[]).join(', ')||'Various';document.getElementById('profileRating').textContent=tailor.rating||5;document.getElementById('profileOrders').textContent=tailor.orders_completed||0;document.getElementById('profileTurnaround').textContent=(tailor.turnaround_days||14)+'-'+((tailor.turnaround_days||14)+7)+' days';document.getElementById('profileBio').textContent=tailor.bio||'Skilled tailor';document.getElementById('profileStartPrice').textContent='$'+(tailor.starting_price||100);if(tailor.is_verified){document.getElementById('profileVerified').style.display='inline';}else{document.getElementById('profileVerified').style.display='none';}MODAL('profile');}}async function SENDMSG(){const content=document.getElementById('messageInput').value;if(!content){alert('Message cannot be empty');return;}if(SCANMSG(content)){document.getElementById('contactWarning').style.display='block';return;}if(!CURRENT_USER){alert('Please sign in first');return;}const{error}=await supa.from('messages').insert({sender_id:CURRENT_USER.id,recipient_id:document.getElementById('threadSelect').value,content,order_id:null,created_at:new Date().toISOString()});if(error){alert('Error sending message: '+error.message);}else{document.getElementById('messageInput').value='';alert('Message sent!');THREAD(document.getElementById('threadSelect').value);}}function SCANMSG(val){const phoneRegex=/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/;const emailRegex=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;const externalPaymentRegex=/paypal|venmo|cashapp|zelle/i;return phoneRegex.test(val)||emailRegex.test(val)||externalPaymentRegex.test(val);}async function THREAD(recipientId){if(!recipientId)return;const container=document.getElementById('messagesContainer');const form=document.getElementById('messageForm');const list=document.getElementById('messagesList');container.style.display='block';form.style.display='block';list.innerHTML='';const{data,error}=await supa.from('messages').select('*').or(`and(sender_id.eq.${CURRENT_USER.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${CURRENT_USER.id})`).order('created_at',{ascending:true});if(data){data.forEach(msg=>{const isOwn=msg.sender_id===CURRENT_USER.id;const msgEl=`<div style="margin-bottom: 1rem; text-align: ${isOwn?'right':'left'};"><div style="background: ${isOwn?'var(--green)':'var(--white)'}; color: ${isOwn?'white':'var(--dark)'}; padding: 0.75rem 1rem; border-radius: 8px; display: inline-block; max-width: 70%;">${msg.content}</div></div>`;list.innerHTML+=msgEl;});}}function JOINNAV(direction){JOIN_STEP+=direction;if(JOIN_STEP<1)JOIN_STEP=1;if(JOIN_STEP>5)JOIN_STEP=5;for(let i=1;i<=5;i++){document.getElementById(`step${i}`).classList.remove('active');}document.getElementById(`step${JOIN_STEP}`).classList.add('active');const steps=document.querySelectorAll('.progress-step');steps.forEach((step,idx)=>{if(idx+1<JOIN_STEP){step.classList.add('completed');}else if(idx+1===JOIN_STEP){step.classList.add('active');}else{step.classList.remove('active','completed');}});document.getElementById('backBtn').style.display=JOIN_STEP>1?'block':'none';document.getElementById('nextBtn').style.display=JOIN_STEP<5?'block':'none';document.getElementById('submitBtn').style.display=JOIN_STEP===5?'block':'none';if(JOIN_STEP===5){UPDATEREVIEWSUMMARY();}}function UPDATEREVIEWSUMMARY(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const summary=`<p><strong>Name:</strong> ${document.getElementById('joinFirstName').value} ${document.getElementById('joinLastName').value}</p><p><strong>Email:</strong> ${document.getElementById('joinEmail').value}</p><p><strong>Phone:</strong> ${document.getElementById('joinPhone').value}</p><p><strong>Experience:</strong> ${document.getElementById('yearsExp').value} years</p><p><strong>Heritage:</strong> ${document.getElementById('joinHeritage').value}</p><p><strong>Specialties:</strong> ${specs.join(', ')}</p><p><strong>Location:</strong> ${document.getElementById('joinCity').value}, ${document.getElementById('joinState').value}</p><p><strong>Starting Price:</strong> $${document.getElementById('joinPrice').value}</p><p><strong>Turnaround:</strong> ${document.getElementById('joinTurnaround').value} days</p>`;document.getElementById('reviewSummary').innerHTML=summary;}async function SUBMITJOIN(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const application={full_name:document.getElementById('joinFirstName').value+' '+document.getElementById('joinLastName').value,email:document.getElementById('joinEmail').value,phone:document.getElementById('joinPhone').value,years_experience:parseInt(document.getElementById('yearsExp').value),heritage:document.getElementById('joinHeritage').value,specialties:specs,location:document.getElementById('joinCity').value+', '+document.getElementById('joinState').value,starting_price:parseInt(document.getElementById('joinPrice').value),turnaround_days:parseInt(document.getElementById('joinTurnaround').value),bio:document.getElementById('joinBio').value,status:'pending',created_at:new Date().toISOString()};const{error}=await supa.from('tailor_applications').insert(application);if(error){alert('Error submitting application: '+error.message);}else{alert('Application submitted! We will review it within 3-5 business days.');GO('home');JOIN_STEP=1;}}async function COMPLETEPAYMENT(){if(!CURRENT_USER||!SELECTED_TAILOR){alert('Please sign in and select a tailor');return;}const itemDesc=document.getElementById('payItemDesc').value;const amount=SELECTED_TAILOR.starting_price||100;if(!itemDesc){alert('Please describe the item');return;}const orderRef='SB-'+Date.now();const{error}=await supa.from('orders').insert({customer_id:CURRENT_USER.id,tailor_id:SELECTED_TAILOR.id,item_name:itemDesc,amount,order_ref:orderRef,status:'pending',created_at:new Date().toISOString()});if(error){alert('Error creating order: '+error.message);}else{document.getElementById('successMsg').classList.add('show');setTimeout(()=>{CLOSEMODAL();GO('dashboard');},2000);}}function GO(page){const pages=document.querySelectorAll('.page');pages.forEach(p=>p.classList.remove('active'));document.getElementById(page).classList.add('active');CURRENT_PAGE=page;if(page==='tailors'){LOADTAILORS();}else if(page==='dashboard'&&CURRENT_USER){LOADPROFILE();}else if(page==='admin'&&CURRENT_USER?.user_metadata?.role==='admin'){LOADADMIN();}window.scrollTo(0,0);}async function LOADADMIN(){if(!CURRENT_USER||CURRENT_USER.user_metadata?.role!=='admin'){alert('Access denied');GO('home');return;}ADMINPANEL('adminOverview',document.querySelector('#adminSidebarMenu button'));const{count:userCount}=await supa.from('profiles').select('*',{count:'exact',head:true});const{count:tailorCount}=await supa.from('profiles').select('*',{count:'exact',head:true}).eq('role','tailor');const{count:orderCount}=await supa.from('orders').select('*',{count:'exact',head:true});const{data:orders}=await supa.from('orders').select('amount');let revenue=0;if(orders){revenue=orders.reduce((sum,o)=>sum+(o.amount||0),0)*0.08;}document.getElementById('adminUsersCount').textContent=userCount||0;document.getElementById('adminTailorsCount').textContent=tailorCount||0;document.getElementById('adminOrdersCount').textContent=orderCount||0;document.getElementById('adminRevenue').textContent='$'+Math.round(revenue);const{data:apps}=await supa.from('tailor_applications').select('*').eq('status','pending');const verifBody=document.getElementById('verificationsBody');verifBody.innerHTML='';if(apps&&apps.length>0){apps.forEach(app=>{const row=`<tr><td>${app.full_name}</td><td>${app.email}</td><td><span class="status-badge status-pending">Pending</span></td><td>${new Date(app.created_at).toLocaleDateString()}</td><td><button onclick="VERIFYTAILOR('${app.id}')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer; margin-right:0.5rem;">Verify</button><button onclick="REJECTAPP('${app.id}')" style="padding:0.5rem 1rem; background:#e74c3c; color:white; border:none; border-radius:4px; cursor:pointer;">Reject</button></td></tr>`;verifBody.innerHTML+=row;});}else{verifBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No pending verifications</td></tr>';}const{data:recentOrders}=await supa.from('orders').select('*').order('created_at',{ascending:false}).limit(20);const adminOrdersBody=document.getElementById('adminOrdersBody');adminOrdersBody.innerHTML='';if(recentOrders&&recentOrders.length>0){recentOrders.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${order.customer_id}</td><td>${order.tailor_id}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td></tr>`;adminOrdersBody.innerHTML+=row;});}else{adminOrdersBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No orders yet</td></tr>';}const{data:allUsers}=await supa.from('profiles').select('*').order('created_at',{ascending:false}).limit(50);const adminUsersBody=document.getElementById('adminUsersBody');adminUsersBody.innerHTML='';if(allUsers&&allUsers.length>0){allUsers.forEach(user=>{const row=`<tr><td>${user.full_name||'—'}</td><td>${user.email||'—'}</td><td><span class="status-badge" style="background:${user.role==='tailor'?'#d5f5e3':'#d6eaf8'}; color:var(--dark);">${user.role||'customer'}</span></td><td>${user.created_at?new Date(user.created_at).toLocaleDateString():'—'}</td><td><button onclick="alert('View user: '+' ${user.full_name||user.id}')" style="padding:0.4rem 0.8rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">View</button></td></tr>`;adminUsersBody.innerHTML+=row;});}else{adminUsersBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No users found</td></tr>';};}async function VERIFYTAILOR(appId){const{error}=await supa.from('tailor_applications').update({status:'approved'}).eq('id',appId);if(error){alert('Error: '+error.message);}else{alert('Tailor verified successfully!');LOADADMIN();}}async function REJECTAPP(appId){const{error}=await supa.from('tailor_applications').update({status:'rejected'}).eq('id',appId);if(error){alert('Error: '+error.message);}else{alert('Application rejected.');LOADADMIN();}}function PANEL(name){const panels=document.querySelectorAll('#dashboard .panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('#dashboard .sidebar-menu button');buttons.forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}function ADMINPANEL(name,btn){const panels=document.querySelectorAll('#admin .panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('#adminSidebarMenu button');buttons.forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}function MODAL(type){if(type==='auth'){document.getElementById('authModal').classList.add('active');}else if(type==='profile'){document.getElementById('profileModal').classList.add('active');}else if(type==='payment'){if(!CURRENT_USER){alert('Please sign in first');MODAL('auth');return;}document.getElementById('payTailorName').textContent=SELECTED_TAILOR.full_name;document.getElementById('payStartPrice').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('payTotal').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('paymentModal').classList.add('active');CLOSEMODAL();}}function CLOSEMODAL(){document.querySelectorAll('.modal').forEach(m=>{m.classList.remove('active');});document.getElementById('successMsg').classList.remove('show');}function SWITCHMODAL(tab){const tabs=document.querySelectorAll('.tab-content');const btns=document.querySelectorAll('.tab-btn');tabs.forEach(t=>t.classList.remove('active'));btns.forEach(b=>b.classList.remove('active'));if(tab==='signin'){document.getElementById('signinTab').classList.add('active');btns[0].classList.add('active');}else{document.getElementById('signupTab').classList.add('active');btns[1].classList.add('active');}}function TOGGLEROLE(btn,role){const buttons=btn.parentElement.querySelectorAll('button');buttons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');SIGNUP_ROLE=role;}function toggleDropdown(){document.getElementById('dropdownContent').classList.toggle('active');}function GETINITIALS(name){if(!name)return'JD';const parts=name.split(' ');return(parts[0][0]+(parts[1]?.[0]||'')).toUpperCase();}
+const SUPABASE_URL='https://prypgbyuwszdjtftouzj.supabase.co';const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY';const STRIPE_KEY='pk_test_YOUR_KEY_HERE';const supa=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);let CURRENT_USER=null;let CURRENT_PAGE='home';let SELECTED_TAILOR=null;let ALL_TAILORS=[];let FILTERED_TAILORS=[];let ACTIVE_SPEC_FILTERS=[];let JOIN_STEP=1;let SIGNUP_ROLE='customer';const STATIC_TAILORS=[{id:'tailor-1',full_name:'Adaeze Anioke',location:'Atlanta, GA',heritage:'Nigerian',specialties:['Ankara','Bridal'],rating:4.9,orders_completed:87,starting_price:120,turnaround_days:14,bio:'Passionate about authentic African textiles and modern bridal design.',is_verified:true,role:'tailor'},{id:'tailor-2',full_name:'Grace Owusu',location:'New York, NY',heritage:'Ghanaian',specialties:['Kente','Kids'],rating:5.0,orders_completed:64,starting_price:95,turnaround_days:12,bio:'Expert in traditional Kente cloth and kids wear.',is_verified:true,role:'tailor'},{id:'tailor-3',full_name:'Sofia Reyes',location:'Miami, FL',heritage:'Mexican',specialties:['Quinceañera','Formal'],rating:4.8,orders_completed:51,starting_price:105,turnaround_days:18,bio:'Specializing in beautiful quinceañera gowns and formal wear.',is_verified:true,role:'tailor'},{id:'tailor-4',full_name:'Priya Sharma',location:'Dallas, TX',heritage:'Indian',specialties:['Sari','Salwar','Bridal'],rating:5.0,orders_completed:73,starting_price:115,turnaround_days:16,bio:'Master of traditional Indian garments with impeccable draping.',is_verified:true,role:'tailor'},{id:'tailor-5',full_name:'Fatou Diallo',location:'Houston, TX',heritage:'Senegalese',specialties:['Boubou','Wax print'],rating:4.7,orders_completed:43,starting_price:75,turnaround_days:14,bio:'Creating stunning traditional Senegalese outfits with vibrant wax prints.',is_verified:true,role:'tailor'},{id:'tailor-6',full_name:'Chen Wei',location:'San Francisco, CA',heritage:'Chinese',specialties:['Qipao','Cheongsam','Modern'],rating:4.9,orders_completed:38,starting_price:130,turnaround_days:15,bio:'Elegant qipao and cheongsam tailoring with contemporary flair.',is_verified:true,role:'tailor'}];document.addEventListener('DOMContentLoaded',async()=>{LOADFEATURED();LOADTAILORS();AUTHSTATELISTENER();SETUPSCROLLREVEAL();});function AUTHSTATELISTENER(){supa.auth.onAuthStateChange(async(event,session)=>{if(session){CURRENT_USER=session.user;await LOADPROFILE();UPDATENAV();}else{CURRENT_USER=null;UPDATENAV();}});}function UPDATENAV(){const authBtns=document.getElementById('authBtns');const userMenu=document.getElementById('userMenu');if(CURRENT_USER){authBtns.style.display='none';userMenu.classList.add('active');const initials=GETINITIALS(CURRENT_USER.user_metadata?.full_name||'User');document.getElementById('userAvatar').textContent=initials;if(CURRENT_USER.user_metadata?.role==='admin'){document.getElementById('adminLink').style.display='block';}}else{authBtns.style.display='flex';userMenu.classList.remove('active');}}async function SIGNIN(){var errEl=document.getElementById('signinError');var btn=document.getElementById('signinBtn');if(errEl){errEl.style.display='none';errEl.textContent='';}var email=(document.getElementById('signinEmail').value||'').trim();var password=document.getElementById('signinPassword').value;if(!email||!password){if(errEl){errEl.textContent='Please enter your email and password.';errEl.style.display='block';}return;}if(btn){btn.textContent='Signing in\u2026';btn.disabled=true;}try{// 1. Wipe any stale/corrupt Supabase session in localStorage that can block the auth client
+try{Object.keys(localStorage).filter(function(k){return k.startsWith('sb-');}).forEach(function(k){localStorage.removeItem(k);});}catch(ex){}// 2. Hit the REST endpoint directly — bypasses any stuck internal state in the Supabase JS client
+var authResp=await Promise.race([fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY},body:JSON.stringify({email:email,password:password})}),new Promise(function(_,rej){setTimeout(function(){rej(new Error('Request timed out after 15 s. Check your internet connection and try again.'));},15000)})]);var result=await authResp.json();if(!authResp.ok||result.error||result.error_code){var msg=(result.error_description||result.msg||result.error||'Sign in failed');if(msg.toLowerCase().includes('invalid')||msg.toLowerCase().includes('credentials')){msg='Incorrect email or password. Please try again, or click \u201cForgot password?\u201d below.';}if(errEl){errEl.textContent=msg;errEl.style.display='block';}else{alert(msg);}return;}// 3. Store the session so the Supabase client tracks it normally
+await supa.auth.setSession({access_token:result.access_token,refresh_token:result.refresh_token});CURRENT_USER=result.user;UPDATENAV();CLOSEMODAL();GO('dashboard');}catch(e){var msg2=(e.message||String(e));if(errEl){errEl.textContent=msg2;errEl.style.display='block';}else{alert(msg2);}}finally{if(btn){btn.textContent='Sign In';btn.disabled=false;}}}async function SIGNUP(){const firstName=document.getElementById('signupFirstName').value;const lastName=document.getElementById('signupLastName').value;const email=document.getElementById('signupEmail').value;const password=document.getElementById('signupPassword').value;if(!firstName||!lastName||!email||!password){alert('Please fill in all fields');return;}if(password.length<6){alert('Password must be at least 6 characters.');return;}const{data,error}=await supa.auth.signUp({email,password,options:{data:{full_name:firstName+' '+lastName,role:SIGNUP_ROLE}}});if(error){alert('Sign up failed: '+error.message);return;}if(data&&data.session){CURRENT_USER=data.user;try{await supa.from('profiles').upsert({id:data.user.id,full_name:firstName+' '+lastName,email,role:SIGNUP_ROLE,is_verified:false,created_at:new Date().toISOString()});}catch(e){console.warn('Profile upsert:',e);}CLOSEMODAL();GO('dashboard');}else{alert('Account created! Check your inbox for a confirmation link, then sign in.');CLOSEMODAL();}}async function GOOGLESIGNIN(){const{error}=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});if(error){alert('Google sign in failed: '+error.message);}}function RESETPWD(){var prefill=(document.getElementById('signinEmail').value||'').trim();var email=prompt('Enter your email to receive a password reset link:',prefill);if(email&&email.trim()){supa.auth.resetPasswordForEmail(email.trim()).then(function(res){if(res.error){alert('Error: '+res.error.message);}else{var errEl=document.getElementById('signinError');if(errEl){errEl.style.color='#1a7a4a';errEl.style.background='#eafaf1';errEl.style.borderColor='#a9dfbf';errEl.textContent='Password reset email sent to '+email.trim()+'. Check your inbox.';errEl.style.display='block';setTimeout(function(){errEl.style.display='none';errEl.style.color='';errEl.style.background='';errEl.style.borderColor='';},8000);}else{alert('Password reset email sent to '+email.trim()+'. Check your inbox.');}}});}}async function LOGOUT(){await supa.auth.signOut();GO('home');}async function LOADPROFILE(){if(!CURRENT_USER)return;const{data,error}=await supa.from('profiles').select('*').eq('id',CURRENT_USER.id).single();if(data){document.getElementById('firstName').value=data.full_name?.split(' ')[0]||'';document.getElementById('lastName').value=data.full_name?.split(' ').slice(1).join(' ')||'';document.getElementById('profileEmail').value=data.email||'';document.getElementById('bio').value=data.bio||'';document.getElementById('location').value=data.location||'';if(data.role==='tailor'){document.getElementById('locationGroup').style.display='block';document.getElementById('specialtiesGroup').style.display='block';document.getElementById('priceGroup').style.display='block';document.getElementById('heritageGroup').style.display='block';document.getElementById('tailorOrders').style.display='block';document.getElementById('tailorEarnings').style.display='block';document.getElementById('tailorPortfolio').style.display='block';document.getElementById('tierWidget').style.display='block';UPDATETIERWIDGET(data);document.getElementById('specialties').value=(data.specialties||[]).join(', ');document.getElementById('price').value=data.starting_price||'';document.getElementById('heritage').value=data.heritage||'';LOADORDERS('tailor');LOADEARN();}else{LOADORDERS('customer');document.getElementById('savedTailorsBtn').style.display='block';LOADSAVEDTAILORS();}}}async function SAVEPROFILE(){if(!CURRENT_USER){alert('Please sign in first');return;}const firstName=document.getElementById('firstName').value;const lastName=document.getElementById('lastName').value;const bio=document.getElementById('bio').value;const location=document.getElementById('location').value;const specialties=document.getElementById('specialties').value?document.getElementById('specialties').value.split(',').map(s=>s.trim()):[];const price=document.getElementById('price').value;const heritage=document.getElementById('heritage').value;const updates={id:CURRENT_USER.id,full_name:firstName+' '+lastName,bio,location,specialties:specialties.length>0?specialties:null,starting_price:price?parseInt(price):null,heritage:heritage||null,updated_at:new Date().toISOString()};const{error}=await supa.from('profiles').upsert(updates);if(error){alert('Error saving profile: '+error.message);}else{alert('Profile saved successfully!');}}async function LOADORDERS(type='customer'){if(!CURRENT_USER)return;const tbody=type==='customer'?document.getElementById('ordersBody'):document.getElementById('incomingBody');tbody.innerHTML='';let query=supa.from('orders').select('*');if(type==='customer'){query=query.eq('customer_id',CURRENT_USER.id);}else{query=query.eq('tailor_id',CURRENT_USER.id);}const{data,error}=await query;if(data&&data.length>0){data.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${type==='customer'?'Tailor':order.customer_id}</td><td>${order.item_name}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td><td>${new Date(order.created_at).toLocaleDateString()}</td>${type==='tailor'?'<td><button onclick="alert(\'Accept order\')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">Accept</button></td>':''}
+</tr>`;tbody.innerHTML+=row;});}else{tbody.innerHTML='<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--gray);">No orders yet</td></tr>';}}async function LOADEARN(){if(!CURRENT_USER)return;const{data,error}=await supa.from('orders').select('*').eq('tailor_id',CURRENT_USER.id).eq('status','completed');let total=0;const tbody=document.getElementById('earningsBody');tbody.innerHTML='';if(data&&data.length>0){data.forEach(order=>{const tailorCut=Math.round(order.amount*0.92);total+=tailorCut;const row=`<tr><td>${order.id}</td><td>Customer</td><td>$${order.amount}</td><td>$${tailorCut}</td><td><span class="status-badge status-completed">Completed</span></td></tr>`;tbody.innerHTML+=row;});}const avg=data&&data.length>0?Math.round(total/(data.length)):0;document.getElementById('totalEarnings').textContent='$'+total;document.getElementById('completedCount').textContent=data?data.length:0;document.getElementById('avgOrder').textContent='$'+avg;const thisMonth=data?data.filter(o=>{const d=new Date(o.created_at);const n=new Date();return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}).reduce((s,o)=>s+Math.round(o.amount*0.92),0):0;document.getElementById('monthEarnings').textContent='$'+thisMonth;}async function SAVEM(){if(!CURRENT_USER){alert('Please sign in first');return;}const measurements={user_id:CURRENT_USER.id,bust:parseFloat(document.getElementById('bust').value)||0,waist:parseFloat(document.getElementById('waist').value)||0,hips:parseFloat(document.getElementById('hips').value)||0,shoulders:parseFloat(document.getElementById('shoulders').value)||0,sleeves:parseFloat(document.getElementById('sleeves').value)||0,inseam:parseFloat(document.getElementById('inseam').value)||0,notes:document.getElementById('measurementNotes').value,updated_at:new Date().toISOString()};const{error}=await supa.from('measurements').upsert(measurements);if(error){alert('Error saving measurements: '+error.message);}else{alert('Measurements saved successfully!');}}async function LOADFEATURED(){const grid=document.getElementById('featuredGrid');const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true).limit(3);if(data&&data.length>0){BUILDGRID(data,'featuredGrid');}else{BUILDGRID(STATIC_TAILORS.slice(0,3),'featuredGrid');}}async function LOADTAILORS(){const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true);if(data&&data.length>0){ALL_TAILORS=data;}else{ALL_TAILORS=STATIC_TAILORS;}FILTERED_TAILORS=[...ALL_TAILORS];BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function BUILDGRID(tailors,gridId='tailorsGrid'){const grid=document.getElementById(gridId);grid.innerHTML='';tailors.forEach(tailor=>{const initials=GETINITIALS(tailor.full_name);const specs=Array.isArray(tailor.specialties)?tailor.specialties:[];const tierBadge=(tailor.tier==='pro'||tailor.orders_completed>50)?'<span class="tier-badge tier-pro"><i class="fas fa-star"></i> Pro</span>':(tailor.is_verified?'<span class="tier-badge tier-verified"><i class="fas fa-shield-alt"></i> Verified</span>':'');const savedList=JSON.parse(localStorage.getItem('sb_saved')||'[]');const isSaved=savedList.includes(tailor.id);const card=`<div class="tailor-card"><div class="tailor-header" onclick="OPENTAILORPROFILE('${tailor.id}')"><div class="tailor-avatar">${initials}</div><div class="tailor-name">${tailor.full_name}</div><div class="tailor-location">${tailor.location}</div><div style="margin-top:0.5rem;">${tierBadge}</div></div><div class="tailor-body"><div style="position:absolute; top:0.75rem; right:0.75rem;"><button class="heart-btn ${isSaved?'saved':''}" onclick="event.stopPropagation();SAVETAILOR('${tailor.id}',this)" title="${isSaved?'Saved':'Save tailor'}"><i class="${isSaved?'fas':'far'} fa-heart"></i></button></div><div class="tailor-specialties">${specs.map(s=>`<span class="spec-chip">${s}</span>`).join('')}</div><div class="tailor-rating"><span class="stars">${'★'.repeat(Math.round(tailor.rating||5))}</span><span>${tailor.rating||5} (${tailor.orders_completed||0} orders)</span></div><div class="tailor-price">Starting at $${tailor.starting_price||100}</div><button onclick="OPENTAILORPROFILE('${tailor.id}')">View Profile</button></div></div>`; grid.innerHTML+=card;});if(tailors.length===0){document.getElementById('noResults').style.display='block';}else{document.getElementById('noResults').style.display='none';}}function FILTERTAILORS(){const search=document.getElementById('searchInput').value.toLowerCase();const location=document.getElementById('locationSelect').value.toLowerCase();FILTERED_TAILORS=ALL_TAILORS.filter(t=>{const matchSearch=!search||t.full_name.toLowerCase().includes(search)||(Array.isArray(t.specialties)&&t.specialties.some(s=>s.toLowerCase().includes(search)))||t.location.toLowerCase().includes(search);const matchLocation=!location||t.location.toLowerCase().includes(location);const matchSpecs=ACTIVE_SPEC_FILTERS.length===0||(Array.isArray(t.specialties)&&ACTIVE_SPEC_FILTERS.some(f=>t.specialties.includes(f)));return matchSearch&&matchLocation&&matchSpecs;});BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function TOGGLESPEC(el){const spec=el.dataset.spec;el.classList.toggle('active');if(el.classList.contains('active')){if(!ACTIVE_SPEC_FILTERS.includes(spec)){ACTIVE_SPEC_FILTERS.push(spec);}}else{ACTIVE_SPEC_FILTERS=ACTIVE_SPEC_FILTERS.filter(f=>f!==spec);}FILTERTAILORS();}function OPENTAILORPROFILE(tailorId){const tailor=ALL_TAILORS.find(t=>t.id===tailorId)||STATIC_TAILORS.find(t=>t.id===tailorId);if(tailor){SELECTED_TAILOR=tailor;const initials=GETINITIALS(tailor.full_name);document.getElementById('profileAvatar').textContent=initials;document.getElementById('profileNameDisplay').textContent=tailor.full_name;document.getElementById('profileLocationDisplay').textContent=tailor.location;document.getElementById('profileHeritage').textContent=tailor.heritage||'Not specified';document.getElementById('profileSpecs').textContent=(Array.isArray(tailor.specialties)?tailor.specialties:[]).join(', ')||'Various';document.getElementById('profileRating').textContent=tailor.rating||5;document.getElementById('profileOrders').textContent=tailor.orders_completed||0;document.getElementById('profileTurnaround').textContent=(tailor.turnaround_days||14)+'-'+((tailor.turnaround_days||14)+7)+' days';document.getElementById('profileBio').textContent=tailor.bio||'Skilled tailor';document.getElementById('profileStartPrice').textContent='$'+(tailor.starting_price||100);if(tailor.is_verified){document.getElementById('profileVerified').style.display='inline';}else{document.getElementById('profileVerified').style.display='none';}MODAL('profile');}}async function SENDMSG(){const content=document.getElementById('messageInput').value;if(!content){alert('Message cannot be empty');return;}if(SCANMSG(content)){document.getElementById('contactWarning').style.display='block';return;}if(!CURRENT_USER){alert('Please sign in first');return;}const{error}=await supa.from('messages').insert({sender_id:CURRENT_USER.id,recipient_id:document.getElementById('threadSelect').value,content,order_id:null,created_at:new Date().toISOString()});if(error){alert('Error sending message: '+error.message);}else{document.getElementById('messageInput').value='';alert('Message sent!');THREAD(document.getElementById('threadSelect').value);}}function SCANMSG(val){const phoneRegex=/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/;const emailRegex=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;const externalPaymentRegex=/paypal|venmo|cashapp|zelle/i;return phoneRegex.test(val)||emailRegex.test(val)||externalPaymentRegex.test(val);}async function THREAD(recipientId){if(!recipientId)return;const container=document.getElementById('messagesContainer');const form=document.getElementById('messageForm');const list=document.getElementById('messagesList');container.style.display='block';form.style.display='block';list.innerHTML='';const{data,error}=await supa.from('messages').select('*').or(`and(sender_id.eq.${CURRENT_USER.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${CURRENT_USER.id})`).order('created_at',{ascending:true});if(data){data.forEach(msg=>{const isOwn=msg.sender_id===CURRENT_USER.id;const msgEl=`<div style="margin-bottom: 1rem; text-align: ${isOwn?'right':'left'};"><div style="background: ${isOwn?'var(--green)':'var(--white)'}; color: ${isOwn?'white':'var(--dark)'}; padding: 0.75rem 1rem; border-radius: 8px; display: inline-block; max-width: 70%;">${msg.content}</div></div>`;list.innerHTML+=msgEl;});}}function JOINNAV(direction){JOIN_STEP+=direction;if(JOIN_STEP<1)JOIN_STEP=1;if(JOIN_STEP>5)JOIN_STEP=5;for(let i=1;i<=5;i++){document.getElementById(`step${i}`).classList.remove('active');}document.getElementById(`step${JOIN_STEP}`).classList.add('active');const steps=document.querySelectorAll('.progress-step');steps.forEach((step,idx)=>{if(idx+1<JOIN_STEP){step.classList.add('completed');}else if(idx+1===JOIN_STEP){step.classList.add('active');}else{step.classList.remove('active','completed');}});document.getElementById('backBtn').style.display=JOIN_STEP>1?'block':'none';document.getElementById('nextBtn').style.display=JOIN_STEP<5?'block':'none';document.getElementById('submitBtn').style.display=JOIN_STEP===5?'block':'none';if(JOIN_STEP===5){UPDATEREVIEWSUMMARY();}}function UPDATEREVIEWSUMMARY(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const summary=`<p><strong>Name:</strong> ${document.getElementById('joinFirstName').value} ${document.getElementById('joinLastName').value}</p><p><strong>Email:</strong> ${document.getElementById('joinEmail').value}</p><p><strong>Phone:</strong> ${document.getElementById('joinPhone').value}</p><p><strong>Experience:</strong> ${document.getElementById('yearsExp').value} years</p><p><strong>Heritage:</strong> ${document.getElementById('joinHeritage').value}</p><p><strong>Specialties:</strong> ${specs.join(', ')}</p><p><strong>Location:</strong> ${document.getElementById('joinCity').value}, ${document.getElementById('joinState').value}</p><p><strong>Starting Price:</strong> $${document.getElementById('joinPrice').value}</p><p><strong>Turnaround:</strong> ${document.getElementById('joinTurnaround').value} days</p>`;document.getElementById('reviewSummary').innerHTML=summary;}async function SUBMITJOIN(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const application={full_name:document.getElementById('joinFirstName').value+' '+document.getElementById('joinLastName').value,email:document.getElementById('joinEmail').value,phone:document.getElementById('joinPhone').value,years_experience:parseInt(document.getElementById('yearsExp').value),heritage:document.getElementById('joinHeritage').value,specialties:specs,location:document.getElementById('joinCity').value+', '+document.getElementById('joinState').value,starting_price:parseInt(document.getElementById('joinPrice').value),turnaround_days:parseInt(document.getElementById('joinTurnaround').value),bio:document.getElementById('joinBio').value,status:'pending',created_at:new Date().toISOString()};const{error}=await supa.from('tailor_applications').insert(application);if(error){alert('Error submitting application: '+error.message);}else{alert('Application submitted! We will review it within 3-5 business days.');GO('home');JOIN_STEP=1;}}async function COMPLETEPAYMENT(){if(!CURRENT_USER||!SELECTED_TAILOR){alert('Please sign in and select a tailor');return;}const itemDesc=document.getElementById('payItemDesc').value;const amount=SELECTED_TAILOR.starting_price||100;if(!itemDesc){alert('Please describe the item');return;}const orderRef='SB-'+Date.now();const{error}=await supa.from('orders').insert({customer_id:CURRENT_USER.id,tailor_id:SELECTED_TAILOR.id,item_name:itemDesc,amount,order_ref:orderRef,status:'pending',created_at:new Date().toISOString()});if(error){alert('Error creating order: '+error.message);}else{document.getElementById('successMsg').classList.add('show');setTimeout(()=>{CLOSEMODAL();GO('dashboard');},2000);}}function GO(page){const pages=document.querySelectorAll('.page');pages.forEach(p=>p.classList.remove('active'));document.getElementById(page).classList.add('active');CURRENT_PAGE=page;if(page==='tailors'){LOADTAILORS();}else if(page==='dashboard'&&CURRENT_USER){LOADPROFILE();}else if(page==='admin'&&CURRENT_USER?.user_metadata?.role==='admin'){LOADADMIN();}window.scrollTo(0,0);}async function LOADADMIN(){if(!CURRENT_USER||CURRENT_USER.user_metadata?.role!=='admin'){alert('Access denied');GO('home');return;}ADMINPANEL('adminOverview',document.querySelector('#adminSidebarMenu button'));const{count:userCount}=await supa.from('profiles').select('*',{count:'exact',head:true});const{count:tailorCount}=await supa.from('profiles').select('*',{count:'exact',head:true}).eq('role','tailor');const{count:orderCount}=await supa.from('orders').select('*',{count:'exact',head:true});const{data:orders}=await supa.from('orders').select('amount');let revenue=0;if(orders){revenue=orders.reduce((sum,o)=>sum+(o.amount||0),0)*0.08;}document.getElementById('adminUsersCount').textContent=userCount||0;document.getElementById('adminTailorsCount').textContent=tailorCount||0;document.getElementById('adminOrdersCount').textContent=orderCount||0;document.getElementById('adminRevenue').textContent='$'+Math.round(revenue);const{data:apps}=await supa.from('tailor_applications').select('*').eq('status','pending');const verifBody=document.getElementById('verificationsBody');verifBody.innerHTML='';if(apps&&apps.length>0){apps.forEach(app=>{const row=`<tr><td>${app.full_name}</td><td>${app.email}</td><td><span class="status-badge status-pending">Pending</span></td><td>${new Date(app.created_at).toLocaleDateString()}</td><td><button onclick="VERIFYTAILOR('${app.id}')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer; margin-right:0.5rem;">Verify</button><button onclick="REJECTAPP('${app.id}')" style="padding:0.5rem 1rem; background:#e74c3c; color:white; border:none; border-radius:4px; cursor:pointer;">Reject</button></td></tr>`;verifBody.innerHTML+=row;});}else{verifBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No pending verifications</td></tr>';}const{data:recentOrders}=await supa.from('orders').select('*').order('created_at',{ascending:false}).limit(20);const adminOrdersBody=document.getElementById('adminOrdersBody');adminOrdersBody.innerHTML='';if(recentOrders&&recentOrders.length>0){recentOrders.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${order.customer_id}</td><td>${order.tailor_id}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td></tr>`;adminOrdersBody.innerHTML+=row;});}else{adminOrdersBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No orders yet</td></tr>';}const{data:allUsers}=await supa.from('profiles').select('*').order('created_at',{ascending:false}).limit(50);const adminUsersBody=document.getElementById('adminUsersBody');adminUsersBody.innerHTML='';if(allUsers&&allUsers.length>0){allUsers.forEach(user=>{const row=`<tr><td>${user.full_name||'—'}</td><td>${user.email||'—'}</td><td><span class="status-badge" style="background:${user.role==='tailor'?'#d5f5e3':'#d6eaf8'}; color:var(--dark);">${user.role||'customer'}</span></td><td>${user.created_at?new Date(user.created_at).toLocaleDateString():'—'}</td><td><button onclick="alert('View user: '+' ${user.full_name||user.id}')" style="padding:0.4rem 0.8rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">View</button></td></tr>`;adminUsersBody.innerHTML+=row;});}else{adminUsersBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No users found</td></tr>';};}async function VERIFYTAILOR(appId){const{error}=await supa.from('tailor_applications').update({status:'approved'}).eq('id',appId);if(error){alert('Error: '+error.message);}else{alert('Tailor verified successfully!');LOADADMIN();}}async function REJECTAPP(appId){const{error}=await supa.from('tailor_applications').update({status:'rejected'}).eq('id',appId);if(error){alert('Error: '+error.message);}else{alert('Application rejected.');LOADADMIN();}}function PANEL(name){const panels=document.querySelectorAll('#dashboard .panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('#dashboard .sidebar-menu button');buttons.forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}function ADMINPANEL(name,btn){const panels=document.querySelectorAll('#admin .panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('#adminSidebarMenu button');buttons.forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}function MODAL(type){if(type==='auth'){document.getElementById('authModal').classList.add('active');}else if(type==='profile'){document.getElementById('profileModal').classList.add('active');}else if(type==='payment'){if(!CURRENT_USER){alert('Please sign in first');MODAL('auth');return;}document.getElementById('payTailorName').textContent=SELECTED_TAILOR.full_name;document.getElementById('payStartPrice').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('payTotal').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('paymentModal').classList.add('active');CLOSEMODAL();}}function CLOSEMODAL(){document.querySelectorAll('.modal').forEach(m=>{m.classList.remove('active');});document.getElementById('successMsg').classList.remove('show');}function SWITCHMODAL(tab){var tabs=document.querySelectorAll('.tab-content');var btns=document.querySelectorAll('.tab-btn');tabs.forEach(function(t){t.classList.remove('active');});btns.forEach(function(b){b.classList.remove('active');});var errEl=document.getElementById('signinError');if(errEl){errEl.style.display='none';}if(tab==='signin'){document.getElementById('signinTab').classList.add('active');btns[0].classList.add('active');}else{document.getElementById('signupTab').classList.add('active');btns[1].classList.add('active');}}function TOGGLEROLE(btn,role){const buttons=btn.parentElement.querySelectorAll('button');buttons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');SIGNUP_ROLE=role;}function toggleDropdown(){document.getElementById('dropdownContent').classList.toggle('active');}function GETINITIALS(name){if(!name)return'JD';const parts=name.split(' ');return(parts[0][0]+(parts[1]?.[0]||'')).toUpperCase();}
 // ═══ NEW V2 FUNCTIONS ═══
 
 // HERO SEARCH
@@ -3234,6 +3471,250 @@ OPENTAILORPROFILE=function(tailorId){
 var MHUB_CURRENT_GARMENT='mens-tshirt';
 var MHUB_CURRENT_FIT='Fitted';
 var MHUB_PROFILES=[];
+var MHUB_EDIT_IDX=-1; // -1 means creating new, >=0 means editing existing
+
+// Ease allowances per fit style (added to body measurement for finished garment spec)
+// Format: { fieldSuffix: { Slim, Fitted, Relaxed, Loose, Modest, Structured, Flared } }
+var MHUB_EASE={
+  chest:    {Slim:1,  Fitted:2,  Relaxed:4,  Loose:6,  Modest:5,  Structured:3,  Flared:2  },
+  bust:     {Slim:1,  Fitted:2,  Relaxed:4,  Loose:6,  Modest:5,  Structured:3,  Flared:2  },
+  waist:    {Slim:0.5,Fitted:1,  Relaxed:3,  Loose:5,  Modest:4,  Structured:1,  Flared:2  },
+  hips:     {Slim:1,  Fitted:2,  Relaxed:4,  Loose:6,  Modest:5,  Structured:3,  Flared:6  },
+  shoulder: {Slim:0,  Fitted:0.25,Relaxed:0.5,Loose:1, Modest:0.5,Structured:0.5,Flared:0.25},
+  thigh:    {Slim:1,  Fitted:2,  Relaxed:4,  Loose:6,  Modest:4,  Structured:2,  Flared:4  },
+  knee:     {Slim:0.5,Fitted:1,  Relaxed:2,  Loose:3,  Modest:2,  Structured:1,  Flared:2  },
+  leg:      {Slim:0,  Fitted:1,  Relaxed:2,  Loose:4,  Modest:2,  Structured:1,  Flared:8  },
+  neck:     {Slim:0.5,Fitted:1,  Relaxed:1.5,Loose:2,  Modest:1.5,Structured:1,  Flared:1  },
+  vdepth:   {Slim:0,  Fitted:0,  Relaxed:0,  Loose:0,  Modest:-1, Structured:0,  Flared:0  }
+  // Length fields (sleeve, inseam, torso, body, length) get no ease — they are structural lengths
+};
+var MHUB_FIT_STYLES=['Slim','Fitted','Relaxed','Loose','Modest','Structured','Flared'];
+
+// PATTERN CUTTING CONSTANTS (seam allowances)
+var CUT_SA=0.625;   // 5/8" structural seam
+var CUT_HEM=1.0;    // 1" hem
+var CUT_NSA=0.375;  // 3/8" neckline/facing seam
+function ROUNDIN(x){return Math.round(x*8)/8;} // round to nearest 1/8"
+
+// Pattern piece definitions per garment type.
+// Each piece has a name and array of dims {label, note, calc(draftedMeasMap)}
+// draftedMeasMap keys: chest, bust, waist, hips, shoulder, sleeve, length, torso, neck, vdepth, inseam, thigh, knee, leg
+var PATTERN_PIECES={
+  'mens-tshirt':{
+    fieldMap:{'mt-chest':'chest','mt-shoulder':'shoulder','mt-sleeve':'sleeve','mt-length':'length','mt-neck':'neck','mt-waist':'waist'},
+    pieces:[
+      {name:'Front Body (cut \u00d72)',dims:[
+        {label:'Width',      note:'chest\u00f72 + 2\u00d7\u215d\u2033 side seams',              calc:function(d){return d.chest?ROUNDIN(d.chest/2+2*CUT_SA):null;}},
+        {label:'Length',     note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',          calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Back Body (cut \u00d72)',dims:[
+        {label:'Width',      note:'chest\u00f72 + 2\u00d7\u215d\u2033 side seams',              calc:function(d){return d.chest?ROUNDIN(d.chest/2+2*CUT_SA):null;}},
+        {label:'Length',     note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',          calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Sleeve (cut \u00d72)',dims:[
+        {label:'Cap Width',  note:'shoulder + 2\u00d7\u215d\u2033 sleeve seams',                calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
+        {label:'Length',     note:'sleeve length + \u215d\u2033 cap seam + 1\u2033 cuff hem',   calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Neckband (cut \u00d71)',dims:[
+        {label:'Circumference', note:'neck circ + 2\u00d7\u215e\u2033 ends',                   calc:function(d){return d.neck?ROUNDIN(d.neck+2*CUT_NSA):null;}},
+        {label:'Height (folded)',note:'1\u2033 fold + 2\u00d7\u215e\u2033 seams \u2192 fixed',  calc:function(d){return d.neck?1.75:null;}}
+      ]}
+    ]
+  },
+  'round-neck':{
+    fieldMap:{'rn-chest':'chest','rn-shoulder':'shoulder','rn-sleeve':'sleeve','rn-length':'length'},
+    pieces:[
+      {name:'Front Body (cut \u00d72)',dims:[
+        {label:'Width',      note:'chest\u00f72 + 2\u00d7\u215d\u2033',     calc:function(d){return d.chest?ROUNDIN(d.chest/2+2*CUT_SA):null;}},
+        {label:'Length',     note:'length + \u215d\u2033 + 1\u2033 hem',     calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Back Body (cut \u00d72)',dims:[
+        {label:'Width',      calc:function(d){return d.chest?ROUNDIN(d.chest/2+2*CUT_SA):null;}},
+        {label:'Length',     calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Sleeve (cut \u00d72)',dims:[
+        {label:'Cap Width',  calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
+        {label:'Length',     calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+      ]}
+    ]
+  },
+  'v-neck':{
+    fieldMap:{'vn-chest':'chest','vn-shoulder':'shoulder','vn-sleeve':'sleeve','vn-length':'length','vn-vdepth':'vdepth'},
+    pieces:[
+      {name:'Front Body (on fold, cut \u00d71)',dims:[
+        {label:'Half Width',  note:'chest\u00f74 + \u215d\u2033 one side seam (fold=CF)',       calc:function(d){return d.chest?ROUNDIN(d.chest/4+CUT_SA):null;}},
+        {label:'Length',      note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',          calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}},
+        {label:'V depth',     note:'V depth + \u215e\u2033 facing seam',                         calc:function(d){return d.vdepth?ROUNDIN(d.vdepth+CUT_NSA):null;}}
+      ]},
+      {name:'Back Body (on fold, cut \u00d71)',dims:[
+        {label:'Half Width',  note:'chest\u00f74 + \u215d\u2033 one side seam (fold=CB)',       calc:function(d){return d.chest?ROUNDIN(d.chest/4+CUT_SA):null;}},
+        {label:'Length',      calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Sleeve (cut \u00d72)',dims:[
+        {label:'Cap Width',   calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
+        {label:'Length',      calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'V-Neck Facing (cut \u00d72)',dims:[
+        {label:'Facing Length',note:'V depth \u00d72 + 2\u00d7\u215e\u2033 ends',              calc:function(d){return d.vdepth?ROUNDIN(d.vdepth*2+2*CUT_NSA):null;}},
+        {label:'Facing Width', note:'1\u2033 wide + 2\u00d7\u215e\u2033 \u2192 fixed 1\u00be\u2033', calc:function(d){return d.vdepth?1.75:null;}}
+      ]}
+    ]
+  },
+  'mens-trousers':{
+    fieldMap:{'mtr-waist':'waist','mtr-hips':'hips','mtr-inseam':'inseam','mtr-thigh':'thigh','mtr-knee':'knee','mtr-leg':'leg'},
+    pieces:[
+      {name:'Front Leg (cut \u00d72)',dims:[
+        {label:'Waist width',  note:'waist\u00f74 + 2\u00d7\u215d\u2033 seams',                 calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA):null;}},
+        {label:'Hip width',    note:'hips\u00f74 + 2\u00d7\u215d\u2033 seams',                  calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA):null;}},
+        {label:'Thigh width',  note:'thigh\u00f74 + 2\u00d7\u215d\u2033',                       calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA):null;}},
+        {label:'Knee width',   note:'knee\u00f74 + 2\u00d7\u215d\u2033',                        calc:function(d){return d.knee?ROUNDIN(d.knee/4+2*CUT_SA):null;}},
+        {label:'Leg opening',  note:'leg\u00f74 + 2\u00d7\u215d\u2033',                         calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
+        {label:'Total length', note:'inseam + \u215d\u2033 crotch seam + 1\u2033 hem',          calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Back Leg (cut \u00d72)',dims:[
+        {label:'Waist width',  note:'waist\u00f74 + 2\u00d7\u215d\u2033 + 1\u2033 back dart',  calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA+1):null;}},
+        {label:'Hip width',    note:'hips\u00f74 + 2\u00d7\u215d\u2033 + \u00bd\u2033 seat',    calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA+0.5):null;}},
+        {label:'Thigh width',  note:'thigh\u00f74 + 2\u00d7\u215d\u2033 + \u00bd\u2033',        calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA+0.5):null;}},
+        {label:'Knee width',   note:'knee\u00f74 + 2\u00d7\u215d\u2033',                        calc:function(d){return d.knee?ROUNDIN(d.knee/4+2*CUT_SA):null;}},
+        {label:'Leg opening',  note:'leg\u00f74 + 2\u00d7\u215d\u2033',                         calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
+        {label:'Total length', note:'inseam + \u215d\u2033 crotch seam + 1\u2033 hem',          calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Waistband (cut \u00d71)',dims:[
+        {label:'Length',       note:'waist + 2\u00d7\u215d\u2033 + 1\u00bd\u2033 overlap',      calc:function(d){return d.waist?ROUNDIN(d.waist+2*CUT_SA+1.5):null;}},
+        {label:'Width',        note:'1\u00bd\u2033 finish\u00d72 + 2\u00d7\u215d\u2033 \u2192 fixed 4\u00bc\u2033', calc:function(d){return d.waist?4.25:null;}}
+      ]}
+    ]
+  },
+  'womens-blouse':{
+    fieldMap:{'wb-bust':'bust','wb-waist':'waist','wb-shoulder':'shoulder','wb-sleeve':'sleeve','wb-torso':'torso','wb-neck':'neck'},
+    pieces:[
+      {name:'Front Body (on fold, cut \u00d71)',dims:[
+        {label:'Bust half-width',  note:'bust\u00f74 + \u215d\u2033 side seam (fold=CF)',       calc:function(d){return d.bust?ROUNDIN(d.bust/4+CUT_SA):null;}},
+        {label:'Waist half-width', note:'waist\u00f74 + \u215d\u2033 side seam',                calc:function(d){return d.waist?ROUNDIN(d.waist/4+CUT_SA):null;}},
+        {label:'Length',           note:'torso + \u215d\u2033 shoulder + 1\u2033 hem',           calc:function(d){return d.torso?ROUNDIN(d.torso+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Back Body (on fold, cut \u00d71)',dims:[
+        {label:'Bust half-width',  note:'bust\u00f74 + \u215d\u2033 side seam (fold=CB)',       calc:function(d){return d.bust?ROUNDIN(d.bust/4+CUT_SA):null;}},
+        {label:'Waist half-width', calc:function(d){return d.waist?ROUNDIN(d.waist/4+CUT_SA):null;}},
+        {label:'Length',           calc:function(d){return d.torso?ROUNDIN(d.torso+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Sleeve (cut \u00d72)',dims:[
+        {label:'Cap Width',  calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
+        {label:'Length',     calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Collar \/ Neckband (cut \u00d72)',dims:[
+        {label:'Length',     note:'neck circ + 2\u00d7\u215e\u2033 ends',                       calc:function(d){return d.neck?ROUNDIN(d.neck+2*CUT_NSA):null;}},
+        {label:'Width',      note:'1\u2033 fold + 2\u00d7\u215d\u2033 \u2192 fixed 2\u00bc\u2033', calc:function(d){return d.neck?2.25:null;}}
+      ]}
+    ]
+  },
+  'womens-tshirt':{
+    fieldMap:{'wt-bust':'bust','wt-shoulder':'shoulder','wt-sleeve':'sleeve','wt-length':'length'},
+    pieces:[
+      {name:'Front Body (cut \u00d72)',dims:[
+        {label:'Width',      note:'bust\u00f72 + 2\u00d7\u215d\u2033 side seams',               calc:function(d){return d.bust?ROUNDIN(d.bust/2+2*CUT_SA):null;}},
+        {label:'Length',     note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',           calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Back Body (cut \u00d72)',dims:[
+        {label:'Width',      calc:function(d){return d.bust?ROUNDIN(d.bust/2+2*CUT_SA):null;}},
+        {label:'Length',     calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Sleeve (cut \u00d72)',dims:[
+        {label:'Cap Width',  calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
+        {label:'Length',     calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+      ]}
+    ]
+  },
+  'womens-trousers':{
+    fieldMap:{'wtr-waist':'waist','wtr-hips':'hips','wtr-inseam':'inseam','wtr-thigh':'thigh','wtr-leg':'leg'},
+    pieces:[
+      {name:'Front Leg (cut \u00d72)',dims:[
+        {label:'Waist width',  note:'waist\u00f74 + 2\u00d7\u215d\u2033',                       calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA):null;}},
+        {label:'Hip width',    note:'hips\u00f74 + 2\u00d7\u215d\u2033',                        calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA):null;}},
+        {label:'Thigh width',  calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA):null;}},
+        {label:'Leg opening',  calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
+        {label:'Total length', note:'inseam + \u215d\u2033 crotch + 1\u2033 hem',               calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Back Leg (cut \u00d72)',dims:[
+        {label:'Waist width',  note:'waist\u00f74 + 2\u00d7\u215d\u2033 + \u00be\u2033 dart',  calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA+0.75):null;}},
+        {label:'Hip width',    note:'hips\u00f74 + 2\u00d7\u215d\u2033 + \u00bd\u2033 seat',   calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA+0.5):null;}},
+        {label:'Thigh width',  calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA+0.25):null;}},
+        {label:'Leg opening',  calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
+        {label:'Total length', calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Waistband (cut \u00d71)',dims:[
+        {label:'Length',       note:'waist + 2\u00d7\u215d\u2033 + 1\u00bd\u2033 overlap',     calc:function(d){return d.waist?ROUNDIN(d.waist+2*CUT_SA+1.5):null;}},
+        {label:'Width',        note:'1\u00bd\u2033 finish\u00d72 + 2\u00d7\u215d\u2033 \u2192 fixed 4\u00bc\u2033', calc:function(d){return d.waist?4.25:null;}}
+      ]}
+    ]
+  }
+};
+
+// GENERATE CUTTING SPECIFICATIONS TABLE
+function GENERATECUTTINGSPECS(bodyMeasurements, garment, selectedFit){
+  var pdef=PATTERN_PIECES[garment];
+  if(!pdef)return '';
+  var fm=pdef.fieldMap;
+
+  // Build drafted measurement map for each fit style
+  function getDrafted(fitStyle){
+    var d={};
+    Object.keys(bodyMeasurements).forEach(function(fid){
+      var bv=parseFloat(bodyMeasurements[fid]);
+      if(isNaN(bv))return;
+      var mk=fm[fid];
+      if(!mk)return;
+      var ease=(MHUB_EASE[mk]&&MHUB_EASE[mk][fitStyle]!==undefined)?MHUB_EASE[mk][fitStyle]:0;
+      d[mk]=bv+ease;
+    });
+    return d;
+  }
+  var draftedByFit={};
+  MHUB_FIT_STYLES.forEach(function(fs){draftedByFit[fs]=getDrafted(fs);});
+
+  // Build header row
+  var hdr='<th class="cut-piece-col">Pattern Piece</th><th class="cut-dim-col">Dimension &amp; Formula</th>';
+  MHUB_FIT_STYLES.forEach(function(fs){
+    var isSel=(fs===selectedFit);
+    hdr+='<th'+(isSel?' class="highlight-col"':'')+'>'+fs+(isSel?' \u2713':'')+'</th>';
+  });
+
+  // Build body rows
+  var rows='';
+  pdef.pieces.forEach(function(piece){
+    var ndims=piece.dims.length;
+    piece.dims.forEach(function(dim,di){
+      rows+='<tr>';
+      if(di===0){
+        rows+='<td rowspan="'+ndims+'" class="cut-piece-name">'+piece.name+'</td>';
+      }
+      var noteHtml=dim.note?'<span class="cut-formula-note">'+dim.note+'</span>':'';
+      rows+='<td class="cut-dim-label">'+dim.label+(noteHtml?'<br>'+noteHtml:'')+'</td>';
+      MHUB_FIT_STYLES.forEach(function(fs){
+        var isSel=(fs===selectedFit);
+        var val=dim.calc?dim.calc(draftedByFit[fs]):null;
+        var valStr=(val!==null&&val!==undefined&&!isNaN(val))?val+'"':'&mdash;';
+        rows+='<td'+(isSel?' class="highlight-col"':'')+'>'+valStr+'</td>';
+      });
+      rows+='</tr>';
+    });
+  });
+
+  var gLabel=garment.replace(/-/g,' ');
+  gLabel=gLabel.charAt(0).toUpperCase()+gLabel.slice(1);
+
+  return '<div class="mhub-cutting-panel">'
+    +'<div class="mhub-draft-title" style="margin-top:0;">\u2702\uFE0F Pattern Cutting Specifications &mdash; '+gLabel+'</div>'
+    +'<div class="mhub-draft-subtitle">Seam allowances already included: <strong>\u215d\u2033 structural &bull; 1\u2033 hem &bull; \u215e\u2033 neckline</strong>. Cut directly from these dimensions.</div>'
+    +'<div style="overflow-x:auto;">'
+    +'<table class="mhub-cutting-table">'
+    +'<thead><tr>'+hdr+'</tr></thead>'
+    +'<tbody>'+rows+'</tbody>'
+    +'</table>'
+    +'</div>'
+    +'<p class="mhub-draft-note">\u2139\uFE0F <strong>Cut \u00d72</strong> = cut two identical pieces. <strong>On fold</strong> = place pattern on folded fabric, fold line = centre of garment. Back trouser/trouser leg is wider to accommodate seat curve and back dart.</p>'
+    +'</div>';
+}
 
 function MHUBSHOWTAB(tab){
   document.getElementById('mhubTabNew').style.display=tab==='new'?'block':'none';
@@ -3248,6 +3729,9 @@ function MHUBGARMENT(btn,garment){
   var gp=document.getElementById('gp-'+garment);
   if(gp)gp.classList.add('active');
   MHUB_CURRENT_GARMENT=garment;
+  // Clear any existing draft result when garment changes
+  var dr=document.getElementById('mhubDraftResult');
+  if(dr){dr.style.display='none';dr.innerHTML='';}
 }
 function SELECTFIT(btn){
   document.querySelectorAll('.fit-btn').forEach(function(b){b.classList.remove('active');});
@@ -3258,12 +3742,36 @@ function SAVEMHUB(){
   if(!CURRENT_USER){alert('Please sign in to save measurement profiles.');return;}
   var name=(document.getElementById('mhubProfileName').value||'').trim();
   if(!name){alert('Please give your profile a name.');return;}
-  var profile={id:Date.now().toString(),name:name,garment:MHUB_CURRENT_GARMENT,fit:MHUB_CURRENT_FIT,notes:(document.getElementById('mhubNotes').value||''),measurements:COLLECTMEASUREMENTS(),created:new Date().toLocaleString()};
-  MHUB_PROFILES.push(profile);
+  var m=COLLECTMEASUREMENTS();
+  var hasAny=Object.keys(m).length>0;
+  if(!hasAny){alert('Please enter at least one measurement before saving.');return;}
+  var profile={id:Date.now().toString(),name:name,garment:MHUB_CURRENT_GARMENT,fit:MHUB_CURRENT_FIT,notes:(document.getElementById('mhubNotes').value||''),measurements:m,created:new Date().toLocaleString()};
+  if(MHUB_EDIT_IDX>=0){
+    // Overwrite existing profile
+    MHUB_PROFILES[MHUB_EDIT_IDX]=profile;
+    MHUB_PROFILES[MHUB_EDIT_IDX].created=MHUB_PROFILES[MHUB_EDIT_IDX].created+' (edited)';
+    MHUB_EDIT_IDX=-1;
+    document.getElementById('mhubSaveBtn').textContent='Save Profile';
+    document.getElementById('mhubCancelEditBtn').style.display='none';
+  } else {
+    MHUB_PROFILES.push(profile);
+  }
   localStorage.setItem('sb_mhub_'+CURRENT_USER.id,JSON.stringify(MHUB_PROFILES));
   alert('Profile "'+name+'" saved!');
   document.getElementById('mhubProfileName').value='';
+  document.getElementById('mhubNotes').value='';
+  var dr=document.getElementById('mhubDraftResult');
+  if(dr){dr.style.display='none';dr.innerHTML='';}
   MHUBSHOWTAB('saved');
+}
+function CANCELMHUBEDIT(){
+  MHUB_EDIT_IDX=-1;
+  document.getElementById('mhubSaveBtn').textContent='Save Profile';
+  document.getElementById('mhubCancelEditBtn').style.display='none';
+  document.getElementById('mhubProfileName').value='';
+  document.getElementById('mhubNotes').value='';
+  var dr=document.getElementById('mhubDraftResult');
+  if(dr){dr.style.display='none';dr.innerHTML='';}
 }
 function COLLECTMEASUREMENTS(){
   var inputs=document.querySelectorAll('#gp-'+MHUB_CURRENT_GARMENT+' input');
@@ -3271,6 +3779,94 @@ function COLLECTMEASUREMENTS(){
   inputs.forEach(function(inp){if(inp.value)m[inp.id]=inp.value;});
   return m;
 }
+
+// GENERATE DRAFTED MEASUREMENTS
+function GENERATEDRAFT(){
+  var m=COLLECTMEASUREMENTS();
+  if(Object.keys(m).length===0){alert('Please enter your body measurements first.');return;}
+  var garment=MHUB_CURRENT_GARMENT;
+  var selectedFit=MHUB_CURRENT_FIT;
+  var profileName=(document.getElementById('mhubProfileName').value||'').trim()||'This Garment';
+
+  // Build label map from field ids to human-readable names
+  var FIELD_LABELS={
+    'mt-chest':'Chest','mt-shoulder':'Shoulder Width','mt-sleeve':'Sleeve Length',
+    'mt-length':'Body Length','mt-neck':'Neck','mt-waist':'Waist',
+    'rn-chest':'Chest','rn-shoulder':'Shoulder Width','rn-sleeve':'Sleeve Length','rn-length':'Body Length',
+    'vn-chest':'Chest','vn-shoulder':'Shoulder Width','vn-sleeve':'Sleeve Length',
+    'vn-length':'Body Length','vn-vdepth':'V-Neck Depth',
+    'mtr-waist':'Waist','mtr-hips':'Hips','mtr-inseam':'Inseam','mtr-thigh':'Thigh',
+    'mtr-knee':'Knee','mtr-leg':'Leg Opening',
+    'wb-bust':'Bust','wb-waist':'Waist','wb-shoulder':'Shoulder Width',
+    'wb-sleeve':'Sleeve Length','wb-torso':'Torso Length','wb-neck':'Neck',
+    'wt-bust':'Bust','wt-shoulder':'Shoulder Width','wt-sleeve':'Sleeve Length','wt-length':'Body Length',
+    'wtr-waist':'Waist','wtr-hips':'Hips','wtr-inseam':'Inseam',
+    'wtr-thigh':'Thigh','wtr-leg':'Leg Opening'
+  };
+
+  // For each field determine the ease key (the suffix that matches MHUB_EASE keys)
+  function getEaseKey(fieldId){
+    var id=fieldId.toLowerCase();
+    if(id.indexOf('chest')>=0)return 'chest';
+    if(id.indexOf('bust')>=0)return 'bust';
+    if(id.indexOf('shoulder')>=0)return 'shoulder';
+    if(id.indexOf('waist')>=0)return 'waist';
+    if(id.indexOf('hips')>=0)return 'hips';
+    if(id.indexOf('thigh')>=0)return 'thigh';
+    if(id.indexOf('knee')>=0)return 'knee';
+    if(id.indexOf('leg')>=0)return 'leg';
+    if(id.indexOf('neck')>=0 && id.indexOf('vdepth')<0)return 'neck';
+    if(id.indexOf('vdepth')>=0)return 'vdepth';
+    return null; // length fields — no ease
+  }
+
+  // Build table rows
+  var garmentLabel=garment.replace(/-/g,' ');
+  garmentLabel=garmentLabel.charAt(0).toUpperCase()+garmentLabel.slice(1);
+
+  var headerCells='<th>Measurement</th><th class="body-header">Body Size</th>';
+  MHUB_FIT_STYLES.forEach(function(fs){
+    var isSelected=(fs===selectedFit);
+    headerCells+='<th'+(isSelected?' class="highlight-col"':'')+'>'+fs+(isSelected?' &#x2713;':'')+'</th>';
+  });
+
+  var bodyRows='';
+  Object.keys(m).forEach(function(fid){
+    var bodyVal=parseFloat(m[fid]);
+    if(isNaN(bodyVal))return;
+    var label=FIELD_LABELS[fid]||fid;
+    var easeKey=getEaseKey(fid);
+    var rowCells='<td>'+label+'</td>';
+    rowCells+='<td class="body-col">'+bodyVal+'"</td>';
+    MHUB_FIT_STYLES.forEach(function(fs){
+      var isSelected=(fs===selectedFit);
+      var ease=(easeKey&&MHUB_EASE[easeKey]&&MHUB_EASE[easeKey][fs]!==undefined)?MHUB_EASE[easeKey][fs]:0;
+      var drafted=Math.round((bodyVal+ease)*10)/10;
+      var displayVal=drafted>0?drafted+'"':'—';
+      rowCells+='<td'+(isSelected?' class="highlight-col"':'')+'>'+displayVal+'</td>';
+    });
+    bodyRows+='<tr>'+rowCells+'</tr>';
+  });
+
+  var html='<div class="mhub-draft-panel">'
+    +'<div class="mhub-draft-title">&#x2702;&#xFE0F; Drafted Measurements &mdash; '+profileName+'</div>'
+    +'<div class="mhub-draft-subtitle">'+garmentLabel+' &bull; Your selected fit: <strong>'+selectedFit+'</strong> (highlighted)</div>'
+    +'<div style="overflow-x:auto;">'
+    +'<table class="mhub-draft-table">'
+    +'<thead><tr>'+headerCells+'</tr></thead>'
+    +'<tbody>'+bodyRows+'</tbody>'
+    +'</table>'
+    +'</div>'
+    +'<p class="mhub-draft-note">&#x2139;&#xFE0F; <strong>Body Size</strong> = your actual measurement. <strong>Drafted</strong> = finished garment size (body + ease allowance). Share the drafted column matching your chosen fit with your tailor.</p>'
+    +'</div>';
+
+  // Append cutting specifications table below drafted measurements
+  html+=GENERATECUTTINGSPECS(m,garment,selectedFit);
+
+  var dr=document.getElementById('mhubDraftResult');
+  if(dr){dr.innerHTML=html;dr.style.display='block';dr.scrollIntoView({behavior:'smooth',block:'nearest'});}
+}
+
 function RENDERMHUBPROFILES(){
   if(CURRENT_USER){var saved=localStorage.getItem('sb_mhub_'+CURRENT_USER.id);if(saved)MHUB_PROFILES=JSON.parse(saved);}
   var list=document.getElementById('mhubProfilesList');
@@ -3278,11 +3874,104 @@ function RENDERMHUBPROFILES(){
   if(MHUB_PROFILES.length===0){list.innerHTML='<p style="color:var(--gray);text-align:center;padding:2rem;">No saved profiles yet. Create your first one!</p>';return;}
   list.innerHTML=MHUB_PROFILES.map(function(p,i){
     var garmentLabel=p.garment.replace(/-/g,' ');
-    return '<div class="mhub-profile-card"><div class="mhub-profile-info"><div class="mhub-profile-name">'+p.name+'</div><div class="mhub-profile-meta">'+garmentLabel+' &bull; '+p.fit+' fit &bull; '+p.created+'</div></div><div class="mhub-profile-actions"><button class="btn-use" onclick="USEMHUBPROFILE('+i+')">Use</button><button class="btn-delete" onclick="DELETEMHUBPROFILE('+i+')">Delete</button></div></div>';
+    garmentLabel=garmentLabel.charAt(0).toUpperCase()+garmentLabel.slice(1);
+    return '<div class="mhub-profile-card">'
+      +'<div class="mhub-profile-info">'
+      +'<div class="mhub-profile-name">'+p.name+'</div>'
+      +'<div class="mhub-profile-meta">'+garmentLabel+' &bull; '+p.fit+' fit &bull; '+p.created+'</div>'
+      +'</div>'
+      +'<div class="mhub-profile-actions">'
+      +'<button class="btn-use" onclick="OPENMHUBEDITMODAL('+i+')">&#x270F;&#xFE0F; Edit</button>'
+      +'<button class="btn-use" onclick="USEMHUBPROFILE('+i+')" style="background:var(--green);">Use</button>'
+      +'<button class="btn-delete" onclick="DELETEMHUBPROFILE('+i+')">Delete</button>'
+      +'</div>'
+      +'</div>';
   }).join('');
 }
+
+// EDIT MODAL — open with full measurements loaded
+var MHUB_EDITING_IDX=-1;
+function OPENMHUBEDITMODAL(idx){
+  var p=MHUB_PROFILES[idx];
+  if(!p)return;
+  MHUB_EDITING_IDX=idx;
+  document.getElementById('editProfileName').value=p.name||'';
+  document.getElementById('editNotes').value=p.notes||'';
+  var sel=document.getElementById('editFitStyle');
+  if(sel)sel.value=p.fit||'Fitted';
+
+  // Build measurement input fields
+  var FIELD_LABELS={
+    'mt-chest':'Chest (in)','mt-shoulder':'Shoulder Width (in)','mt-sleeve':'Sleeve Length (in)',
+    'mt-length':'Body Length (in)','mt-neck':'Neck (in)','mt-waist':'Waist (in)',
+    'rn-chest':'Chest (in)','rn-shoulder':'Shoulder Width (in)','rn-sleeve':'Sleeve Length (in)','rn-length':'Body Length (in)',
+    'vn-chest':'Chest (in)','vn-shoulder':'Shoulder Width (in)','vn-sleeve':'Sleeve Length (in)',
+    'vn-length':'Body Length (in)','vn-vdepth':'V-Neck Depth (in)',
+    'mtr-waist':'Waist (in)','mtr-hips':'Hips (in)','mtr-inseam':'Inseam (in)','mtr-thigh':'Thigh (in)',
+    'mtr-knee':'Knee (in)','mtr-leg':'Leg Opening (in)',
+    'wb-bust':'Bust (in)','wb-waist':'Waist (in)','wb-shoulder':'Shoulder Width (in)',
+    'wb-sleeve':'Sleeve Length (in)','wb-torso':'Torso Length (in)','wb-neck':'Neck (in)',
+    'wt-bust':'Bust (in)','wt-shoulder':'Shoulder Width (in)','wt-sleeve':'Sleeve Length (in)','wt-length':'Body Length (in)',
+    'wtr-waist':'Waist (in)','wtr-hips':'Hips (in)','wtr-inseam':'Inseam (in)',
+    'wtr-thigh':'Thigh (in)','wtr-leg':'Leg Opening (in)'
+  };
+  var grid=document.getElementById('editFieldsGrid');
+  if(!grid)return;
+  var m=p.measurements||{};
+  var keys=Object.keys(m);
+  if(keys.length===0){
+    // If no measurements stored, show fields for this garment type from the form
+    var existingInputs=document.querySelectorAll('#gp-'+p.garment+' input');
+    existingInputs.forEach(function(inp){keys.push(inp.id);m[inp.id]='';});
+  }
+  var fieldsHtml='';
+  keys.forEach(function(k){
+    var label=FIELD_LABELS[k]||k;
+    fieldsHtml+='<div class="mhub-edit-field">'
+      +'<label>'+label+'</label>'
+      +'<input type="number" id="edit_'+k+'" value="'+(m[k]||'')+'" min="0" step="0.5" placeholder="0">'
+      +'</div>';
+  });
+  grid.innerHTML=fieldsHtml;
+  document.getElementById('mhubEditModal').classList.add('open');
+}
+function CLOSEMHUBEDITMODAL(){
+  document.getElementById('mhubEditModal').classList.remove('open');
+  MHUB_EDITING_IDX=-1;
+}
+function SAVEMHUBEDIT(){
+  if(!CURRENT_USER){alert('Please sign in.');return;}
+  var idx=MHUB_EDITING_IDX;
+  if(idx<0||idx>=MHUB_PROFILES.length)return;
+  var name=(document.getElementById('editProfileName').value||'').trim();
+  if(!name){alert('Profile name is required.');return;}
+  var fit=document.getElementById('editFitStyle').value;
+  var notes=document.getElementById('editNotes').value||'';
+  // Collect updated measurements
+  var m={};
+  document.querySelectorAll('#editFieldsGrid input').forEach(function(inp){
+    if(inp.value){
+      var origKey=inp.id.replace('edit_','');
+      m[origKey]=inp.value;
+    }
+  });
+  MHUB_PROFILES[idx].name=name;
+  MHUB_PROFILES[idx].fit=fit;
+  MHUB_PROFILES[idx].notes=notes;
+  MHUB_PROFILES[idx].measurements=m;
+  MHUB_PROFILES[idx].updated=new Date().toLocaleString();
+  localStorage.setItem('sb_mhub_'+CURRENT_USER.id,JSON.stringify(MHUB_PROFILES));
+  CLOSEMHUBEDITMODAL();
+  RENDERMHUBPROFILES();
+  alert('Profile "'+name+'" updated!');
+}
 function USEMHUBPROFILE(idx){var p=MHUB_PROFILES[idx];alert('Profile "'+p.name+'" selected! It will attach to your next order at checkout.');}
-function DELETEMHUBPROFILE(idx){MHUB_PROFILES.splice(idx,1);if(CURRENT_USER)localStorage.setItem('sb_mhub_'+CURRENT_USER.id,JSON.stringify(MHUB_PROFILES));RENDERMHUBPROFILES();}
+function DELETEMHUBPROFILE(idx){
+  if(!confirm('Delete this profile?'))return;
+  MHUB_PROFILES.splice(idx,1);
+  if(CURRENT_USER)localStorage.setItem('sb_mhub_'+CURRENT_USER.id,JSON.stringify(MHUB_PROFILES));
+  RENDERMHUBPROFILES();
+}
 
 // PANEL OVERRIDE — supports new panels
 var _ORIG_PANEL=PANEL;
