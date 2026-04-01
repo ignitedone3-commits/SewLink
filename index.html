@@ -3502,38 +3502,52 @@ var PATTERN_PIECES={
   'mens-tshirt':{
     fieldMap:{'mt-chest':'chest','mt-shoulder':'shoulder','mt-sleeve':'sleeve','mt-length':'length','mt-neck':'neck','mt-waist':'waist'},
     pieces:[
-      {name:'Front Body (cut \u00d72)',dims:[
-        {label:'Width',      note:'chest\u00f72 + 2\u00d7\u215d\u2033 side seams',              calc:function(d){return d.chest?ROUNDIN(d.chest/2+2*CUT_SA):null;}},
-        {label:'Length',     note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',          calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      {name:'Front Body (cut \u00d74)',dims:[
+        {label:'Chest Width',       note:'chest\u00f74 + 2\u00d7\u215d\u2033 side seams',           calc:function(d){return d.chest?ROUNDIN(d.chest/4+2*CUT_SA):null;}},
+        {label:'Stomach\/Waist Width',note:'waist\u00f74 + 2\u00d7\u215d\u2033 side seams',         calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'chest\u00f76 + \u215d\u2033 seam allowance',               calc:function(d){return d.chest?ROUNDIN(d.chest/6+CUT_SA):null;}},
+        {label:'Length',            note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',        calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
       ]},
-      {name:'Back Body (cut \u00d72)',dims:[
-        {label:'Width',      note:'chest\u00f72 + 2\u00d7\u215d\u2033 side seams',              calc:function(d){return d.chest?ROUNDIN(d.chest/2+2*CUT_SA):null;}},
-        {label:'Length',     note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',          calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      {name:'Back Body (cut \u00d74)',dims:[
+        {label:'Chest Width',       note:'chest\u00f74 + 2\u00d7\u215d\u2033 side seams',           calc:function(d){return d.chest?ROUNDIN(d.chest/4+2*CUT_SA):null;}},
+        {label:'Stomach\/Waist Width',note:'waist\u00f74 + 2\u00d7\u215d\u2033 side seams',         calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'chest\u00f76 + \u215d\u2033 seam allowance',               calc:function(d){return d.chest?ROUNDIN(d.chest/6+CUT_SA):null;}},
+        {label:'Length',            note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',        calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Sleeve (cut \u00d72)',dims:[
-        {label:'Cap Width',  note:'shoulder + 2\u00d7\u215d\u2033 sleeve seams',                calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
-        {label:'Length',     note:'sleeve length + \u215d\u2033 cap seam + 1\u2033 cuff hem',   calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+        {label:'Armhole\/Cap Width',note:'shoulder \u00f72 + 2\u00d7\u215d\u2033 sleeve seams',     calc:function(d){return d.shoulder?ROUNDIN(d.shoulder/2+2*CUT_SA):null;}},
+        {label:'Length',            note:'sleeve length + \u215d\u2033 cap seam + 1\u2033 cuff hem', calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Neckband (cut \u00d71)',dims:[
-        {label:'Circumference', note:'neck circ + 2\u00d7\u215e\u2033 ends',                   calc:function(d){return d.neck?ROUNDIN(d.neck+2*CUT_NSA):null;}},
-        {label:'Height (folded)',note:'1\u2033 fold + 2\u00d7\u215e\u2033 seams \u2192 fixed',  calc:function(d){return d.neck?1.75:null;}}
+        {label:'Finished Length',   note:'neck circumference \u2014 finished size',                  calc:function(d){return d.neck?ROUNDIN(d.neck):null;}},
+        {label:'Finished Width',    note:'1\u2033 visible width after fold \u2014 finished',         calc:function(d){return d.neck?1.0:null;}},
+        {label:'Cut Length',        note:'neck circ + 2\u00d7\u215e\u2033 end seams',               calc:function(d){return d.neck?ROUNDIN(d.neck+2*CUT_NSA):null;}},
+        {label:'Cut Height',        note:'1\u2033 fold\u00d72 + 2\u00d7\u215e\u2033 \u2192 fixed 2\u00bc\u2033', calc:function(d){return d.neck?2.25:null;}}
       ]}
     ]
   },
   'round-neck':{
-    fieldMap:{'rn-chest':'chest','rn-shoulder':'shoulder','rn-sleeve':'sleeve','rn-length':'length'},
+    fieldMap:{'rn-chest':'chest','rn-shoulder':'shoulder','rn-sleeve':'sleeve','rn-length':'length','rn-neck':'neck'},
     pieces:[
-      {name:'Front Body (cut \u00d72)',dims:[
-        {label:'Width',      note:'chest\u00f72 + 2\u00d7\u215d\u2033',     calc:function(d){return d.chest?ROUNDIN(d.chest/2+2*CUT_SA):null;}},
-        {label:'Length',     note:'length + \u215d\u2033 + 1\u2033 hem',     calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      {name:'Front Body (cut \u00d74)',dims:[
+        {label:'Chest Width',       note:'chest\u00f74 + 2\u00d7\u215d\u2033 side seams',           calc:function(d){return d.chest?ROUNDIN(d.chest/4+2*CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'chest\u00f76 + \u215d\u2033 seam allowance',               calc:function(d){return d.chest?ROUNDIN(d.chest/6+CUT_SA):null;}},
+        {label:'Length',            note:'length + \u215d\u2033 shoulder + 1\u2033 hem',             calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
       ]},
-      {name:'Back Body (cut \u00d72)',dims:[
-        {label:'Width',      calc:function(d){return d.chest?ROUNDIN(d.chest/2+2*CUT_SA):null;}},
-        {label:'Length',     calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      {name:'Back Body (cut \u00d74)',dims:[
+        {label:'Chest Width',       note:'chest\u00f74 + 2\u00d7\u215d\u2033 side seams',           calc:function(d){return d.chest?ROUNDIN(d.chest/4+2*CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'chest\u00f76 + \u215d\u2033 seam allowance',               calc:function(d){return d.chest?ROUNDIN(d.chest/6+CUT_SA):null;}},
+        {label:'Length',            calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Sleeve (cut \u00d72)',dims:[
-        {label:'Cap Width',  calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
-        {label:'Length',     calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+        {label:'Armhole\/Cap Width',note:'shoulder \u00f72 + 2\u00d7\u215d\u2033 sleeve seams',     calc:function(d){return d.shoulder?ROUNDIN(d.shoulder/2+2*CUT_SA):null;}},
+        {label:'Length',            calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+      ]},
+      {name:'Neckband (cut \u00d71)',dims:[
+        {label:'Finished Length',   note:'neck circumference \u2014 finished size',                  calc:function(d){return d.neck?ROUNDIN(d.neck):null;}},
+        {label:'Finished Width',    note:'1\u2033 visible width after fold \u2014 finished',         calc:function(d){return d.neck?1.0:null;}},
+        {label:'Cut Length',        note:'neck circ + 2\u00d7\u215e\u2033 end seams',               calc:function(d){return d.neck?ROUNDIN(d.neck+2*CUT_NSA):null;}},
+        {label:'Cut Height',        note:'fixed 2\u00bc\u2033 (1\u2033 fold\u00d72 + seams)',       calc:function(d){return d.neck?2.25:null;}}
       ]}
     ]
   },
@@ -3541,46 +3555,48 @@ var PATTERN_PIECES={
     fieldMap:{'vn-chest':'chest','vn-shoulder':'shoulder','vn-sleeve':'sleeve','vn-length':'length','vn-vdepth':'vdepth'},
     pieces:[
       {name:'Front Body (on fold, cut \u00d71)',dims:[
-        {label:'Half Width',  note:'chest\u00f74 + \u215d\u2033 one side seam (fold=CF)',       calc:function(d){return d.chest?ROUNDIN(d.chest/4+CUT_SA):null;}},
-        {label:'Length',      note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',          calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}},
-        {label:'V depth',     note:'V depth + \u215e\u2033 facing seam',                         calc:function(d){return d.vdepth?ROUNDIN(d.vdepth+CUT_NSA):null;}}
+        {label:'Chest Half-Width',  note:'chest\u00f74 + \u215d\u2033 side seam (fold = CF)',        calc:function(d){return d.chest?ROUNDIN(d.chest/4+CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'chest\u00f76 + \u215d\u2033 seam allowance',               calc:function(d){return d.chest?ROUNDIN(d.chest/6+CUT_SA):null;}},
+        {label:'Length',            note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',        calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}},
+        {label:'V depth',           note:'V depth + \u215e\u2033 facing seam',                       calc:function(d){return d.vdepth?ROUNDIN(d.vdepth+CUT_NSA):null;}}
       ]},
       {name:'Back Body (on fold, cut \u00d71)',dims:[
-        {label:'Half Width',  note:'chest\u00f74 + \u215d\u2033 one side seam (fold=CB)',       calc:function(d){return d.chest?ROUNDIN(d.chest/4+CUT_SA):null;}},
-        {label:'Length',      calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+        {label:'Chest Half-Width',  note:'chest\u00f74 + \u215d\u2033 side seam (fold = CB)',        calc:function(d){return d.chest?ROUNDIN(d.chest/4+CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'chest\u00f76 + \u215d\u2033 seam allowance',               calc:function(d){return d.chest?ROUNDIN(d.chest/6+CUT_SA):null;}},
+        {label:'Length',            calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Sleeve (cut \u00d72)',dims:[
-        {label:'Cap Width',   calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
-        {label:'Length',      calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+        {label:'Armhole\/Cap Width',note:'shoulder \u00f72 + 2\u00d7\u215d\u2033 sleeve seams',     calc:function(d){return d.shoulder?ROUNDIN(d.shoulder/2+2*CUT_SA):null;}},
+        {label:'Length',            calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'V-Neck Facing (cut \u00d72)',dims:[
-        {label:'Facing Length',note:'V depth \u00d72 + 2\u00d7\u215e\u2033 ends',              calc:function(d){return d.vdepth?ROUNDIN(d.vdepth*2+2*CUT_NSA):null;}},
-        {label:'Facing Width', note:'1\u2033 wide + 2\u00d7\u215e\u2033 \u2192 fixed 1\u00be\u2033', calc:function(d){return d.vdepth?1.75:null;}}
+        {label:'Facing Length',     note:'V depth \u00d72 + 2\u00d7\u215e\u2033 ends',              calc:function(d){return d.vdepth?ROUNDIN(d.vdepth*2+2*CUT_NSA):null;}},
+        {label:'Facing Width',      note:'1\u2033 wide + 2\u00d7\u215e\u2033 \u2192 fixed 1\u00be\u2033', calc:function(d){return d.vdepth?1.75:null;}}
       ]}
     ]
   },
   'mens-trousers':{
     fieldMap:{'mtr-waist':'waist','mtr-hips':'hips','mtr-inseam':'inseam','mtr-thigh':'thigh','mtr-knee':'knee','mtr-leg':'leg'},
     pieces:[
-      {name:'Front Leg (cut \u00d72)',dims:[
-        {label:'Waist width',  note:'waist\u00f74 + 2\u00d7\u215d\u2033 seams',                 calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA):null;}},
-        {label:'Hip width',    note:'hips\u00f74 + 2\u00d7\u215d\u2033 seams',                  calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA):null;}},
-        {label:'Thigh width',  note:'thigh\u00f74 + 2\u00d7\u215d\u2033',                       calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA):null;}},
-        {label:'Knee width',   note:'knee\u00f74 + 2\u00d7\u215d\u2033',                        calc:function(d){return d.knee?ROUNDIN(d.knee/4+2*CUT_SA):null;}},
-        {label:'Leg opening',  note:'leg\u00f74 + 2\u00d7\u215d\u2033',                         calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
-        {label:'Total length', note:'inseam + \u215d\u2033 crotch seam + 1\u2033 hem',          calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
+      {name:'Front Leg (cut \u00d74)',dims:[
+        {label:'Waist Width',       note:'waist\u00f74 + 2\u00d7\u215d\u2033 seams',                calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA):null;}},
+        {label:'Hip Width',         note:'hips\u00f74 + 2\u00d7\u215d\u2033 seams',                 calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA):null;}},
+        {label:'Thigh Width',       note:'thigh\u00f74 + 2\u00d7\u215d\u2033',                      calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA):null;}},
+        {label:'Knee Width',        note:'knee\u00f74 + 2\u00d7\u215d\u2033',                       calc:function(d){return d.knee?ROUNDIN(d.knee/4+2*CUT_SA):null;}},
+        {label:'Leg Opening',       note:'leg\u00f74 + 2\u00d7\u215d\u2033',                        calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
+        {label:'Total Length',      note:'inseam + \u215d\u2033 crotch seam + 1\u2033 hem',         calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
       ]},
-      {name:'Back Leg (cut \u00d72)',dims:[
-        {label:'Waist width',  note:'waist\u00f74 + 2\u00d7\u215d\u2033 + 1\u2033 back dart',  calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA+1):null;}},
-        {label:'Hip width',    note:'hips\u00f74 + 2\u00d7\u215d\u2033 + \u00bd\u2033 seat',    calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA+0.5):null;}},
-        {label:'Thigh width',  note:'thigh\u00f74 + 2\u00d7\u215d\u2033 + \u00bd\u2033',        calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA+0.5):null;}},
-        {label:'Knee width',   note:'knee\u00f74 + 2\u00d7\u215d\u2033',                        calc:function(d){return d.knee?ROUNDIN(d.knee/4+2*CUT_SA):null;}},
-        {label:'Leg opening',  note:'leg\u00f74 + 2\u00d7\u215d\u2033',                         calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
-        {label:'Total length', note:'inseam + \u215d\u2033 crotch seam + 1\u2033 hem',          calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
+      {name:'Back Leg (cut \u00d74)',dims:[
+        {label:'Waist Width',       note:'waist\u00f74 + 2\u00d7\u215d\u2033 + 1\u2033 back dart', calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA+1):null;}},
+        {label:'Hip Width',         note:'hips\u00f74 + 2\u00d7\u215d\u2033 + \u00bd\u2033 seat',  calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA+0.5):null;}},
+        {label:'Thigh Width',       note:'thigh\u00f74 + 2\u00d7\u215d\u2033 + \u00bd\u2033',      calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA+0.5):null;}},
+        {label:'Knee Width',        note:'knee\u00f74 + 2\u00d7\u215d\u2033',                       calc:function(d){return d.knee?ROUNDIN(d.knee/4+2*CUT_SA):null;}},
+        {label:'Leg Opening',       note:'leg\u00f74 + 2\u00d7\u215d\u2033',                        calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
+        {label:'Total Length',      note:'inseam + \u215d\u2033 crotch seam + 1\u2033 hem',         calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Waistband (cut \u00d71)',dims:[
-        {label:'Length',       note:'waist + 2\u00d7\u215d\u2033 + 1\u00bd\u2033 overlap',      calc:function(d){return d.waist?ROUNDIN(d.waist+2*CUT_SA+1.5):null;}},
-        {label:'Width',        note:'1\u00bd\u2033 finish\u00d72 + 2\u00d7\u215d\u2033 \u2192 fixed 4\u00bc\u2033', calc:function(d){return d.waist?4.25:null;}}
+        {label:'Length',            note:'waist + 2\u00d7\u215d\u2033 + 1\u00bd\u2033 overlap',     calc:function(d){return d.waist?ROUNDIN(d.waist+2*CUT_SA+1.5):null;}},
+        {label:'Width',             note:'1\u00bd\u2033 finish\u00d72 + 2\u00d7\u215d\u2033 \u2192 fixed 4\u00bc\u2033', calc:function(d){return d.waist?4.25:null;}}
       ]}
     ]
   },
@@ -3588,62 +3604,68 @@ var PATTERN_PIECES={
     fieldMap:{'wb-bust':'bust','wb-waist':'waist','wb-shoulder':'shoulder','wb-sleeve':'sleeve','wb-torso':'torso','wb-neck':'neck'},
     pieces:[
       {name:'Front Body (on fold, cut \u00d71)',dims:[
-        {label:'Bust half-width',  note:'bust\u00f74 + \u215d\u2033 side seam (fold=CF)',       calc:function(d){return d.bust?ROUNDIN(d.bust/4+CUT_SA):null;}},
-        {label:'Waist half-width', note:'waist\u00f74 + \u215d\u2033 side seam',                calc:function(d){return d.waist?ROUNDIN(d.waist/4+CUT_SA):null;}},
-        {label:'Length',           note:'torso + \u215d\u2033 shoulder + 1\u2033 hem',           calc:function(d){return d.torso?ROUNDIN(d.torso+CUT_SA+CUT_HEM):null;}}
+        {label:'Bust Half-Width',   note:'bust\u00f74 + \u215d\u2033 side seam (fold = CF)',         calc:function(d){return d.bust?ROUNDIN(d.bust/4+CUT_SA):null;}},
+        {label:'Stomach\/Waist Half-Width',note:'waist\u00f74 + \u215d\u2033 side seam',            calc:function(d){return d.waist?ROUNDIN(d.waist/4+CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'bust\u00f76 + \u215d\u2033 seam allowance',                calc:function(d){return d.bust?ROUNDIN(d.bust/6+CUT_SA):null;}},
+        {label:'Length',            note:'torso + \u215d\u2033 shoulder + 1\u2033 hem',              calc:function(d){return d.torso?ROUNDIN(d.torso+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Back Body (on fold, cut \u00d71)',dims:[
-        {label:'Bust half-width',  note:'bust\u00f74 + \u215d\u2033 side seam (fold=CB)',       calc:function(d){return d.bust?ROUNDIN(d.bust/4+CUT_SA):null;}},
-        {label:'Waist half-width', calc:function(d){return d.waist?ROUNDIN(d.waist/4+CUT_SA):null;}},
-        {label:'Length',           calc:function(d){return d.torso?ROUNDIN(d.torso+CUT_SA+CUT_HEM):null;}}
+        {label:'Bust Half-Width',   note:'bust\u00f74 + \u215d\u2033 side seam (fold = CB)',         calc:function(d){return d.bust?ROUNDIN(d.bust/4+CUT_SA):null;}},
+        {label:'Stomach\/Waist Half-Width',calc:function(d){return d.waist?ROUNDIN(d.waist/4+CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'bust\u00f76 + \u215d\u2033 seam allowance',                calc:function(d){return d.bust?ROUNDIN(d.bust/6+CUT_SA):null;}},
+        {label:'Length',            calc:function(d){return d.torso?ROUNDIN(d.torso+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Sleeve (cut \u00d72)',dims:[
-        {label:'Cap Width',  calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
-        {label:'Length',     calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+        {label:'Armhole\/Cap Width',note:'shoulder \u00f72 + 2\u00d7\u215d\u2033 sleeve seams',     calc:function(d){return d.shoulder?ROUNDIN(d.shoulder/2+2*CUT_SA):null;}},
+        {label:'Length',            calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Collar \/ Neckband (cut \u00d72)',dims:[
-        {label:'Length',     note:'neck circ + 2\u00d7\u215e\u2033 ends',                       calc:function(d){return d.neck?ROUNDIN(d.neck+2*CUT_NSA):null;}},
-        {label:'Width',      note:'1\u2033 fold + 2\u00d7\u215d\u2033 \u2192 fixed 2\u00bc\u2033', calc:function(d){return d.neck?2.25:null;}}
+        {label:'Finished Length',   note:'neck circumference \u2014 finished size',                  calc:function(d){return d.neck?ROUNDIN(d.neck):null;}},
+        {label:'Finished Width',    note:'1\u00bd\u2033 visible collar width \u2014 finished',       calc:function(d){return d.neck?1.5:null;}},
+        {label:'Cut Length',        note:'neck circ + 2\u00d7\u215e\u2033 end seams',               calc:function(d){return d.neck?ROUNDIN(d.neck+2*CUT_NSA):null;}},
+        {label:'Cut Width',         note:'1\u00bd\u2033 finish\u00d72 + 2\u00d7\u215d\u2033 \u2192 fixed 3\u00be\u2033', calc:function(d){return d.neck?3.75:null;}}
       ]}
     ]
   },
   'womens-tshirt':{
     fieldMap:{'wt-bust':'bust','wt-shoulder':'shoulder','wt-sleeve':'sleeve','wt-length':'length'},
     pieces:[
-      {name:'Front Body (cut \u00d72)',dims:[
-        {label:'Width',      note:'bust\u00f72 + 2\u00d7\u215d\u2033 side seams',               calc:function(d){return d.bust?ROUNDIN(d.bust/2+2*CUT_SA):null;}},
-        {label:'Length',     note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',           calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      {name:'Front Body (cut \u00d74)',dims:[
+        {label:'Bust Width',        note:'bust\u00f74 + 2\u00d7\u215d\u2033 side seams',            calc:function(d){return d.bust?ROUNDIN(d.bust/4+2*CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'bust\u00f76 + \u215d\u2033 seam allowance',                calc:function(d){return d.bust?ROUNDIN(d.bust/6+CUT_SA):null;}},
+        {label:'Length',            note:'body length + \u215d\u2033 shoulder + 1\u2033 hem',        calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
       ]},
-      {name:'Back Body (cut \u00d72)',dims:[
-        {label:'Width',      calc:function(d){return d.bust?ROUNDIN(d.bust/2+2*CUT_SA):null;}},
-        {label:'Length',     calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
+      {name:'Back Body (cut \u00d74)',dims:[
+        {label:'Bust Width',        note:'bust\u00f74 + 2\u00d7\u215d\u2033 side seams',            calc:function(d){return d.bust?ROUNDIN(d.bust/4+2*CUT_SA):null;}},
+        {label:'Armhole Depth',     note:'bust\u00f76 + \u215d\u2033 seam allowance',                calc:function(d){return d.bust?ROUNDIN(d.bust/6+CUT_SA):null;}},
+        {label:'Length',            calc:function(d){return d.length?ROUNDIN(d.length+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Sleeve (cut \u00d72)',dims:[
-        {label:'Cap Width',  calc:function(d){return d.shoulder?ROUNDIN(d.shoulder+2*CUT_SA):null;}},
-        {label:'Length',     calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
+        {label:'Armhole\/Cap Width',note:'shoulder \u00f72 + 2\u00d7\u215d\u2033 sleeve seams',     calc:function(d){return d.shoulder?ROUNDIN(d.shoulder/2+2*CUT_SA):null;}},
+        {label:'Length',            calc:function(d){return d.sleeve?ROUNDIN(d.sleeve+CUT_SA+CUT_HEM):null;}}
       ]}
     ]
   },
   'womens-trousers':{
     fieldMap:{'wtr-waist':'waist','wtr-hips':'hips','wtr-inseam':'inseam','wtr-thigh':'thigh','wtr-leg':'leg'},
     pieces:[
-      {name:'Front Leg (cut \u00d72)',dims:[
-        {label:'Waist width',  note:'waist\u00f74 + 2\u00d7\u215d\u2033',                       calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA):null;}},
-        {label:'Hip width',    note:'hips\u00f74 + 2\u00d7\u215d\u2033',                        calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA):null;}},
-        {label:'Thigh width',  calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA):null;}},
-        {label:'Leg opening',  calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
-        {label:'Total length', note:'inseam + \u215d\u2033 crotch + 1\u2033 hem',               calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
+      {name:'Front Leg (cut \u00d74)',dims:[
+        {label:'Waist Width',       note:'waist\u00f74 + 2\u00d7\u215d\u2033',                      calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA):null;}},
+        {label:'Hip Width',         note:'hips\u00f74 + 2\u00d7\u215d\u2033',                       calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA):null;}},
+        {label:'Thigh Width',       calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA):null;}},
+        {label:'Leg Opening',       calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
+        {label:'Total Length',      note:'inseam + \u215d\u2033 crotch + 1\u2033 hem',              calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
       ]},
-      {name:'Back Leg (cut \u00d72)',dims:[
-        {label:'Waist width',  note:'waist\u00f74 + 2\u00d7\u215d\u2033 + \u00be\u2033 dart',  calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA+0.75):null;}},
-        {label:'Hip width',    note:'hips\u00f74 + 2\u00d7\u215d\u2033 + \u00bd\u2033 seat',   calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA+0.5):null;}},
-        {label:'Thigh width',  calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA+0.25):null;}},
-        {label:'Leg opening',  calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
-        {label:'Total length', calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
+      {name:'Back Leg (cut \u00d74)',dims:[
+        {label:'Waist Width',       note:'waist\u00f74 + 2\u00d7\u215d\u2033 + \u00be\u2033 dart', calc:function(d){return d.waist?ROUNDIN(d.waist/4+2*CUT_SA+0.75):null;}},
+        {label:'Hip Width',         note:'hips\u00f74 + 2\u00d7\u215d\u2033 + \u00bd\u2033 seat',  calc:function(d){return d.hips?ROUNDIN(d.hips/4+2*CUT_SA+0.5):null;}},
+        {label:'Thigh Width',       calc:function(d){return d.thigh?ROUNDIN(d.thigh/4+2*CUT_SA+0.25):null;}},
+        {label:'Leg Opening',       calc:function(d){return d.leg?ROUNDIN(d.leg/4+2*CUT_SA):null;}},
+        {label:'Total Length',      calc:function(d){return d.inseam?ROUNDIN(d.inseam+CUT_SA+CUT_HEM):null;}}
       ]},
       {name:'Waistband (cut \u00d71)',dims:[
-        {label:'Length',       note:'waist + 2\u00d7\u215d\u2033 + 1\u00bd\u2033 overlap',     calc:function(d){return d.waist?ROUNDIN(d.waist+2*CUT_SA+1.5):null;}},
-        {label:'Width',        note:'1\u00bd\u2033 finish\u00d72 + 2\u00d7\u215d\u2033 \u2192 fixed 4\u00bc\u2033', calc:function(d){return d.waist?4.25:null;}}
+        {label:'Length',            note:'waist + 2\u00d7\u215d\u2033 + 1\u00bd\u2033 overlap',     calc:function(d){return d.waist?ROUNDIN(d.waist+2*CUT_SA+1.5):null;}},
+        {label:'Width',             note:'1\u00bd\u2033 finish\u00d72 + 2\u00d7\u215d\u2033 \u2192 fixed 4\u00bc\u2033', calc:function(d){return d.waist?4.25:null;}}
       ]}
     ]
   }
@@ -3704,14 +3726,14 @@ function GENERATECUTTINGSPECS(bodyMeasurements, garment, selectedFit){
 
   return '<div class="mhub-cutting-panel">'
     +'<div class="mhub-draft-title" style="margin-top:0;">\u2702\uFE0F Pattern Cutting Specifications &mdash; '+gLabel+'</div>'
-    +'<div class="mhub-draft-subtitle">Seam allowances already included: <strong>\u215d\u2033 structural &bull; 1\u2033 hem &bull; \u215e\u2033 neckline</strong>. Cut directly from these dimensions.</div>'
+    +'<div class="mhub-draft-subtitle">Seam allowances included in <strong>Cut</strong> dimensions (ââ³ structural â¢ 1â³ hem â¢ ââ³ neckline). <strong>Finished</strong> rows show completed measurements after sewing. Body panels cut Ã4 (chest Ã· 4 each). Sleeves &amp; shoulders cut Ã2.</div>
     +'<div style="overflow-x:auto;">'
     +'<table class="mhub-cutting-table">'
     +'<thead><tr>'+hdr+'</tr></thead>'
     +'<tbody>'+rows+'</tbody>'
     +'</table>'
     +'</div>'
-    +'<p class="mhub-draft-note">\u2139\uFE0F <strong>Cut \u00d72</strong> = cut two identical pieces. <strong>On fold</strong> = place pattern on folded fabric, fold line = centre of garment. Back trouser/trouser leg is wider to accommodate seat curve and back dart.</p>'
+    +'<p class="mhub-draft-note">â¹ï¸ <strong>Cut Ã4</strong> = cut four identical panels (body pieces â chest, stomach, hips divide by 4 for each panel). <strong>Cut Ã2</strong> = cut two identical pieces (shoulders, sleeves divide by 2). <strong>On fold</strong> = place pattern on folded fabric; fold line = centre front/back. <strong>Finished</strong> dimensions show the completed size after sewing; <strong>Cut</strong> dimensions include all seam allowances. Armhole Depth is derived from chestÃ·6 + seam allowance. Back trouser leg is wider to accommodate seat curve and back dart.</p>
     +'</div>';
 }
 
