@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -431,6 +432,7 @@
       background: var(--white);
       border-radius: 8px;
       overflow: hidden;
+      position: relative;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       transition: all 0.3s;
       cursor: pointer;
@@ -1443,6 +1445,619 @@
         gap: 0.3rem;
       }
     }
+
+    /* ═══ NEW V2 ADDITIONS ═══ */
+
+    /* HERO SEARCH */
+    .hero-search-wrap {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 60px;
+      padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .hero-search-wrap input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-size: 1rem;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .hero-search-wrap input::placeholder { color: rgba(255,255,255,0.7); }
+
+    .hero-search-btn {
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      padding: 0.65rem 1.4rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .hero-search-btn:hover { transform: scale(1.03); }
+
+    .hero-chips {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .hero-chip {
+      background: rgba(255,255,255,0.18);
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .hero-chip:hover {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    /* AI SEARCH BAR (Tailors page) */
+    .ai-search-section {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      margin-bottom: 1.75rem;
+    }
+
+    .ai-search-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 2px solid var(--lightgray);
+      border-radius: 10px;
+      padding: 0.6rem 0.6rem 0.6rem 1.2rem;
+      transition: border-color 0.3s;
+      margin-bottom: 1.25rem;
+    }
+
+    .ai-search-row:focus-within { border-color: var(--green); }
+
+    .ai-search-row i { color: var(--gray); font-size: 1.1rem; }
+
+    .ai-search-row input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--dark);
+    }
+
+    .ai-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray);
+      font-size: 1rem;
+      padding: 0.4rem;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+
+    .ai-icon-btn:hover { color: var(--green); }
+
+    .ai-search-go {
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .ai-search-go:hover { opacity: 0.9; }
+
+    .filter-chips-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .filter-chips-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+
+    .fchip {
+      padding: 0.4rem 0.9rem;
+      background: var(--lightgray);
+      border: 2px solid var(--lightgray);
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--dark);
+    }
+
+    .fchip:hover { border-color: var(--green); color: var(--green); }
+    .fchip.active { background: var(--green); color: var(--white); border-color: var(--green); }
+
+    .photo-search-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: 1.5px dashed #ccc;
+      border-radius: 8px;
+      background: none;
+      cursor: pointer;
+      color: var(--gray);
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .photo-search-btn:hover { border-color: var(--green); color: var(--green); }
+
+    .search-results-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .sort-select {
+      padding: 0.4rem 0.75rem;
+      border: 1px solid var(--lightgray);
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--dark);
+    }
+
+    /* TIER BADGES */
+    .tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.28rem 0.65rem;
+      border-radius: 50px;
+      letter-spacing: 0.3px;
+    }
+
+    .tier-verified {
+      background: rgba(29,158,117,0.15);
+      color: #0d7a5a;
+      border: 1px solid rgba(29,158,117,0.4);
+    }
+
+    .tier-pro {
+      background: rgba(212,160,23,0.15);
+      color: #a0790a;
+      border: 1px solid rgba(212,160,23,0.4);
+    }
+
+    /* TIER STATUS WIDGET */
+    .tier-widget {
+      background: linear-gradient(135deg, rgba(29,158,117,0.08) 0%, rgba(29,158,117,0.02) 100%);
+      border: 1px solid rgba(29,158,117,0.2);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tier-widget .tw-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .tier-widget .tw-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .tier-widget .tw-hint {
+      font-size: 0.78rem;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    /* ─── M-HUB ─── */
+    .mhub-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .mhub-tabs {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--lightgray);
+      border-radius: 8px;
+      padding: 0.25rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .mhub-tab {
+      flex: 1;
+      padding: 0.5rem 0.6rem;
+      background: none;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+      color: var(--gray);
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .mhub-tab.active {
+      background: var(--white);
+      color: var(--green);
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .mhub-garment-panel { display: none; }
+    .mhub-garment-panel.active { display: block; animation: fadeIn 0.3s; }
+
+    .fit-style-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .fit-btn {
+      padding: 0.65rem 0.5rem;
+      background: var(--lightgray);
+      border: 2px solid var(--lightgray);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .fit-btn:hover { border-color: var(--green); color: var(--green); }
+    .fit-btn.active { background: var(--green); color: var(--white); border-color: var(--green); }
+
+    .mhub-profiles-list {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .mhub-profile-card {
+      background: var(--lightgray);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mhub-profile-card:hover { border-color: var(--green); background: rgba(29,158,117,0.05); }
+    .mhub-profile-card.selected { border-color: var(--green); background: rgba(29,158,117,0.08); }
+
+    .mhub-profile-info .mhub-profile-name { font-weight: 700; margin-bottom: 0.25rem; }
+    .mhub-profile-info .mhub-profile-meta { font-size: 0.82rem; color: var(--gray); }
+
+    .mhub-profile-actions { display: flex; gap: 0.5rem; }
+    .mhub-profile-actions button {
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-use { background: var(--green); color: var(--white); }
+    .btn-delete { background: #fee2e2; color: #991b1b; }
+
+    .size-ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .size-ref-table th {
+      background: var(--green);
+      color: var(--white);
+      padding: 0.65rem 0.75rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .size-ref-table td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--lightgray);
+      text-align: center;
+    }
+
+    .size-ref-table tr:nth-child(even) td { background: rgba(29,158,117,0.03); }
+
+    .mhub-section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--lightgray);
+    }
+
+    /* PORTFOLIO PANEL */
+    .portfolio-upload-zone {
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      padding: 2.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 1.5rem;
+    }
+
+    .portfolio-upload-zone:hover { border-color: var(--green); background: rgba(29,158,117,0.03); }
+
+    .portfolio-upload-zone i { font-size: 2.5rem; color: var(--gray); margin-bottom: 0.75rem; }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .portfolio-item {
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--lightgray);
+      position: relative;
+      aspect-ratio: 4/5;
+    }
+
+    .portfolio-item-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+      font-size: 0.85rem;
+      gap: 0.5rem;
+    }
+
+    /* SAVED TAILORS */
+    .saved-tailor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .saved-tailor-card {
+      background: var(--lightgray);
+      border-radius: 10px;
+      padding: 1.25rem;
+      text-align: center;
+      border: 2px solid var(--lightgray);
+      transition: all 0.25s;
+    }
+
+    .saved-tailor-card:hover { border-color: var(--green); }
+
+    .saved-tailor-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--green);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin: 0 auto 0.75rem;
+    }
+
+    .heart-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #ccc;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+
+    .heart-btn.saved { color: #e74c3c; }
+
+    /* ORDER TIMELINE */
+    .order-timeline {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      padding: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .timeline-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      position: relative;
+      min-width: 90px;
+    }
+
+    .timeline-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: var(--lightgray);
+      z-index: 0;
+    }
+
+    .timeline-step.done:not(:last-child)::after { background: var(--green); }
+
+    .timeline-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--lightgray);
+      border: 2px solid #ccc;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #999;
+      transition: all 0.3s;
+    }
+
+    .timeline-step.done .timeline-dot {
+      background: var(--green);
+      border-color: var(--green);
+      color: white;
+    }
+
+    .timeline-step.current .timeline-dot {
+      background: var(--white);
+      border-color: var(--green);
+      border-width: 3px;
+      box-shadow: 0 0 0 4px rgba(29,158,117,0.15);
+      color: var(--green);
+    }
+
+    .timeline-label {
+      font-size: 0.72rem;
+      color: var(--gray);
+      text-align: center;
+      margin-top: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .timeline-step.done .timeline-label { color: var(--green); font-weight: 600; }
+    .timeline-step.current .timeline-label { color: var(--dark); font-weight: 700; }
+
+    /* EARNINGS STATS */
+    .earnings-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .earn-card {
+      background: var(--lightgray);
+      border-radius: 10px;
+      padding: 1.25rem;
+      text-align: center;
+      border: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .earn-card:hover { border-color: var(--green); }
+    .earn-card h4 { font-size: 1.9rem; color: var(--green); margin-bottom: 0.25rem; }
+    .earn-card p { font-size: 0.82rem; color: var(--gray); }
+
+    /* MEASUREMENT STATUS */
+    .meas-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .meas-badge.pending { background: #fff3cd; color: #856404; }
+    .meas-badge.approved { background: #d4edda; color: #155724; }
+    .meas-badge.needs-revision { background: #f8d7da; color: #721c24; }
+
+    /* ORDER ROW EXPAND */
+    .order-detail-row { display: none; background: rgba(29,158,117,0.03); }
+    .order-detail-row.open { display: table-row; }
+    .order-detail-cell { padding: 1rem 1.5rem !important; }
+
+    /* IMAGE SEARCH MODAL */
+    .img-search-modal-content { max-width: 480px; }
+
+    .img-drop-zone {
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 1rem 0;
+    }
+
+    .img-drop-zone:hover { border-color: var(--green); }
+
+    @media (max-width: 768px) {
+      .mhub-tabs { gap: 0.2rem; }
+      .mhub-tab { font-size: 0.75rem; padding: 0.4rem; }
+      .fit-style-grid { grid-template-columns: repeat(3, 1fr); }
+      .earnings-stats { grid-template-columns: repeat(2, 1fr); }
+      .ai-search-section { padding: 1rem; }
+    }
+
   </style>
 </head>
 <body>
@@ -1577,38 +2192,67 @@
       <h1>Find Your Perfect Tailor</h1>
     </div>
 
-    <div class="tailors-filters">
-      <div class="filter-group">
-        <label>Search by Name or Specialty</label>
-        <input type="text" id="searchInput" placeholder="e.g., Adaeze, Bridal, Qipao" onkeyup="FILTERTAILORS()">
+    <!-- AI SEARCH BAR -->
+    <div class="ai-search-section">
+      <div class="ai-search-row">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder='Try: "classy African church dress" or "bridal sari New York"' onkeyup="FILTERTAILORS()">
+        <button class="ai-icon-btn" title="Search by photo" onclick="MODAL('imgSearch')"><i class="fas fa-camera"></i></button>
+        <button class="ai-icon-btn" title="Voice search (coming soon)" style="opacity:0.4; cursor:not-allowed;"><i class="fas fa-microphone"></i></button>
+        <button class="ai-search-go" onclick="FILTERTAILORS()">Search</button>
       </div>
-      <div class="filter-group">
-        <label>Filter by Location</label>
-        <select id="locationSelect" onchange="FILTERTAILORS()">
-          <option value="">All Locations</option>
-          <option value="Atlanta">Atlanta, GA</option>
-          <option value="New York">New York, NY</option>
-          <option value="Miami">Miami, FL</option>
-          <option value="Dallas">Dallas, TX</option>
-          <option value="Houston">Houston, TX</option>
-          <option value="San Francisco">San Francisco, CA</option>
-        </select>
+
+      <div class="filter-chips-label">By Occasion</div>
+      <div class="filter-chips-row" id="occasionChips">
+        <span class="fchip" data-type="occasion" data-val="Wedding" onclick="TOGGLECHIP(this)">Wedding</span>
+        <span class="fchip" data-type="occasion" data-val="Church" onclick="TOGGLECHIP(this)">Church</span>
+        <span class="fchip" data-type="occasion" data-val="Funeral" onclick="TOGGLECHIP(this)">Funeral</span>
+        <span class="fchip" data-type="occasion" data-val="Party" onclick="TOGGLECHIP(this)">Party</span>
+        <span class="fchip" data-type="occasion" data-val="Corporate" onclick="TOGGLECHIP(this)">Corporate</span>
+        <span class="fchip" data-type="occasion" data-val="Traditional" onclick="TOGGLECHIP(this)">Traditional Event</span>
+      </div>
+
+      <div class="filter-chips-label">By Culture / Style</div>
+      <div class="filter-chips-row" id="cultureChips">
+        <span class="fchip" data-type="culture" data-val="African" onclick="TOGGLECHIP(this)">African</span>
+        <span class="fchip" data-type="culture" data-val="Nigerian" onclick="TOGGLECHIP(this)">Nigerian</span>
+        <span class="fchip" data-type="culture" data-val="Ghanaian" onclick="TOGGLECHIP(this)">Ghanaian</span>
+        <span class="fchip" data-type="culture" data-val="Indian" onclick="TOGGLECHIP(this)">Indian</span>
+        <span class="fchip" data-type="culture" data-val="Mexican" onclick="TOGGLECHIP(this)">Mexican</span>
+        <span class="fchip" data-type="culture" data-val="Chinese" onclick="TOGGLECHIP(this)">Chinese</span>
+        <span class="fchip" data-type="culture" data-val="Western" onclick="TOGGLECHIP(this)">Western</span>
+      </div>
+
+      <div class="filter-chips-label">By Fabric / Specialty</div>
+      <div class="filter-chips-row" id="fabricChips">
+        <span class="fchip" data-type="specialty" data-val="Ankara" onclick="TOGGLECHIP(this)">Ankara</span>
+        <span class="fchip" data-type="specialty" data-val="Lace" onclick="TOGGLECHIP(this)">Lace</span>
+        <span class="fchip" data-type="specialty" data-val="Kente" onclick="TOGGLECHIP(this)">Kente</span>
+        <span class="fchip" data-type="specialty" data-val="Bridal" onclick="TOGGLECHIP(this)">Bridal</span>
+        <span class="fchip" data-type="specialty" data-val="Sari" onclick="TOGGLECHIP(this)">Sari</span>
+        <span class="fchip" data-type="specialty" data-val="Traditional" onclick="TOGGLECHIP(this)">Traditional</span>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin-top:0.75rem;">
+        <div class="filter-group" style="flex:1; min-width:200px;">
+          <label style="margin-bottom:0.4rem;">Filter by Location</label>
+          <select id="locationSelect" onchange="FILTERTAILORS()" style="padding:0.6rem; border:1px solid var(--lightgray); border-radius:6px; font-family:'DM Sans',sans-serif;">
+            <option value="">All Locations</option>
+            <option value="Atlanta">Atlanta, GA</option>
+            <option value="New York">New York, NY</option>
+            <option value="Miami">Miami, FL</option>
+            <option value="Dallas">Dallas, TX</option>
+            <option value="Houston">Houston, TX</option>
+            <option value="San Francisco">San Francisco, CA</option>
+          </select>
+        </div>
+        <button class="photo-search-btn" onclick="MODAL('imgSearch')"><i class="fas fa-camera"></i> Search by photo</button>
+        <button onclick="CLEARCHIPS()" style="background:none; border:none; color:var(--gray); font-size:0.85rem; cursor:pointer; font-family:'DM Sans',sans-serif;">✕ Clear all filters</button>
       </div>
     </div>
 
-    <div>
-      <p style="margin-bottom: 1rem; color: var(--gray);">Filter by Specialty:</p>
-      <div class="specialty-tags" id="specTags">
-        <span class="spec-tag" data-spec="Bridal" onclick="TOGGLESPEC(this)">Bridal</span>
-        <span class="spec-tag" data-spec="Formal" onclick="TOGGLESPEC(this)">Formal</span>
-        <span class="spec-tag" data-spec="Traditional" onclick="TOGGLESPEC(this)">Traditional</span>
-        <span class="spec-tag" data-spec="Alterations" onclick="TOGGLESPEC(this)">Alterations</span>
-        <span class="spec-tag" data-spec="Custom" onclick="TOGGLESPEC(this)">Custom</span>
-        <span class="spec-tag" data-spec="Kids" onclick="TOGGLESPEC(this)">Kids</span>
-      </div>
-    </div>
-
-    <div class="tailors-grid" id="tailorsGrid">
+    <div class="search-results-meta"><span id="resultsMeta">Loading tailors...</span><select class="sort-select" onchange="FILTERTAILORS()"><option>Sort: Relevance</option><option>Rating</option><option>Price: Low to High</option><option>Turnaround</option></select></div>
+<div class="tailors-grid" id="tailorsGrid">
     </div>
     <div class="no-results" id="noResults" style="display:none;">
       No tailors found matching your criteria. Try adjusting your filters.
@@ -1680,13 +2324,21 @@
   <div class="dashboard-container">
     <div class="dashboard-sidebar">
       <h3>Menu</h3>
+      <!-- Tier Widget (shown for tailors) -->
+      <div class="tier-widget" id="tierWidget" style="display:none;">
+        <div class="tw-label">Your Tier</div>
+        <div class="tw-name" id="tierWidgetName"><i class="fas fa-shield-alt"></i> <span id="tierWidgetText">Verified</span></div>
+        <div class="tw-hint" id="tierWidgetHint">Complete 30 more orders to unlock Pro tier.</div>
+      </div>
       <div class="sidebar-menu">
-        <button class="active" onclick="PANEL('profile')">My Profile</button>
-        <button onclick="PANEL('orders')">Orders</button>
-        <button onclick="PANEL('messages')">Messages</button>
-        <button onclick="PANEL('measurements')">Measurements</button>
-        <button id="tailorOrders" style="display:none;" onclick="PANEL('incoming')">Incoming Orders</button>
-        <button id="tailorEarnings" style="display:none;" onclick="PANEL('earnings')">Earnings</button>
+        <button class="active" onclick="PANEL('profile')">&#x1F464; My Profile</button>
+        <button onclick="PANEL('orders')">&#x1F4E6; Orders</button>
+        <button onclick="PANEL('messages')">&#x1F4AC; Messages</button>
+        <button onclick="PANEL('measurements')">&#x1F4CF; M-Hub</button>
+        <button id="savedTailorsBtn" style="display:none;" onclick="PANEL('savedTailors')">&#x2665; Saved Tailors</button>
+        <button id="tailorOrders" style="display:none;" onclick="PANEL('incoming')">&#x1F4E5; Incoming Orders</button>
+        <button id="tailorPortfolio" style="display:none;" onclick="PANEL('portfolio')">&#x1F5BC; Portfolio</button>
+        <button id="tailorEarnings" style="display:none;" onclick="PANEL('earnings')">&#x1F4B0; Earnings</button>
       </div>
     </div>
 
@@ -1773,44 +2425,174 @@
         </div>
       </div>
 
+      <!-- M-HUB MEASUREMENT SYSTEM -->
       <div class="panel" id="measurementsPanel">
-        <h2>Measurements</h2>
-        <div class="panel-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Bust (inches)</label>
-              <input type="number" id="bust" placeholder="0" min="0" step="0.5">
-            </div>
-            <div class="form-group">
-              <label>Waist (inches)</label>
-              <input type="number" id="waist" placeholder="0" min="0" step="0.5">
+        <div class="mhub-header">
+          <div>
+            <h2 style="margin-bottom:0.25rem;">M-Hub <span style="font-size:1rem; color:var(--green); font-family:'DM Sans',sans-serif;">Measurement System</span></h2>
+            <p style="color:var(--gray); font-size:0.88rem;">Save garment-specific profiles. Attach them to any order.</p>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="panel-button" onclick="MHUBSHOWTAB('new')" style="background:var(--green);">+ New Profile</button>
+            <button class="panel-button" onclick="MHUBSHOWTAB('saved')" style="background:transparent; color:var(--dark); border:1.5px solid var(--lightgray);">Saved Profiles</button>
+            <button class="panel-button" onclick="MHUBSHOWTAB('sizeref')" style="background:transparent; color:var(--dark); border:1.5px solid var(--lightgray);">Size Reference</button>
+          </div>
+        </div>
+
+        <!-- TAB: NEW PROFILE -->
+        <div id="mhubTabNew" style="display:block;">
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label>Profile Name</label>
+            <input type="text" id="mhubProfileName" placeholder="e.g., My Church Dress, Wedding Outfit">
+          </div>
+
+          <div class="form-group" style="margin-bottom:1.25rem;">
+            <label>Garment Category</label>
+          </div>
+          <div class="mhub-tabs" id="mhubGarmentTabs">
+            <button class="mhub-tab active" onclick="MHUBGARMENT(this,'mens-tshirt')">Men's T-Shirt</button>
+            <button class="mhub-tab" onclick="MHUBGARMENT(this,'round-neck')">Round Neck</button>
+            <button class="mhub-tab" onclick="MHUBGARMENT(this,'v-neck')">V-Neck</button>
+            <button class="mhub-tab" onclick="MHUBGARMENT(this,'mens-trousers')">Men's Trousers</button>
+            <button class="mhub-tab" onclick="MHUBGARMENT(this,'womens-blouse')">Women's Blouse</button>
+            <button class="mhub-tab" onclick="MHUBGARMENT(this,'womens-tshirt')">Women's T-Shirt</button>
+            <button class="mhub-tab" onclick="MHUBGARMENT(this,'womens-trousers')">Women's Trousers</button>
+          </div>
+
+          <!-- Garment panels -->
+          <div class="mhub-garment-panel active" id="gp-mens-tshirt">
+            <div class="form-grid">
+              <div class="form-group"><label>Chest (inches)</label><input type="number" id="mt-chest" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Shoulder Width (inches)</label><input type="number" id="mt-shoulder" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Sleeve Length (inches)</label><input type="number" id="mt-sleeve" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Body Length (inches)</label><input type="number" id="mt-length" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Neck (inches)</label><input type="number" id="mt-neck" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Waist (inches)</label><input type="number" id="mt-waist" placeholder="0" min="0" step="0.5"></div>
             </div>
           </div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Hips (inches)</label>
-              <input type="number" id="hips" placeholder="0" min="0" step="0.5">
-            </div>
-            <div class="form-group">
-              <label>Shoulder Width (inches)</label>
-              <input type="number" id="shoulders" placeholder="0" min="0" step="0.5">
-            </div>
-          </div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Sleeve Length (inches)</label>
-              <input type="number" id="sleeves" placeholder="0" min="0" step="0.5">
-            </div>
-            <div class="form-group">
-              <label>Inseam (inches)</label>
-              <input type="number" id="inseam" placeholder="0" min="0" step="0.5">
+
+          <div class="mhub-garment-panel" id="gp-round-neck">
+            <div class="form-grid">
+              <div class="form-group"><label>Chest (inches)</label><input type="number" id="rn-chest" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Shoulder Width (inches)</label><input type="number" id="rn-shoulder" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Sleeve Length (inches)</label><input type="number" id="rn-sleeve" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Body Length (inches)</label><input type="number" id="rn-length" placeholder="0" min="0" step="0.5"></div>
             </div>
           </div>
-          <div class="form-group">
-            <label>Additional Notes</label>
-            <textarea id="measurementNotes" placeholder="Any special fitting instructions..."></textarea>
+
+          <div class="mhub-garment-panel" id="gp-v-neck">
+            <div class="form-grid">
+              <div class="form-group"><label>Chest (inches)</label><input type="number" id="vn-chest" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Shoulder Width (inches)</label><input type="number" id="vn-shoulder" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Sleeve Length (inches)</label><input type="number" id="vn-sleeve" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Body Length (inches)</label><input type="number" id="vn-length" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>V-Neck Depth (inches)</label><input type="number" id="vn-vdepth" placeholder="0" min="0" step="0.5"></div>
+            </div>
           </div>
-          <button class="panel-button" onclick="SAVEM()">Save Measurements</button>
+
+          <div class="mhub-garment-panel" id="gp-mens-trousers">
+            <div class="form-grid">
+              <div class="form-group"><label>Waist (inches)</label><input type="number" id="mtr-waist" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Hips (inches)</label><input type="number" id="mtr-hips" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Inseam (inches)</label><input type="number" id="mtr-inseam" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Thigh (inches)</label><input type="number" id="mtr-thigh" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Knee (inches)</label><input type="number" id="mtr-knee" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Leg Opening (inches)</label><input type="number" id="mtr-leg" placeholder="0" min="0" step="0.5"></div>
+            </div>
+          </div>
+
+          <div class="mhub-garment-panel" id="gp-womens-blouse">
+            <div class="form-grid">
+              <div class="form-group"><label>Bust (inches)</label><input type="number" id="wb-bust" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Waist (inches)</label><input type="number" id="wb-waist" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Shoulder Width (inches)</label><input type="number" id="wb-shoulder" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Sleeve Length (inches)</label><input type="number" id="wb-sleeve" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Torso Length (inches)</label><input type="number" id="wb-torso" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Neck (inches)</label><input type="number" id="wb-neck" placeholder="0" min="0" step="0.5"></div>
+            </div>
+          </div>
+
+          <div class="mhub-garment-panel" id="gp-womens-tshirt">
+            <div class="form-grid">
+              <div class="form-group"><label>Bust (inches)</label><input type="number" id="wt-bust" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Shoulder Width (inches)</label><input type="number" id="wt-shoulder" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Sleeve Length (inches)</label><input type="number" id="wt-sleeve" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Body Length (inches)</label><input type="number" id="wt-length" placeholder="0" min="0" step="0.5"></div>
+            </div>
+          </div>
+
+          <div class="mhub-garment-panel" id="gp-womens-trousers">
+            <div class="form-grid">
+              <div class="form-group"><label>Waist (inches)</label><input type="number" id="wtr-waist" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Hips (inches)</label><input type="number" id="wtr-hips" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Inseam (inches)</label><input type="number" id="wtr-inseam" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Thigh (inches)</label><input type="number" id="wtr-thigh" placeholder="0" min="0" step="0.5"></div>
+              <div class="form-group"><label>Leg Opening (inches)</label><input type="number" id="wtr-leg" placeholder="0" min="0" step="0.5"></div>
+            </div>
+          </div>
+
+          <!-- FIT STYLE -->
+          <div style="margin-top:1.5rem;">
+            <div class="mhub-section-title">Desired Fit Style</div>
+            <div class="fit-style-grid" id="fitStyleGrid">
+              <button class="fit-btn active" data-fit="Fitted" onclick="SELECTFIT(this)">Fitted</button>
+              <button class="fit-btn" data-fit="Slim" onclick="SELECTFIT(this)">Slim</button>
+              <button class="fit-btn" data-fit="Relaxed" onclick="SELECTFIT(this)">Relaxed</button>
+              <button class="fit-btn" data-fit="Loose" onclick="SELECTFIT(this)">Loose</button>
+              <button class="fit-btn" data-fit="Modest" onclick="SELECTFIT(this)">Modest</button>
+              <button class="fit-btn" data-fit="Structured" onclick="SELECTFIT(this)">Structured</button>
+              <button class="fit-btn" data-fit="Flared" onclick="SELECTFIT(this)">Flared</button>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:1rem;">
+            <label>Special Instructions</label>
+            <textarea id="mhubNotes" placeholder="E.g., longer hem, extra room at shoulders, prefer non-stretchy fabric..."></textarea>
+          </div>
+
+          <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.5rem;">
+            <button class="panel-button" onclick="SAVEMHUB()">Save Profile</button>
+            <button class="panel-button" onclick="MHUBSHOWTAB('saved')" style="background:transparent; color:var(--dark); border:1.5px solid var(--lightgray);">View Saved</button>
+          </div>
+        </div>
+
+        <!-- TAB: SAVED PROFILES -->
+        <div id="mhubTabSaved" style="display:none;">
+          <div class="mhub-section-title">Your Measurement Profiles</div>
+          <div class="mhub-profiles-list" id="mhubProfilesList">
+            <p style="color:var(--gray); text-align:center; padding:2rem;">No saved profiles yet. Create your first one!</p>
+          </div>
+          <button class="panel-button" style="margin-top:1.5rem;" onclick="MHUBSHOWTAB('new')">+ Create New Profile</button>
+        </div>
+
+        <!-- TAB: SIZE REFERENCE -->
+        <div id="mhubTabSizeref" style="display:none;">
+          <div class="mhub-section-title">Standard Size Reference (inches)</div>
+          <p style="color:var(--gray); font-size:0.88rem; margin-bottom:1rem;">Use these as a guide if you're unsure of your exact measurements.</p>
+
+          <p style="font-weight:700; margin-bottom:0.5rem;">&#x1F464; Male Sizes (Chest)</p>
+          <table class="size-ref-table">
+            <thead><tr><th>Size</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th></tr></thead>
+            <tbody>
+              <tr><td>Chest</td><td>32-33</td><td>34-35</td><td>36-37</td><td>38-40</td><td>41-43</td><td>44-46</td></tr>
+              <tr><td>Waist</td><td>26-27</td><td>28-29</td><td>30-31</td><td>32-34</td><td>35-37</td><td>38-41</td></tr>
+              <tr><td>Short Sleeve</td><td>8.5</td><td>9</td><td>9.5</td><td>10</td><td>10.5</td><td>11</td></tr>
+              <tr><td>Long Sleeve</td><td>32</td><td>33</td><td>34</td><td>35</td><td>36</td><td>37</td></tr>
+              <tr><td>Trouser Inseam</td><td>28</td><td>29</td><td>30</td><td>31</td><td>32</td><td>33</td></tr>
+            </tbody>
+          </table>
+
+          <p style="font-weight:700; margin:1.5rem 0 0.5rem;">&#x2640; Female Sizes (Bust)</p>
+          <table class="size-ref-table">
+            <thead><tr><th>Size</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th></tr></thead>
+            <tbody>
+              <tr><td>Bust</td><td>30-31</td><td>32-33</td><td>34-35</td><td>36-38</td><td>39-41</td><td>42-44</td></tr>
+              <tr><td>Waist</td><td>23-24</td><td>25-26</td><td>27-28</td><td>29-31</td><td>32-34</td><td>35-37</td></tr>
+              <tr><td>Hips</td><td>33-34</td><td>35-36</td><td>37-38</td><td>39-41</td><td>42-44</td><td>45-47</td></tr>
+              <tr><td>Blouse Length</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td></tr>
+              <tr><td>Trouser Inseam</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td><td>32</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -1834,9 +2616,11 @@
 
       <div class="panel" id="earningsPanel">
         <h2>Earnings</h2>
-        <div class="stat-card" style="margin-bottom: 2rem;">
-          <h3 id="totalEarnings">$0</h3>
-          <p>Total Earnings</p>
+        <div class="earnings-stats">
+          <div class="earn-card"><h4 id="totalEarnings">$0</h4><p>Total Earned</p></div>
+          <div class="earn-card"><h4 id="monthEarnings">$0</h4><p>This Month</p></div>
+          <div class="earn-card"><h4 id="completedCount">0</h4><p>Orders Done</p></div>
+          <div class="earn-card"><h4 id="avgOrder">$0</h4><p>Avg Order Value</p></div>
         </div>
         <table class="orders-table">
           <thead>
@@ -1852,6 +2636,44 @@
           </tbody>
         </table>
       </div>
+    <!-- PORTFOLIO PANEL -->
+      <div class="panel" id="portfolioPanel">
+        <h2>My Portfolio</h2>
+        <p style="color:var(--gray); margin-bottom:1.5rem; font-size:0.9rem;">Upload photos of your best work to attract more customers. Great photos = more orders.</p>
+        <div class="portfolio-upload-zone" onclick="alert('Portfolio upload: connect to Supabase Storage to enable file uploads.')">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p style="color:var(--gray); margin-bottom:0.5rem;">Click or drag images here</p>
+          <p style="font-size:0.8rem; color:#aaa;">JPG, PNG up to 5MB each</p>
+        </div>
+        <div class="mhub-section-title">Portfolio Items</div>
+        <div class="portfolio-grid" id="portfolioGrid">
+          <div class="portfolio-item">
+            <div class="portfolio-item-placeholder"><i class="fas fa-image" style="font-size:2rem;"></i><span>Add your first photo</span></div>
+          </div>
+          <div class="portfolio-item">
+            <div class="portfolio-item-placeholder"><i class="fas fa-plus" style="font-size:1.5rem;"></i></div>
+          </div>
+          <div class="portfolio-item">
+            <div class="portfolio-item-placeholder"><i class="fas fa-plus" style="font-size:1.5rem;"></i></div>
+          </div>
+        </div>
+        <p style="color:var(--gray); font-size:0.82rem; margin-top:1.5rem;">Tip: Upload at least 6 photos covering different garment types to improve your search ranking.</p>
+      </div>
+
+      <!-- SAVED TAILORS PANEL (customer) -->
+      <div class="panel" id="savedTailorsPanel">
+        <h2>&#x2665; Saved Tailors</h2>
+        <p style="color:var(--gray); margin-bottom:1.5rem; font-size:0.9rem;">Your favourite tailors — quick access for repeat orders.</p>
+        <div class="saved-tailor-grid" id="savedTailorGrid">
+          <div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--gray);">
+            <i class="fas fa-heart" style="font-size:2rem; margin-bottom:1rem; display:block; color:#eee;"></i>
+            <p>No saved tailors yet.</p>
+            <p style="font-size:0.85rem; margin-top:0.5rem;">Tap the &#x2665; on any tailor profile to save them here.</p>
+            <button class="panel-button" style="margin-top:1rem;" onclick="GO('tailors')">Browse Tailors</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -1986,55 +2808,142 @@
 
 <!-- ADMIN PAGE -->
 <div class="page" id="admin">
-  <div class="admin-container">
-    <h1>Admin Dashboard</h1>
+  <div class="dashboard-container">
 
-    <div class="admin-grid">
-      <div class="admin-card">
-        <h3 id="adminUsers">0</h3>
-        <p>Total Users</p>
-      </div>
-      <div class="admin-card">
-        <h3 id="adminTailors">0</h3>
-        <p>Active Tailors</p>
-      </div>
-      <div class="admin-card">
-        <h3 id="adminOrders">0</h3>
-        <p>Total Orders</p>
-      </div>
-      <div class="admin-card">
-        <h3 id="adminRevenue">$0</h3>
-        <p>Platform Revenue</p>
+    <!-- Admin Sidebar -->
+    <div class="dashboard-sidebar">
+      <h3>Admin Panel</h3>
+      <div class="sidebar-menu" id="adminSidebarMenu">
+        <button class="active" onclick="ADMINPANEL('adminOverview', this)">📊 Overview</button>
+        <button onclick="ADMINPANEL('adminVerifications', this)">✅ Verifications</button>
+        <button onclick="ADMINPANEL('adminOrders', this)">📦 Orders</button>
+        <button onclick="ADMINPANEL('adminUsers', this)">👥 Users</button>
+        <button onclick="ADMINPANEL('adminSettings', this)">⚙️ Settings</button>
       </div>
     </div>
 
-    <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Pending Verifications</h2>
-    <table class="users-table" id="verificationsTable">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th>Applied</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="verificationsBody"></tbody>
-    </table>
+    <!-- Admin Panels -->
+    <div class="dashboard-panels">
 
-    <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Recent Orders</h2>
-    <table class="users-table">
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer</th>
-          <th>Tailor</th>
-          <th>Amount</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="adminOrdersBody"></tbody>
-    </table>
+      <!-- Overview Panel -->
+      <div class="panel active" id="adminOverviewPanel">
+        <h2>Admin Dashboard</h2>
+        <div class="admin-grid">
+          <div class="admin-card">
+            <h3 id="adminUsersCount">0</h3>
+            <p>Total Users</p>
+          </div>
+          <div class="admin-card">
+            <h3 id="adminTailorsCount">0</h3>
+            <p>Active Tailors</p>
+          </div>
+          <div class="admin-card">
+            <h3 id="adminOrdersCount">0</h3>
+            <p>Total Orders</p>
+          </div>
+          <div class="admin-card">
+            <h3 id="adminRevenue">$0</h3>
+            <p>Platform Revenue</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verifications Panel -->
+      <div class="panel" id="adminVerificationsPanel">
+        <h2>Pending Verifications</h2>
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Applied</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="verificationsBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Orders Panel -->
+      <div class="panel" id="adminOrdersPanel">
+        <h2>Recent Orders</h2>
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Tailor</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="adminOrdersBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Users Panel -->
+      <div class="panel" id="adminUsersPanel">
+        <h2>All Users</h2>
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Joined</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminUsersBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Settings Panel -->
+      <div class="panel" id="adminSettingsPanel">
+        <h2>Platform Settings</h2>
+        <div class="panel-form">
+          <div class="form-group">
+            <label>Platform Commission (%)</label>
+            <input type="number" id="commissionRate" value="8" min="1" max="30" style="padding: 0.75rem; border: 1px solid var(--lightgray); border-radius: 4px; font-size: 1rem;">
+          </div>
+          <div class="form-group">
+            <label>Max Turnaround Days</label>
+            <input type="number" id="maxTurnaround" value="60" min="1" style="padding: 0.75rem; border: 1px solid var(--lightgray); border-radius: 4px; font-size: 1rem;">
+          </div>
+          <div class="form-group">
+            <label>Platform Maintenance Mode</label>
+            <select id="maintenanceMode" style="padding: 0.75rem; border: 1px solid var(--lightgray); border-radius: 4px; font-size: 1rem;">
+              <option value="off">Off — Platform is live</option>
+              <option value="on">On — Maintenance active</option>
+            </select>
+          </div>
+          <button class="panel-button" onclick="alert('Settings saved successfully!')">Save Settings</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE SEARCH MODAL -->
+<div class="modal" id="imgSearchModal">
+  <div class="modal-content img-search-modal-content">
+    <button class="modal-close" onclick="CLOSEMODAL()">&times;</button>
+    <h2 style="margin-bottom:0.5rem;">&#x1F4F7; Search by Photo</h2>
+    <p style="color:var(--gray); font-size:0.9rem; margin-bottom:1rem;">Upload an inspiration image. SewBridge will identify the style and find matching tailors.</p>
+    <div class="img-drop-zone" onclick="alert('Image search: Connect your OpenAI Vision API key to enable AI-powered photo search.')">
+      <i class="fas fa-cloud-upload-alt" style="font-size:2.5rem; color:var(--gray); display:block; margin-bottom:0.75rem;"></i>
+      <p style="font-weight:600; margin-bottom:0.25rem;">Click to upload or drag & drop</p>
+      <p style="font-size:0.82rem; color:#aaa;">JPG, PNG up to 10MB</p>
+    </div>
+    <div style="background:rgba(29,158,117,0.05); border:1px solid rgba(29,158,117,0.2); border-radius:8px; padding:1rem; font-size:0.85rem; color:var(--gray);">
+      <strong style="color:var(--green);">AI will detect:</strong> garment type, fabric, colour, occasion, cultural style &mdash; then search SewBridge for matching tailors.
+    </div>
+    <div style="display:flex; gap:1rem; margin-top:1.5rem;">
+      <button class="panel-button" style="flex:1;" onclick="alert('Connect OpenAI Vision API to activate.')">Analyse Image</button>
+      <button class="panel-button" style="flex:1; background:transparent; color:var(--dark); border:1.5px solid var(--lightgray);" onclick="CLOSEMODAL()">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -2105,8 +3014,10 @@
       <div class="profile-avatar" id="profileAvatar">AD</div>
       <div class="profile-name" id="profileNameDisplay">Adaeze Anioke</div>
       <div style="font-size: 0.95rem;" id="profileLocationDisplay">Atlanta, GA</div>
-      <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-        <span id="profileVerified" style="display:none;">Verified</span>
+      <div style="margin-top: 0.75rem; display:flex; gap:0.5rem; justify-content:center; align-items:center; flex-wrap:wrap;">
+        <span id="profileVerified" style="display:none;" class="tier-badge tier-verified"><i class="fas fa-shield-alt"></i> Verified</span>
+        <span id="profileProBadge" style="display:none;" class="tier-badge tier-pro"><i class="fas fa-star"></i> Pro Tailor</span>
+        <button class="heart-btn" id="profileHeartBtn" onclick="TOGGLESAVE()" title="Save this tailor"><i class="far fa-heart"></i></button>
       </div>
     </div>
     <div class="profile-details">
@@ -2227,8 +3138,177 @@
 </footer>
 
 <script>
-const SUPABASE_URL='https://prypgbyuwszdjtftouzj.supabase.co';const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY';const STRIPE_KEY='pk_test_YOUR_KEY_HERE';const supa=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);let CURRENT_USER=null;let CURRENT_PAGE='home';let SELECTED_TAILOR=null;let ALL_TAILORS=[];let FILTERED_TAILORS=[];let ACTIVE_SPEC_FILTERS=[];let JOIN_STEP=1;let SIGNUP_ROLE='customer';const STATIC_TAILORS=[{id:'tailor-1',full_name:'Adaeze Anioke',location:'Atlanta, GA',heritage:'Nigerian',specialties:['Ankara','Bridal'],rating:4.9,orders_completed:87,starting_price:120,turnaround_days:14,bio:'Passionate about authentic African textiles and modern bridal design.',is_verified:true,role:'tailor'},{id:'tailor-2',full_name:'Grace Owusu',location:'New York, NY',heritage:'Ghanaian',specialties:['Kente','Kids'],rating:5.0,orders_completed:64,starting_price:95,turnaround_days:12,bio:'Expert in traditional Kente cloth and kids wear.',is_verified:true,role:'tailor'},{id:'tailor-3',full_name:'Sofia Reyes',location:'Miami, FL',heritage:'Mexican',specialties:['Quinceañera','Formal'],rating:4.8,orders_completed:51,starting_price:105,turnaround_days:18,bio:'Specializing in beautiful quinceañera gowns and formal wear.',is_verified:true,role:'tailor'},{id:'tailor-4',full_name:'Priya Sharma',location:'Dallas, TX',heritage:'Indian',specialties:['Sari','Salwar','Bridal'],rating:5.0,orders_completed:73,starting_price:115,turnaround_days:16,bio:'Master of traditional Indian garments with impeccable draping.',is_verified:true,role:'tailor'},{id:'tailor-5',full_name:'Fatou Diallo',location:'Houston, TX',heritage:'Senegalese',specialties:['Boubou','Wax print'],rating:4.7,orders_completed:43,starting_price:75,turnaround_days:14,bio:'Creating stunning traditional Senegalese outfits with vibrant wax prints.',is_verified:true,role:'tailor'},{id:'tailor-6',full_name:'Chen Wei',location:'San Francisco, CA',heritage:'Chinese',specialties:['Qipao','Cheongsam','Modern'],rating:4.9,orders_completed:38,starting_price:130,turnaround_days:15,bio:'Elegant qipao and cheongsam tailoring with contemporary flair.',is_verified:true,role:'tailor'}];document.addEventListener('DOMContentLoaded',async()=>{LOADFEATURED();LOADTAILORS();AUTHSTATELISTENER();SETUPSCROLLREVEAL();});function AUTHSTATELISTENER(){supa.auth.onAuthStateChange(async(event,session)=>{if(session){CURRENT_USER=session.user;await LOADPROFILE();UPDATENAV();}else{CURRENT_USER=null;UPDATENAV();}});}function UPDATENAV(){const authBtns=document.getElementById('authBtns');const userMenu=document.getElementById('userMenu');if(CURRENT_USER){authBtns.style.display='none';userMenu.classList.add('active');const initials=GETINITIALS(CURRENT_USER.user_metadata?.full_name||'User');document.getElementById('userAvatar').textContent=initials;if(CURRENT_USER.user_metadata?.role==='admin'){document.getElementById('adminLink').style.display='block';}}else{authBtns.style.display='flex';userMenu.classList.remove('active');}}async function SIGNIN(){const email=document.getElementById('signinEmail').value;const password=document.getElementById('signinPassword').value;if(!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signInWithPassword({email,password});if(error){alert('Sign in failed: '+error.message);}else{CLOSEMODAL();GO('dashboard');}}async function SIGNUP(){const firstName=document.getElementById('signupFirstName').value;const lastName=document.getElementById('signupLastName').value;const email=document.getElementById('signupEmail').value;const password=document.getElementById('signupPassword').value;if(!firstName||!lastName||!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signUp({email,password,options:{data:{full_name:firstName+' '+lastName,role:SIGNUP_ROLE}}});if(error){alert('Sign up failed: '+error.message);}else{await supa.from('profiles').upsert({id:data.user.id,full_name:firstName+' '+lastName,email,role:SIGNUP_ROLE,is_verified:false,created_at:new Date().toISOString()});alert('Sign up successful! Please check your email to confirm.');CLOSEMODAL();}}async function GOOGLESIGNIN(){const{error}=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});if(error){alert('Google sign in failed: '+error.message);}}function RESETPWD(){const email=prompt('Enter your email to reset password:');if(email){supa.auth.resetPasswordForEmail(email).then(({error})=>{if(error){alert('Error: '+error.message);}else{alert('Password reset link sent to '+email);}});}}async function LOGOUT(){await supa.auth.signOut();GO('home');}async function LOADPROFILE(){if(!CURRENT_USER)return;const{data,error}=await supa.from('profiles').select('*').eq('id',CURRENT_USER.id).single();if(data){document.getElementById('firstName').value=data.full_name?.split(' ')[0]||'';document.getElementById('lastName').value=data.full_name?.split(' ').slice(1).join(' ')||'';document.getElementById('profileEmail').value=data.email||'';document.getElementById('bio').value=data.bio||'';document.getElementById('location').value=data.location||'';if(data.role==='tailor'){document.getElementById('locationGroup').style.display='block';document.getElementById('specialtiesGroup').style.display='block';document.getElementById('priceGroup').style.display='block';document.getElementById('heritageGroup').style.display='block';document.getElementById('tailorOrders').style.display='block';document.getElementById('tailorEarnings').style.display='block';document.getElementById('specialties').value=(data.specialties||[]).join(', ');document.getElementById('price').value=data.starting_price||'';document.getElementById('heritage').value=data.heritage||'';LOADORDERS('tailor');LOADEARN();}else{LOADORDERS('customer');}}}async function SAVEPROFILE(){if(!CURRENT_USER){alert('Please sign in first');return;}const firstName=document.getElementById('firstName').value;const lastName=document.getElementById('lastName').value;const bio=document.getElementById('bio').value;const location=document.getElementById('location').value;const specialties=document.getElementById('specialties').value?document.getElementById('specialties').value.split(',').map(s=>s.trim()):[];const price=document.getElementById('price').value;const heritage=document.getElementById('heritage').value;const updates={id:CURRENT_USER.id,full_name:firstName+' '+lastName,bio,location,specialties:specialties.length>0?specialties:null,starting_price:price?parseInt(price):null,heritage:heritage||null,updated_at:new Date().toISOString()};const{error}=await supa.from('profiles').upsert(updates);if(error){alert('Error saving profile: '+error.message);}else{alert('Profile saved successfully!');}}async function LOADORDERS(type='customer'){if(!CURRENT_USER)return;const tbody=type==='customer'?document.getElementById('ordersBody'):document.getElementById('incomingBody');tbody.innerHTML='';let query=supa.from('orders').select('*');if(type==='customer'){query=query.eq('customer_id',CURRENT_USER.id);}else{query=query.eq('tailor_id',CURRENT_USER.id);}const{data,error}=await query;if(data&&data.length>0){data.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${type==='customer'?'Tailor':order.customer_id}</td><td>${order.item_name}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td><td>${new Date(order.created_at).toLocaleDateString()}</td>${type==='tailor'?'<td><button onclick="alert(\'Accept order\')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">Accept</button></td>':''}
-</tr>`;tbody.innerHTML+=row;});}else{tbody.innerHTML='<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--gray);">No orders yet</td></tr>';}}async function LOADEARN(){if(!CURRENT_USER)return;const{data,error}=await supa.from('orders').select('*').eq('tailor_id',CURRENT_USER.id).eq('status','completed');let total=0;const tbody=document.getElementById('earningsBody');tbody.innerHTML='';if(data&&data.length>0){data.forEach(order=>{const tailorCut=Math.round(order.amount*0.92);total+=tailorCut;const row=`<tr><td>${order.id}</td><td>Customer</td><td>$${order.amount}</td><td>$${tailorCut}</td><td><span class="status-badge status-completed">Completed</span></td></tr>`;tbody.innerHTML+=row;});}document.getElementById('totalEarnings').textContent='$'+total;}async function SAVEM(){if(!CURRENT_USER){alert('Please sign in first');return;}const measurements={user_id:CURRENT_USER.id,bust:parseFloat(document.getElementById('bust').value)||0,waist:parseFloat(document.getElementById('waist').value)||0,hips:parseFloat(document.getElementById('hips').value)||0,shoulders:parseFloat(document.getElementById('shoulders').value)||0,sleeves:parseFloat(document.getElementById('sleeves').value)||0,inseam:parseFloat(document.getElementById('inseam').value)||0,notes:document.getElementById('measurementNotes').value,updated_at:new Date().toISOString()};const{error}=await supa.from('measurements').upsert(measurements);if(error){alert('Error saving measurements: '+error.message);}else{alert('Measurements saved successfully!');}}async function LOADFEATURED(){const grid=document.getElementById('featuredGrid');const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true).limit(3);if(data&&data.length>0){BUILDGRID(data,'featuredGrid');}else{BUILDGRID(STATIC_TAILORS.slice(0,3),'featuredGrid');}}async function LOADTAILORS(){const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true);if(data&&data.length>0){ALL_TAILORS=data;}else{ALL_TAILORS=STATIC_TAILORS;}FILTERED_TAILORS=[...ALL_TAILORS];BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function BUILDGRID(tailors,gridId='tailorsGrid'){const grid=document.getElementById(gridId);grid.innerHTML='';tailors.forEach(tailor=>{const initials=GETINITIALS(tailor.full_name);const specs=Array.isArray(tailor.specialties)?tailor.specialties:[];const card=`<div class="tailor-card" onclick="OPENTAILORPROFILE('${tailor.id}')"><div class="tailor-header"><div class="tailor-avatar">${initials}</div><div class="tailor-name">${tailor.full_name}</div><div class="tailor-location">${tailor.location}</div></div><div class="tailor-body"><div class="tailor-badges">${tailor.is_verified?'<span class="tailor-badge verified">Verified</span>':''}</div><div class="tailor-specialties">${specs.map(s=>`<span class="spec-chip">${s}</span>`).join('')}</div><div class="tailor-rating"><span class="stars">${'★'.repeat(Math.round(tailor.rating||5))}</span><span>${tailor.rating||5} (${tailor.orders_completed||0} orders)</span></div><div class="tailor-price">Starting at $${tailor.starting_price||100}</div><button>View Profile</button></div></div>`;grid.innerHTML+=card;});if(tailors.length===0){document.getElementById('noResults').style.display='block';}else{document.getElementById('noResults').style.display='none';}}function FILTERTAILORS(){const search=document.getElementById('searchInput').value.toLowerCase();const location=document.getElementById('locationSelect').value.toLowerCase();FILTERED_TAILORS=ALL_TAILORS.filter(t=>{const matchSearch=!search||t.full_name.toLowerCase().includes(search)||(Array.isArray(t.specialties)&&t.specialties.some(s=>s.toLowerCase().includes(search)))||t.location.toLowerCase().includes(search);const matchLocation=!location||t.location.toLowerCase().includes(location);const matchSpecs=ACTIVE_SPEC_FILTERS.length===0||(Array.isArray(t.specialties)&&ACTIVE_SPEC_FILTERS.some(f=>t.specialties.includes(f)));return matchSearch&&matchLocation&&matchSpecs;});BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function TOGGLESPEC(el){const spec=el.dataset.spec;el.classList.toggle('active');if(el.classList.contains('active')){if(!ACTIVE_SPEC_FILTERS.includes(spec)){ACTIVE_SPEC_FILTERS.push(spec);}}else{ACTIVE_SPEC_FILTERS=ACTIVE_SPEC_FILTERS.filter(f=>f!==spec);}FILTERTAILORS();}function OPENTAILORPROFILE(tailorId){const tailor=ALL_TAILORS.find(t=>t.id===tailorId)||STATIC_TAILORS.find(t=>t.id===tailorId);if(tailor){SELECTED_TAILOR=tailor;const initials=GETINITIALS(tailor.full_name);document.getElementById('profileAvatar').textContent=initials;document.getElementById('profileNameDisplay').textContent=tailor.full_name;document.getElementById('profileLocationDisplay').textContent=tailor.location;document.getElementById('profileHeritage').textContent=tailor.heritage||'Not specified';document.getElementById('profileSpecs').textContent=(Array.isArray(tailor.specialties)?tailor.specialties:[]).join(', ')||'Various';document.getElementById('profileRating').textContent=tailor.rating||5;document.getElementById('profileOrders').textContent=tailor.orders_completed||0;document.getElementById('profileTurnaround').textContent=(tailor.turnaround_days||14)+'-'+((tailor.turnaround_days||14)+7)+' days';document.getElementById('profileBio').textContent=tailor.bio||'Skilled tailor';document.getElementById('profileStartPrice').textContent='$'+(tailor.starting_price||100);if(tailor.is_verified){document.getElementById('profileVerified').style.display='inline';}else{document.getElementById('profileVerified').style.display='none';}MODAL('profile');}}async function SENDMSG(){const content=document.getElementById('messageInput').value;if(!content){alert('Message cannot be empty');return;}if(SCANMSG(content)){document.getElementById('contactWarning').style.display='block';return;}if(!CURRENT_USER){alert('Please sign in first');return;}const{error}=await supa.from('messages').insert({sender_id:CURRENT_USER.id,recipient_id:document.getElementById('threadSelect').value,content,order_id:null,created_at:new Date().toISOString()});if(error){alert('Error sending message: '+error.message);}else{document.getElementById('messageInput').value='';alert('Message sent!');THREAD(document.getElementById('threadSelect').value);}}function SCANMSG(val){const phoneRegex=/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/;const emailRegex=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;const externalPaymentRegex=/paypal|venmo|cashapp|zelle/i;return phoneRegex.test(val)||emailRegex.test(val)||externalPaymentRegex.test(val);}async function THREAD(recipientId){if(!recipientId)return;const container=document.getElementById('messagesContainer');const form=document.getElementById('messageForm');const list=document.getElementById('messagesList');container.style.display='block';form.style.display='block';list.innerHTML='';const{data,error}=await supa.from('messages').select('*').or(`and(sender_id.eq.${CURRENT_USER.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${CURRENT_USER.id})`).order('created_at',{ascending:true});if(data){data.forEach(msg=>{const isOwn=msg.sender_id===CURRENT_USER.id;const msgEl=`<div style="margin-bottom: 1rem; text-align: ${isOwn?'right':'left'};"><div style="background: ${isOwn?'var(--green)':'var(--white)'}; color: ${isOwn?'white':'var(--dark)'}; padding: 0.75rem 1rem; border-radius: 8px; display: inline-block; max-width: 70%;">${msg.content}</div></div>`;list.innerHTML+=msgEl;});}}function JOINNAV(direction){JOIN_STEP+=direction;if(JOIN_STEP<1)JOIN_STEP=1;if(JOIN_STEP>5)JOIN_STEP=5;for(let i=1;i<=5;i++){document.getElementById(`step${i}`).classList.remove('active');}document.getElementById(`step${JOIN_STEP}`).classList.add('active');const steps=document.querySelectorAll('.progress-step');steps.forEach((step,idx)=>{if(idx+1<JOIN_STEP){step.classList.add('completed');}else if(idx+1===JOIN_STEP){step.classList.add('active');}else{step.classList.remove('active','completed');}});document.getElementById('backBtn').style.display=JOIN_STEP>1?'block':'none';document.getElementById('nextBtn').style.display=JOIN_STEP<5?'block':'none';document.getElementById('submitBtn').style.display=JOIN_STEP===5?'block':'none';if(JOIN_STEP===5){UPDATEREVIEWSUMMARY();}}function UPDATEREVIEWSUMMARY(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const summary=`<p><strong>Name:</strong> ${document.getElementById('joinFirstName').value} ${document.getElementById('joinLastName').value}</p><p><strong>Email:</strong> ${document.getElementById('joinEmail').value}</p><p><strong>Phone:</strong> ${document.getElementById('joinPhone').value}</p><p><strong>Experience:</strong> ${document.getElementById('yearsExp').value} years</p><p><strong>Heritage:</strong> ${document.getElementById('joinHeritage').value}</p><p><strong>Specialties:</strong> ${specs.join(', ')}</p><p><strong>Location:</strong> ${document.getElementById('joinCity').value}, ${document.getElementById('joinState').value}</p><p><strong>Starting Price:</strong> $${document.getElementById('joinPrice').value}</p><p><strong>Turnaround:</strong> ${document.getElementById('joinTurnaround').value} days</p>`;document.getElementById('reviewSummary').innerHTML=summary;}async function SUBMITJOIN(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const application={full_name:document.getElementById('joinFirstName').value+' '+document.getElementById('joinLastName').value,email:document.getElementById('joinEmail').value,phone:document.getElementById('joinPhone').value,years_experience:parseInt(document.getElementById('yearsExp').value),heritage:document.getElementById('joinHeritage').value,specialties:specs,location:document.getElementById('joinCity').value+', '+document.getElementById('joinState').value,starting_price:parseInt(document.getElementById('joinPrice').value),turnaround_days:parseInt(document.getElementById('joinTurnaround').value),bio:document.getElementById('joinBio').value,status:'pending',created_at:new Date().toISOString()};const{error}=await supa.from('tailor_applications').insert(application);if(error){alert('Error submitting application: '+error.message);}else{alert('Application submitted! We will review it within 3-5 business days.');GO('home');JOIN_STEP=1;}}async function COMPLETEPAYMENT(){if(!CURRENT_USER||!SELECTED_TAILOR){alert('Please sign in and select a tailor');return;}const itemDesc=document.getElementById('payItemDesc').value;const amount=SELECTED_TAILOR.starting_price||100;if(!itemDesc){alert('Please describe the item');return;}const orderRef='SB-'+Date.now();const{error}=await supa.from('orders').insert({customer_id:CURRENT_USER.id,tailor_id:SELECTED_TAILOR.id,item_name:itemDesc,amount,order_ref:orderRef,status:'pending',created_at:new Date().toISOString()});if(error){alert('Error creating order: '+error.message);}else{document.getElementById('successMsg').classList.add('show');setTimeout(()=>{CLOSEMODAL();GO('dashboard');},2000);}}function GO(page){const pages=document.querySelectorAll('.page');pages.forEach(p=>p.classList.remove('active'));document.getElementById(page).classList.add('active');CURRENT_PAGE=page;if(page==='tailors'){LOADTAILORS();}else if(page==='dashboard'&&CURRENT_USER){LOADPROFILE();}else if(page==='admin'&&CURRENT_USER?.user_metadata?.role==='admin'){LOADADMIN();}window.scrollTo(0,0);}async function LOADADMIN(){if(!CURRENT_USER||CURRENT_USER.user_metadata?.role!=='admin'){alert('Access denied');GO('home');return;}const{count:userCount}=await supa.from('profiles').select('*',{count:'exact',head:true});const{count:tailorCount}=await supa.from('profiles').select('*',{count:'exact',head:true}).eq('role','tailor');const{count:orderCount}=await supa.from('orders').select('*',{count:'exact',head:true});const{data:orders}=await supa.from('orders').select('amount');let revenue=0;if(orders){revenue=orders.reduce((sum,o)=>sum+(o.amount||0),0)*0.08;}document.getElementById('adminUsers').textContent=userCount||0;document.getElementById('adminTailors').textContent=tailorCount||0;document.getElementById('adminOrders').textContent=orderCount||0;document.getElementById('adminRevenue').textContent='$'+Math.round(revenue);const{data:apps}=await supa.from('tailor_applications').select('*').eq('status','pending');const verifBody=document.getElementById('verificationsBody');verifBody.innerHTML='';if(apps&&apps.length>0){apps.forEach(app=>{const row=`<tr><td>${app.full_name}</td><td>${app.email}</td><td><span class="status-badge status-pending">Pending</span></td><td>${new Date(app.created_at).toLocaleDateString()}</td><td><button onclick="alert('Verify user')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">Verify</button></td></tr>`;verifBody.innerHTML+=row;});}const{data:recentOrders}=await supa.from('orders').select('*').order('created_at',{ascending:false}).limit(10);const adminOrdersBody=document.getElementById('adminOrdersBody');adminOrdersBody.innerHTML='';if(recentOrders){recentOrders.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${order.customer_id}</td><td>${order.tailor_id}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td></tr>`;adminOrdersBody.innerHTML+=row;});}}function PANEL(name){const panels=document.querySelectorAll('.panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('.sidebar-menu button');buttons.forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}function MODAL(type){if(type==='auth'){document.getElementById('authModal').classList.add('active');}else if(type==='profile'){document.getElementById('profileModal').classList.add('active');}else if(type==='payment'){if(!CURRENT_USER){alert('Please sign in first');MODAL('auth');return;}document.getElementById('payTailorName').textContent=SELECTED_TAILOR.full_name;document.getElementById('payStartPrice').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('payTotal').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('paymentModal').classList.add('active');CLOSEMODAL();}}function CLOSEMODAL(){document.querySelectorAll('.modal').forEach(m=>{m.classList.remove('active');});document.getElementById('successMsg').classList.remove('show');}function SWITCHMODAL(tab){const tabs=document.querySelectorAll('.tab-content');const btns=document.querySelectorAll('.tab-btn');tabs.forEach(t=>t.classList.remove('active'));btns.forEach(b=>b.classList.remove('active'));if(tab==='signin'){document.getElementById('signinTab').classList.add('active');btns[0].classList.add('active');}else{document.getElementById('signupTab').classList.add('active');btns[1].classList.add('active');}}function TOGGLEROLE(btn,role){const buttons=btn.parentElement.querySelectorAll('button');buttons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');SIGNUP_ROLE=role;}function toggleDropdown(){document.getElementById('dropdownContent').classList.toggle('active');}function GETINITIALS(name){if(!name)return'JD';const parts=name.split(' ');return(parts[0][0]+(parts[1]?.[0]||'')).toUpperCase();}function SETUPSCROLLREVEAL(){const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');}});},{threshold:0.1});document.querySelectorAll('.scroll-reveal').forEach(el=>{observer.observe(el);});}</script>
+const SUPABASE_URL='https://prypgbyuwszdjtftouzj.supabase.co';const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY';const STRIPE_KEY='pk_test_YOUR_KEY_HERE';const supa=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);let CURRENT_USER=null;let CURRENT_PAGE='home';let SELECTED_TAILOR=null;let ALL_TAILORS=[];let FILTERED_TAILORS=[];let ACTIVE_SPEC_FILTERS=[];let JOIN_STEP=1;let SIGNUP_ROLE='customer';const STATIC_TAILORS=[{id:'tailor-1',full_name:'Adaeze Anioke',location:'Atlanta, GA',heritage:'Nigerian',specialties:['Ankara','Bridal'],rating:4.9,orders_completed:87,starting_price:120,turnaround_days:14,bio:'Passionate about authentic African textiles and modern bridal design.',is_verified:true,role:'tailor'},{id:'tailor-2',full_name:'Grace Owusu',location:'New York, NY',heritage:'Ghanaian',specialties:['Kente','Kids'],rating:5.0,orders_completed:64,starting_price:95,turnaround_days:12,bio:'Expert in traditional Kente cloth and kids wear.',is_verified:true,role:'tailor'},{id:'tailor-3',full_name:'Sofia Reyes',location:'Miami, FL',heritage:'Mexican',specialties:['Quinceañera','Formal'],rating:4.8,orders_completed:51,starting_price:105,turnaround_days:18,bio:'Specializing in beautiful quinceañera gowns and formal wear.',is_verified:true,role:'tailor'},{id:'tailor-4',full_name:'Priya Sharma',location:'Dallas, TX',heritage:'Indian',specialties:['Sari','Salwar','Bridal'],rating:5.0,orders_completed:73,starting_price:115,turnaround_days:16,bio:'Master of traditional Indian garments with impeccable draping.',is_verified:true,role:'tailor'},{id:'tailor-5',full_name:'Fatou Diallo',location:'Houston, TX',heritage:'Senegalese',specialties:['Boubou','Wax print'],rating:4.7,orders_completed:43,starting_price:75,turnaround_days:14,bio:'Creating stunning traditional Senegalese outfits with vibrant wax prints.',is_verified:true,role:'tailor'},{id:'tailor-6',full_name:'Chen Wei',location:'San Francisco, CA',heritage:'Chinese',specialties:['Qipao','Cheongsam','Modern'],rating:4.9,orders_completed:38,starting_price:130,turnaround_days:15,bio:'Elegant qipao and cheongsam tailoring with contemporary flair.',is_verified:true,role:'tailor'}];document.addEventListener('DOMContentLoaded',async()=>{LOADFEATURED();LOADTAILORS();AUTHSTATELISTENER();SETUPSCROLLREVEAL();});function AUTHSTATELISTENER(){supa.auth.onAuthStateChange(async(event,session)=>{if(session){CURRENT_USER=session.user;await LOADPROFILE();UPDATENAV();}else{CURRENT_USER=null;UPDATENAV();}});}function UPDATENAV(){const authBtns=document.getElementById('authBtns');const userMenu=document.getElementById('userMenu');if(CURRENT_USER){authBtns.style.display='none';userMenu.classList.add('active');const initials=GETINITIALS(CURRENT_USER.user_metadata?.full_name||'User');document.getElementById('userAvatar').textContent=initials;if(CURRENT_USER.user_metadata?.role==='admin'){document.getElementById('adminLink').style.display='block';}}else{authBtns.style.display='flex';userMenu.classList.remove('active');}}async function SIGNIN(){const email=document.getElementById('signinEmail').value;const password=document.getElementById('signinPassword').value;if(!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signInWithPassword({email,password});if(error){alert('Sign in failed: '+error.message);}else{CLOSEMODAL();GO('dashboard');}}async function SIGNUP(){const firstName=document.getElementById('signupFirstName').value;const lastName=document.getElementById('signupLastName').value;const email=document.getElementById('signupEmail').value;const password=document.getElementById('signupPassword').value;if(!firstName||!lastName||!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signUp({email,password,options:{data:{full_name:firstName+' '+lastName,role:SIGNUP_ROLE}}});if(error){alert('Sign up failed: '+error.message);}else{await supa.from('profiles').upsert({id:data.user.id,full_name:firstName+' '+lastName,email,role:SIGNUP_ROLE,is_verified:false,created_at:new Date().toISOString()});alert('Sign up successful! Please check your email to confirm.');CLOSEMODAL();}}async function GOOGLESIGNIN(){const{error}=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});if(error){alert('Google sign in failed: '+error.message);}}function RESETPWD(){const email=prompt('Enter your email to reset password:');if(email){supa.auth.resetPasswordForEmail(email).then(({error})=>{if(error){alert('Error: '+error.message);}else{alert('Password reset link sent to '+email);}});}}async function LOGOUT(){await supa.auth.signOut();GO('home');}async function LOADPROFILE(){if(!CURRENT_USER)return;const{data,error}=await supa.from('profiles').select('*').eq('id',CURRENT_USER.id).single();if(data){document.getElementById('firstName').value=data.full_name?.split(' ')[0]||'';document.getElementById('lastName').value=data.full_name?.split(' ').slice(1).join(' ')||'';document.getElementById('profileEmail').value=data.email||'';document.getElementById('bio').value=data.bio||'';document.getElementById('location').value=data.location||'';if(data.role==='tailor'){document.getElementById('locationGroup').style.display='block';document.getElementById('specialtiesGroup').style.display='block';document.getElementById('priceGroup').style.display='block';document.getElementById('heritageGroup').style.display='block';document.getElementById('tailorOrders').style.display='block';document.getElementById('tailorEarnings').style.display='block';document.getElementById('tailorPortfolio').style.display='block';document.getElementById('tierWidget').style.display='block';UPDATETIERWIDGET(data);document.getElementById('specialties').value=(data.specialties||[]).join(', ');document.getElementById('price').value=data.starting_price||'';document.getElementById('heritage').value=data.heritage||'';LOADORDERS('tailor');LOADEARN();}else{LOADORDERS('customer');document.getElementById('savedTailorsBtn').style.display='block';LOADSAVEDTAILORS();}}}async function SAVEPROFILE(){if(!CURRENT_USER){alert('Please sign in first');return;}const firstName=document.getElementById('firstName').value;const lastName=document.getElementById('lastName').value;const bio=document.getElementById('bio').value;const location=document.getElementById('location').value;const specialties=document.getElementById('specialties').value?document.getElementById('specialties').value.split(',').map(s=>s.trim()):[];const price=document.getElementById('price').value;const heritage=document.getElementById('heritage').value;const updates={id:CURRENT_USER.id,full_name:firstName+' '+lastName,bio,location,specialties:specialties.length>0?specialties:null,starting_price:price?parseInt(price):null,heritage:heritage||null,updated_at:new Date().toISOString()};const{error}=await supa.from('profiles').upsert(updates);if(error){alert('Error saving profile: '+error.message);}else{alert('Profile saved successfully!');}}async function LOADORDERS(type='customer'){if(!CURRENT_USER)return;const tbody=type==='customer'?document.getElementById('ordersBody'):document.getElementById('incomingBody');tbody.innerHTML='';let query=supa.from('orders').select('*');if(type==='customer'){query=query.eq('customer_id',CURRENT_USER.id);}else{query=query.eq('tailor_id',CURRENT_USER.id);}const{data,error}=await query;if(data&&data.length>0){data.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${type==='customer'?'Tailor':order.customer_id}</td><td>${order.item_name}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td><td>${new Date(order.created_at).toLocaleDateString()}</td>${type==='tailor'?'<td><button onclick="alert(\'Accept order\')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">Accept</button></td>':''}
+</tr>`;tbody.innerHTML+=row;});}else{tbody.innerHTML='<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--gray);">No orders yet</td></tr>';}}async function LOADEARN(){if(!CURRENT_USER)return;const{data,error}=await supa.from('orders').select('*').eq('tailor_id',CURRENT_USER.id).eq('status','completed');let total=0;const tbody=document.getElementById('earningsBody');tbody.innerHTML='';if(data&&data.length>0){data.forEach(order=>{const tailorCut=Math.round(order.amount*0.92);total+=tailorCut;const row=`<tr><td>${order.id}</td><td>Customer</td><td>$${order.amount}</td><td>$${tailorCut}</td><td><span class="status-badge status-completed">Completed</span></td></tr>`;tbody.innerHTML+=row;});}const avg=data&&data.length>0?Math.round(total/(data.length)):0;document.getElementById('totalEarnings').textContent='$'+total;document.getElementById('completedCount').textContent=data?data.length:0;document.getElementById('avgOrder').textContent='$'+avg;const thisMonth=data?data.filter(o=>{const d=new Date(o.created_at);const n=new Date();return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}).reduce((s,o)=>s+Math.round(o.amount*0.92),0):0;document.getElementById('monthEarnings').textContent='$'+thisMonth;}async function SAVEM(){if(!CURRENT_USER){alert('Please sign in first');return;}const measurements={user_id:CURRENT_USER.id,bust:parseFloat(document.getElementById('bust').value)||0,waist:parseFloat(document.getElementById('waist').value)||0,hips:parseFloat(document.getElementById('hips').value)||0,shoulders:parseFloat(document.getElementById('shoulders').value)||0,sleeves:parseFloat(document.getElementById('sleeves').value)||0,inseam:parseFloat(document.getElementById('inseam').value)||0,notes:document.getElementById('measurementNotes').value,updated_at:new Date().toISOString()};const{error}=await supa.from('measurements').upsert(measurements);if(error){alert('Error saving measurements: '+error.message);}else{alert('Measurements saved successfully!');}}async function LOADFEATURED(){const grid=document.getElementById('featuredGrid');const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true).limit(3);if(data&&data.length>0){BUILDGRID(data,'featuredGrid');}else{BUILDGRID(STATIC_TAILORS.slice(0,3),'featuredGrid');}}async function LOADTAILORS(){const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true);if(data&&data.length>0){ALL_TAILORS=data;}else{ALL_TAILORS=STATIC_TAILORS;}FILTERED_TAILORS=[...ALL_TAILORS];BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function BUILDGRID(tailors,gridId='tailorsGrid'){const grid=document.getElementById(gridId);grid.innerHTML='';tailors.forEach(tailor=>{const initials=GETINITIALS(tailor.full_name);const specs=Array.isArray(tailor.specialties)?tailor.specialties:[];const tierBadge=(tailor.tier==='pro'||tailor.orders_completed>50)?'<span class="tier-badge tier-pro"><i class="fas fa-star"></i> Pro</span>':(tailor.is_verified?'<span class="tier-badge tier-verified"><i class="fas fa-shield-alt"></i> Verified</span>':'');const savedList=JSON.parse(localStorage.getItem('sb_saved')||'[]');const isSaved=savedList.includes(tailor.id);const card=`<div class="tailor-card"><div class="tailor-header" onclick="OPENTAILORPROFILE('${tailor.id}')"><div class="tailor-avatar">${initials}</div><div class="tailor-name">${tailor.full_name}</div><div class="tailor-location">${tailor.location}</div><div style="margin-top:0.5rem;">${tierBadge}</div></div><div class="tailor-body"><div style="position:absolute; top:0.75rem; right:0.75rem;"><button class="heart-btn ${isSaved?'saved':''}" onclick="event.stopPropagation();SAVETAILOR('${tailor.id}',this)" title="${isSaved?'Saved':'Save tailor'}"><i class="${isSaved?'fas':'far'} fa-heart"></i></button></div><div class="tailor-specialties">${specs.map(s=>`<span class="spec-chip">${s}</span>`).join('')}</div><div class="tailor-rating"><span class="stars">${'★'.repeat(Math.round(tailor.rating||5))}</span><span>${tailor.rating||5} (${tailor.orders_completed||0} orders)</span></div><div class="tailor-price">Starting at $${tailor.starting_price||100}</div><button onclick="OPENTAILORPROFILE('${tailor.id}')">View Profile</button></div></div>`; grid.innerHTML+=card;});if(tailors.length===0){document.getElementById('noResults').style.display='block';}else{document.getElementById('noResults').style.display='none';}}function FILTERTAILORS(){const search=document.getElementById('searchInput').value.toLowerCase();const location=document.getElementById('locationSelect').value.toLowerCase();FILTERED_TAILORS=ALL_TAILORS.filter(t=>{const matchSearch=!search||t.full_name.toLowerCase().includes(search)||(Array.isArray(t.specialties)&&t.specialties.some(s=>s.toLowerCase().includes(search)))||t.location.toLowerCase().includes(search);const matchLocation=!location||t.location.toLowerCase().includes(location);const matchSpecs=ACTIVE_SPEC_FILTERS.length===0||(Array.isArray(t.specialties)&&ACTIVE_SPEC_FILTERS.some(f=>t.specialties.includes(f)));return matchSearch&&matchLocation&&matchSpecs;});BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function TOGGLESPEC(el){const spec=el.dataset.spec;el.classList.toggle('active');if(el.classList.contains('active')){if(!ACTIVE_SPEC_FILTERS.includes(spec)){ACTIVE_SPEC_FILTERS.push(spec);}}else{ACTIVE_SPEC_FILTERS=ACTIVE_SPEC_FILTERS.filter(f=>f!==spec);}FILTERTAILORS();}function OPENTAILORPROFILE(tailorId){const tailor=ALL_TAILORS.find(t=>t.id===tailorId)||STATIC_TAILORS.find(t=>t.id===tailorId);if(tailor){SELECTED_TAILOR=tailor;const initials=GETINITIALS(tailor.full_name);document.getElementById('profileAvatar').textContent=initials;document.getElementById('profileNameDisplay').textContent=tailor.full_name;document.getElementById('profileLocationDisplay').textContent=tailor.location;document.getElementById('profileHeritage').textContent=tailor.heritage||'Not specified';document.getElementById('profileSpecs').textContent=(Array.isArray(tailor.specialties)?tailor.specialties:[]).join(', ')||'Various';document.getElementById('profileRating').textContent=tailor.rating||5;document.getElementById('profileOrders').textContent=tailor.orders_completed||0;document.getElementById('profileTurnaround').textContent=(tailor.turnaround_days||14)+'-'+((tailor.turnaround_days||14)+7)+' days';document.getElementById('profileBio').textContent=tailor.bio||'Skilled tailor';document.getElementById('profileStartPrice').textContent='$'+(tailor.starting_price||100);if(tailor.is_verified){document.getElementById('profileVerified').style.display='inline';}else{document.getElementById('profileVerified').style.display='none';}MODAL('profile');}}async function SENDMSG(){const content=document.getElementById('messageInput').value;if(!content){alert('Message cannot be empty');return;}if(SCANMSG(content)){document.getElementById('contactWarning').style.display='block';return;}if(!CURRENT_USER){alert('Please sign in first');return;}const{error}=await supa.from('messages').insert({sender_id:CURRENT_USER.id,recipient_id:document.getElementById('threadSelect').value,content,order_id:null,created_at:new Date().toISOString()});if(error){alert('Error sending message: '+error.message);}else{document.getElementById('messageInput').value='';alert('Message sent!');THREAD(document.getElementById('threadSelect').value);}}function SCANMSG(val){const phoneRegex=/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/;const emailRegex=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;const externalPaymentRegex=/paypal|venmo|cashapp|zelle/i;return phoneRegex.test(val)||emailRegex.test(val)||externalPaymentRegex.test(val);}async function THREAD(recipientId){if(!recipientId)return;const container=document.getElementById('messagesContainer');const form=document.getElementById('messageForm');const list=document.getElementById('messagesList');container.style.display='block';form.style.display='block';list.innerHTML='';const{data,error}=await supa.from('messages').select('*').or(`and(sender_id.eq.${CURRENT_USER.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${CURRENT_USER.id})`).order('created_at',{ascending:true});if(data){data.forEach(msg=>{const isOwn=msg.sender_id===CURRENT_USER.id;const msgEl=`<div style="margin-bottom: 1rem; text-align: ${isOwn?'right':'left'};"><div style="background: ${isOwn?'var(--green)':'var(--white)'}; color: ${isOwn?'white':'var(--dark)'}; padding: 0.75rem 1rem; border-radius: 8px; display: inline-block; max-width: 70%;">${msg.content}</div></div>`;list.innerHTML+=msgEl;});}}function JOINNAV(direction){JOIN_STEP+=direction;if(JOIN_STEP<1)JOIN_STEP=1;if(JOIN_STEP>5)JOIN_STEP=5;for(let i=1;i<=5;i++){document.getElementById(`step${i}`).classList.remove('active');}document.getElementById(`step${JOIN_STEP}`).classList.add('active');const steps=document.querySelectorAll('.progress-step');steps.forEach((step,idx)=>{if(idx+1<JOIN_STEP){step.classList.add('completed');}else if(idx+1===JOIN_STEP){step.classList.add('active');}else{step.classList.remove('active','completed');}});document.getElementById('backBtn').style.display=JOIN_STEP>1?'block':'none';document.getElementById('nextBtn').style.display=JOIN_STEP<5?'block':'none';document.getElementById('submitBtn').style.display=JOIN_STEP===5?'block':'none';if(JOIN_STEP===5){UPDATEREVIEWSUMMARY();}}function UPDATEREVIEWSUMMARY(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const summary=`<p><strong>Name:</strong> ${document.getElementById('joinFirstName').value} ${document.getElementById('joinLastName').value}</p><p><strong>Email:</strong> ${document.getElementById('joinEmail').value}</p><p><strong>Phone:</strong> ${document.getElementById('joinPhone').value}</p><p><strong>Experience:</strong> ${document.getElementById('yearsExp').value} years</p><p><strong>Heritage:</strong> ${document.getElementById('joinHeritage').value}</p><p><strong>Specialties:</strong> ${specs.join(', ')}</p><p><strong>Location:</strong> ${document.getElementById('joinCity').value}, ${document.getElementById('joinState').value}</p><p><strong>Starting Price:</strong> $${document.getElementById('joinPrice').value}</p><p><strong>Turnaround:</strong> ${document.getElementById('joinTurnaround').value} days</p>`;document.getElementById('reviewSummary').innerHTML=summary;}async function SUBMITJOIN(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const application={full_name:document.getElementById('joinFirstName').value+' '+document.getElementById('joinLastName').value,email:document.getElementById('joinEmail').value,phone:document.getElementById('joinPhone').value,years_experience:parseInt(document.getElementById('yearsExp').value),heritage:document.getElementById('joinHeritage').value,specialties:specs,location:document.getElementById('joinCity').value+', '+document.getElementById('joinState').value,starting_price:parseInt(document.getElementById('joinPrice').value),turnaround_days:parseInt(document.getElementById('joinTurnaround').value),bio:document.getElementById('joinBio').value,status:'pending',created_at:new Date().toISOString()};const{error}=await supa.from('tailor_applications').insert(application);if(error){alert('Error submitting application: '+error.message);}else{alert('Application submitted! We will review it within 3-5 business days.');GO('home');JOIN_STEP=1;}}async function COMPLETEPAYMENT(){if(!CURRENT_USER||!SELECTED_TAILOR){alert('Please sign in and select a tailor');return;}const itemDesc=document.getElementById('payItemDesc').value;const amount=SELECTED_TAILOR.starting_price||100;if(!itemDesc){alert('Please describe the item');return;}const orderRef='SB-'+Date.now();const{error}=await supa.from('orders').insert({customer_id:CURRENT_USER.id,tailor_id:SELECTED_TAILOR.id,item_name:itemDesc,amount,order_ref:orderRef,status:'pending',created_at:new Date().toISOString()});if(error){alert('Error creating order: '+error.message);}else{document.getElementById('successMsg').classList.add('show');setTimeout(()=>{CLOSEMODAL();GO('dashboard');},2000);}}function GO(page){const pages=document.querySelectorAll('.page');pages.forEach(p=>p.classList.remove('active'));document.getElementById(page).classList.add('active');CURRENT_PAGE=page;if(page==='tailors'){LOADTAILORS();}else if(page==='dashboard'&&CURRENT_USER){LOADPROFILE();}else if(page==='admin'&&CURRENT_USER?.user_metadata?.role==='admin'){LOADADMIN();}window.scrollTo(0,0);}async function LOADADMIN(){if(!CURRENT_USER||CURRENT_USER.user_metadata?.role!=='admin'){alert('Access denied');GO('home');return;}ADMINPANEL('adminOverview',document.querySelector('#adminSidebarMenu button'));const{count:userCount}=await supa.from('profiles').select('*',{count:'exact',head:true});const{count:tailorCount}=await supa.from('profiles').select('*',{count:'exact',head:true}).eq('role','tailor');const{count:orderCount}=await supa.from('orders').select('*',{count:'exact',head:true});const{data:orders}=await supa.from('orders').select('amount');let revenue=0;if(orders){revenue=orders.reduce((sum,o)=>sum+(o.amount||0),0)*0.08;}document.getElementById('adminUsersCount').textContent=userCount||0;document.getElementById('adminTailorsCount').textContent=tailorCount||0;document.getElementById('adminOrdersCount').textContent=orderCount||0;document.getElementById('adminRevenue').textContent='$'+Math.round(revenue);const{data:apps}=await supa.from('tailor_applications').select('*').eq('status','pending');const verifBody=document.getElementById('verificationsBody');verifBody.innerHTML='';if(apps&&apps.length>0){apps.forEach(app=>{const row=`<tr><td>${app.full_name}</td><td>${app.email}</td><td><span class="status-badge status-pending">Pending</span></td><td>${new Date(app.created_at).toLocaleDateString()}</td><td><button onclick="VERIFYTAILOR('${app.id}')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer; margin-right:0.5rem;">Verify</button><button onclick="REJECTAPP('${app.id}')" style="padding:0.5rem 1rem; background:#e74c3c; color:white; border:none; border-radius:4px; cursor:pointer;">Reject</button></td></tr>`;verifBody.innerHTML+=row;});}else{verifBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No pending verifications</td></tr>';}const{data:recentOrders}=await supa.from('orders').select('*').order('created_at',{ascending:false}).limit(20);const adminOrdersBody=document.getElementById('adminOrdersBody');adminOrdersBody.innerHTML='';if(recentOrders&&recentOrders.length>0){recentOrders.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${order.customer_id}</td><td>${order.tailor_id}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td></tr>`;adminOrdersBody.innerHTML+=row;});}else{adminOrdersBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No orders yet</td></tr>';}const{data:allUsers}=await supa.from('profiles').select('*').order('created_at',{ascending:false}).limit(50);const adminUsersBody=document.getElementById('adminUsersBody');adminUsersBody.innerHTML='';if(allUsers&&allUsers.length>0){allUsers.forEach(user=>{const row=`<tr><td>${user.full_name||'—'}</td><td>${user.email||'—'}</td><td><span class="status-badge" style="background:${user.role==='tailor'?'#d5f5e3':'#d6eaf8'}; color:var(--dark);">${user.role||'customer'}</span></td><td>${user.created_at?new Date(user.created_at).toLocaleDateString():'—'}</td><td><button onclick="alert('View user: '+' ${user.full_name||user.id}')" style="padding:0.4rem 0.8rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">View</button></td></tr>`;adminUsersBody.innerHTML+=row;});}else{adminUsersBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No users found</td></tr>';};}async function VERIFYTAILOR(appId){const{error}=await supa.from('tailor_applications').update({status:'approved'}).eq('id',appId);if(error){alert('Error: '+error.message);}else{alert('Tailor verified successfully!');LOADADMIN();}}async function REJECTAPP(appId){const{error}=await supa.from('tailor_applications').update({status:'rejected'}).eq('id',appId);if(error){alert('Error: '+error.message);}else{alert('Application rejected.');LOADADMIN();}}function PANEL(name){const panels=document.querySelectorAll('#dashboard .panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('#dashboard .sidebar-menu button');buttons.forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}function ADMINPANEL(name,btn){const panels=document.querySelectorAll('#admin .panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('#adminSidebarMenu button');buttons.forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}function MODAL(type){if(type==='auth'){document.getElementById('authModal').classList.add('active');}else if(type==='profile'){document.getElementById('profileModal').classList.add('active');}else if(type==='payment'){if(!CURRENT_USER){alert('Please sign in first');MODAL('auth');return;}document.getElementById('payTailorName').textContent=SELECTED_TAILOR.full_name;document.getElementById('payStartPrice').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('payTotal').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('paymentModal').classList.add('active');CLOSEMODAL();}}function CLOSEMODAL(){document.querySelectorAll('.modal').forEach(m=>{m.classList.remove('active');});document.getElementById('successMsg').classList.remove('show');}function SWITCHMODAL(tab){const tabs=document.querySelectorAll('.tab-content');const btns=document.querySelectorAll('.tab-btn');tabs.forEach(t=>t.classList.remove('active'));btns.forEach(b=>b.classList.remove('active'));if(tab==='signin'){document.getElementById('signinTab').classList.add('active');btns[0].classList.add('active');}else{document.getElementById('signupTab').classList.add('active');btns[1].classList.add('active');}}function TOGGLEROLE(btn,role){const buttons=btn.parentElement.querySelectorAll('button');buttons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');SIGNUP_ROLE=role;}function toggleDropdown(){document.getElementById('dropdownContent').classList.toggle('active');}function GETINITIALS(name){if(!name)return'JD';const parts=name.split(' ');return(parts[0][0]+(parts[1]?.[0]||'')).toUpperCase();}
+// ═══ NEW V2 FUNCTIONS ═══
+
+// HERO SEARCH
+function HEROSEARCH(){var q=(document.getElementById('heroSearch').value||'').trim();if(q){document.getElementById('searchInput').value=q;GO('tailors');setTimeout(FILTERTAILORS,100);}else{GO('tailors');}}
+function HEROSEARCHWITH(q){document.getElementById('heroSearch').value=q;document.getElementById('searchInput').value=q;GO('tailors');setTimeout(FILTERTAILORS,100);}
+
+// FILTER CHIPS
+var ACTIVE_CHIPS={occasion:[],culture:[],specialty:[]};
+function TOGGLECHIP(el){var type=el.dataset.type;var val=el.dataset.val;el.classList.toggle('active');if(el.classList.contains('active')){if(ACTIVE_CHIPS[type].indexOf(val)===-1)ACTIVE_CHIPS[type].push(val);}else{ACTIVE_CHIPS[type]=ACTIVE_CHIPS[type].filter(function(v){return v!==val;});}FILTERTAILORS();}
+function CLEARCHIPS(){document.querySelectorAll('.fchip.active').forEach(function(c){c.classList.remove('active');});ACTIVE_CHIPS={occasion:[],culture:[],specialty:[]};document.getElementById('searchInput').value='';FILTERTAILORS();}
+
+// Store original FILTERTAILORS
+var _ORIG_FILTERTAILORS=FILTERTAILORS;
+FILTERTAILORS=function(){
+  var search=(document.getElementById('searchInput').value||'').toLowerCase();
+  var locEl=document.getElementById('locationSelect');
+  var location=locEl?locEl.value.toLowerCase():'';
+  FILTERED_TAILORS=ALL_TAILORS.filter(function(t){
+    var specs=Array.isArray(t.specialties)?t.specialties:[];
+    var matchSearch=!search||t.full_name.toLowerCase().includes(search)||specs.some(function(s){return s.toLowerCase().includes(search);})||t.location.toLowerCase().includes(search)||(t.heritage&&t.heritage.toLowerCase().includes(search));
+    var matchLocation=!location||t.location.toLowerCase().includes(location);
+    var matchSpecs=ACTIVE_SPEC_FILTERS.length===0||specs.some(function(s){return ACTIVE_SPEC_FILTERS.some(function(f){return s.includes(f);});});
+    var matchCulture=ACTIVE_CHIPS.culture.length===0||ACTIVE_CHIPS.culture.some(function(c){return (t.heritage&&t.heritage.toLowerCase().includes(c.toLowerCase()))||specs.some(function(s){return s.toLowerCase().includes(c.toLowerCase());});});
+    var matchOccasion=ACTIVE_CHIPS.occasion.length===0||ACTIVE_CHIPS.occasion.some(function(o){return specs.some(function(s){return s.toLowerCase().includes(o.toLowerCase());});});
+    var matchFabric=ACTIVE_CHIPS.specialty.length===0||ACTIVE_CHIPS.specialty.some(function(f){return specs.some(function(s){return s.toLowerCase().includes(f.toLowerCase());});});
+    return matchSearch&&matchLocation&&matchSpecs&&matchCulture&&matchOccasion&&matchFabric;
+  });
+  BUILDGRID(FILTERED_TAILORS,'tailorsGrid');
+  var meta=document.getElementById('resultsMeta');
+  if(meta)meta.textContent=FILTERED_TAILORS.length+' tailor'+(FILTERED_TAILORS.length!==1?'s':'')+' found'+(document.getElementById('searchInput').value?' for "'+document.getElementById('searchInput').value+'"':'');
+};
+
+// SAVE / HEART TAILOR
+function SAVETAILOR(tailorId,btn){
+  var savedList=JSON.parse(localStorage.getItem('sb_saved')||'[]');
+  var idx=savedList.indexOf(tailorId);
+  if(idx>-1){savedList.splice(idx,1);btn.classList.remove('saved');btn.innerHTML='<i class="far fa-heart"></i>';}
+  else{savedList.push(tailorId);btn.classList.add('saved');btn.innerHTML='<i class="fas fa-heart"></i>';}
+  localStorage.setItem('sb_saved',JSON.stringify(savedList));
+  LOADSAVEDTAILORS();
+}
+function TOGGLESAVE(){var btn=document.getElementById('profileHeartBtn');if(SELECTED_TAILOR)SAVETAILOR(SELECTED_TAILOR.id,btn);}
+
+function LOADSAVEDTAILORS(){
+  var savedList=JSON.parse(localStorage.getItem('sb_saved')||'[]');
+  var grid=document.getElementById('savedTailorGrid');
+  if(!grid)return;
+  if(savedList.length===0){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--gray);"><i class="fas fa-heart" style="font-size:2rem;margin-bottom:1rem;display:block;color:#eee;"></i><p>No saved tailors yet.</p><p style="font-size:0.85rem;margin-top:0.5rem;">Tap the heart on any tailor profile to save them here.</p><button class="panel-button" style="margin-top:1rem;" onclick="GO(&quot;tailors&quot;)">Browse Tailors</button></div>';
+    return;
+  }
+  var tailors=savedList.map(function(id){return ALL_TAILORS.find(function(t){return t.id===id;})||STATIC_TAILORS.find(function(t){return t.id===id;});}).filter(Boolean);
+  grid.innerHTML=tailors.map(function(t){
+    var init=GETINITIALS(t.full_name);
+    var specs=(t.specialties||[]).slice(0,2).join(', ');
+    return '<div class="saved-tailor-card"><div class="saved-tailor-avatar">'+init+'</div><div style="font-weight:700;margin-bottom:0.25rem;">'+t.full_name+'</div><div style="font-size:0.8rem;color:var(--gray);margin-bottom:0.5rem;">'+t.location+'</div><div style="font-size:0.8rem;color:var(--gray);margin-bottom:0.75rem;">'+specs+'</div><button class="panel-button" style="width:100%;" onclick="OPENTAILORPROFILE(&quot;'+t.id+'&quot;)">Quick Order</button></div>';
+  }).join('');
+}
+
+// TIER WIDGET
+function UPDATETIERWIDGET(data){
+  var tierName=document.getElementById('tierWidgetText');
+  var tierHint=document.getElementById('tierWidgetHint');
+  var orders=(data&&data.orders_completed)||0;
+  var tier='Starter';
+  var hint='Complete 10 verified orders to become Verified.';
+  if(data&&data.is_verified){
+    if(orders>=100){tier='Pro Tailor';hint='You are a Pro! Unlock Elite at 200 completed orders.';}
+    else{tier='Verified';hint='Complete '+(100-orders)+' more orders to reach Pro tier.';}
+  }
+  if(tierName)tierName.textContent=tier;
+  if(tierHint)tierHint.textContent=hint;
+}
+
+// OPEN PROFILE OVERRIDE (add tier badge + heart state)
+var _ORIG_OPENTAILORPROFILE=OPENTAILORPROFILE;
+OPENTAILORPROFILE=function(tailorId){
+  _ORIG_OPENTAILORPROFILE(tailorId);
+  var tailor=ALL_TAILORS.find(function(t){return t.id===tailorId;})||STATIC_TAILORS.find(function(t){return t.id===tailorId;});
+  if(!tailor)return;
+  var proEl=document.getElementById('profileProBadge');
+  var hbtn=document.getElementById('profileHeartBtn');
+  if(proEl){proEl.style.display=(tailor.tier==='pro'||tailor.orders_completed>50)?'inline-flex':'none';}
+  if(hbtn){
+    var saved=JSON.parse(localStorage.getItem('sb_saved')||'[]');
+    if(saved.indexOf(tailorId)>-1){hbtn.classList.add('saved');hbtn.innerHTML='<i class="fas fa-heart"></i>';}
+    else{hbtn.classList.remove('saved');hbtn.innerHTML='<i class="far fa-heart"></i>';}
+  }
+};
+
+// M-HUB MEASUREMENT SYSTEM
+var MHUB_CURRENT_GARMENT='mens-tshirt';
+var MHUB_CURRENT_FIT='Fitted';
+var MHUB_PROFILES=[];
+
+function MHUBSHOWTAB(tab){
+  document.getElementById('mhubTabNew').style.display=tab==='new'?'block':'none';
+  document.getElementById('mhubTabSaved').style.display=tab==='saved'?'block':'none';
+  document.getElementById('mhubTabSizeref').style.display=tab==='sizeref'?'block':'none';
+  if(tab==='saved')RENDERMHUBPROFILES();
+}
+function MHUBGARMENT(btn,garment){
+  document.querySelectorAll('.mhub-tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.querySelectorAll('.mhub-garment-panel').forEach(function(p){p.classList.remove('active');});
+  var gp=document.getElementById('gp-'+garment);
+  if(gp)gp.classList.add('active');
+  MHUB_CURRENT_GARMENT=garment;
+}
+function SELECTFIT(btn){
+  document.querySelectorAll('.fit-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  MHUB_CURRENT_FIT=btn.dataset.fit;
+}
+function SAVEMHUB(){
+  if(!CURRENT_USER){alert('Please sign in to save measurement profiles.');return;}
+  var name=(document.getElementById('mhubProfileName').value||'').trim();
+  if(!name){alert('Please give your profile a name.');return;}
+  var profile={id:Date.now().toString(),name:name,garment:MHUB_CURRENT_GARMENT,fit:MHUB_CURRENT_FIT,notes:(document.getElementById('mhubNotes').value||''),measurements:COLLECTMEASUREMENTS(),created:new Date().toLocaleString()};
+  MHUB_PROFILES.push(profile);
+  localStorage.setItem('sb_mhub_'+CURRENT_USER.id,JSON.stringify(MHUB_PROFILES));
+  alert('Profile "'+name+'" saved!');
+  document.getElementById('mhubProfileName').value='';
+  MHUBSHOWTAB('saved');
+}
+function COLLECTMEASUREMENTS(){
+  var inputs=document.querySelectorAll('#gp-'+MHUB_CURRENT_GARMENT+' input');
+  var m={};
+  inputs.forEach(function(inp){if(inp.value)m[inp.id]=inp.value;});
+  return m;
+}
+function RENDERMHUBPROFILES(){
+  if(CURRENT_USER){var saved=localStorage.getItem('sb_mhub_'+CURRENT_USER.id);if(saved)MHUB_PROFILES=JSON.parse(saved);}
+  var list=document.getElementById('mhubProfilesList');
+  if(!list)return;
+  if(MHUB_PROFILES.length===0){list.innerHTML='<p style="color:var(--gray);text-align:center;padding:2rem;">No saved profiles yet. Create your first one!</p>';return;}
+  list.innerHTML=MHUB_PROFILES.map(function(p,i){
+    var garmentLabel=p.garment.replace(/-/g,' ');
+    return '<div class="mhub-profile-card"><div class="mhub-profile-info"><div class="mhub-profile-name">'+p.name+'</div><div class="mhub-profile-meta">'+garmentLabel+' &bull; '+p.fit+' fit &bull; '+p.created+'</div></div><div class="mhub-profile-actions"><button class="btn-use" onclick="USEMHUBPROFILE('+i+')">Use</button><button class="btn-delete" onclick="DELETEMHUBPROFILE('+i+')">Delete</button></div></div>';
+  }).join('');
+}
+function USEMHUBPROFILE(idx){var p=MHUB_PROFILES[idx];alert('Profile "'+p.name+'" selected! It will attach to your next order at checkout.');}
+function DELETEMHUBPROFILE(idx){MHUB_PROFILES.splice(idx,1);if(CURRENT_USER)localStorage.setItem('sb_mhub_'+CURRENT_USER.id,JSON.stringify(MHUB_PROFILES));RENDERMHUBPROFILES();}
+
+// PANEL OVERRIDE — supports new panels
+var _ORIG_PANEL=PANEL;
+PANEL=function(name){
+  document.querySelectorAll('#dashboard .panel').forEach(function(p){p.classList.remove('active');});
+  var target=document.getElementById(name+'Panel');
+  if(target)target.classList.add('active');
+  document.querySelectorAll('#dashboard .sidebar-menu button').forEach(function(b){b.classList.remove('active');});
+  // Highlight clicked button
+  try{if(window.event&&window.event.target)window.event.target.classList.add('active');}catch(e){}
+  if(name==='measurements'&&CURRENT_USER){var s=localStorage.getItem('sb_mhub_'+CURRENT_USER.id);if(s)MHUB_PROFILES=JSON.parse(s);}
+  if(name==='savedTailors')LOADSAVEDTAILORS();
+};
+
+// ORDER TIMELINE helper
+function RENDERORDERTIMELINE(status){
+  var stages=[{key:'pending',label:'Order Placed'},{key:'accepted',label:'Accepted'},{key:'in_production',label:'In Production'},{key:'quality_check',label:'Quality Check'},{key:'delivered',label:'Delivered'}];
+  var statusOrder=['pending','accepted','in_production','quality_check','delivered'];
+  var idx=statusOrder.indexOf(status);
+  return '<div class="order-timeline">'+stages.map(function(s,i){
+    var cls='timeline-step'+(i<idx?' done':(i===idx?' current':''));
+    return '<div class="'+cls+'"><div class="timeline-dot">'+(i<idx?'&#x2713;':i+1)+'</div><div class="timeline-label">'+s.label+'</div></div>';
+  }).join('')+'</div>';
+}
+
+function SETUPSCROLLREVEAL(){const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');}});},{threshold:0.1});document.querySelectorAll('.scroll-reveal').forEach(el=>{observer.observe(el);});}</script>
 
 </body>
 </html>
