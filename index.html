@@ -7,8 +7,6 @@
   <title>SewBridge - Connect with Master Tailors</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7"></script>
-  <script src="https://js.stripe.com/v3/"></script>
   <style>
     * {
       margin: 0;
@@ -23,12 +21,12 @@
       --white: #fff;
       --gray: #666;
       --lightgray: #f0f0f0;
+      --danger: #e74c3c;
+      --warning: #f39c12;
+      --success: #27ae60;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'DM Sans', sans-serif;
       color: var(--dark);
@@ -41,2733 +39,1817 @@
       font-weight: 600;
     }
 
-    /* NAV */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--white);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      padding: 1rem 2rem;
+    /* ===== LANDING PAGE ===== */
+    .landing-container {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    nav .logo-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--dark);
-      cursor: pointer;
-    }
-
-    nav .logo-brand img {
-      height: 40px;
-      width: auto;
-    }
-
-    nav .nav-links {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    nav .nav-links a {
-      text-decoration: none;
-      color: var(--dark);
-      font-weight: 500;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-
-    nav .nav-links a:hover {
-      color: var(--green);
-    }
-
-    nav .auth-buttons {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    nav .auth-buttons button {
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: all 0.3s;
-    }
-
-    nav .auth-buttons .signin-btn {
-      background: transparent;
-      color: var(--dark);
-      border: 2px solid var(--dark);
-    }
-
-    nav .auth-buttons .signin-btn:hover {
-      background: var(--dark);
-      color: var(--white);
-    }
-
-    nav .auth-buttons .signup-btn {
-      background: var(--green);
-      color: var(--white);
-    }
-
-    nav .auth-buttons .signup-btn:hover {
-      opacity: 0.9;
-    }
-
-    nav .user-menu {
-      display: none;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    nav .user-menu.active {
-      display: flex;
-    }
-
-    nav .user-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--green);
-      color: var(--white);
-      display: flex;
+      min-height: 100vh;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
+      background: linear-gradient(135deg, rgba(26,26,26,0.95) 0%, rgba(29,158,117,0.2) 100%);
     }
 
-    nav .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    nav .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: var(--white);
-      min-width: 200px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      padding: 0.5rem 0;
-      z-index: 1;
-      border-radius: 6px;
-      top: 100%;
-      right: 0;
-      margin-top: 0.5rem;
-    }
-
-    nav .dropdown-content.active {
-      display: block;
-    }
-
-    nav .dropdown-content a {
-      color: var(--dark);
-      padding: 0.75rem 1.5rem;
-      text-decoration: none;
-      display: block;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    nav .dropdown-content a:hover {
-      background-color: var(--lightgray);
-      color: var(--green);
-    }
-
-    /* PAGES */
-    .page {
-      display: none;
-      animation: fadeIn 0.5s ease-in;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .auth-box {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 450px;
+      padding: 3rem 2rem;
+      animation: slideUp 0.5s ease;
     }
 
     @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .scroll-reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .scroll-reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* HOME PAGE */
-    .hero {
-      position: relative;
-      min-height: 90vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, rgba(26,26,26,0.8) 0%, rgba(29,158,117,0.3) 100%),
-                  repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(29,158,117,0.05) 35px, rgba(29,158,117,0.05) 70px),
-                  var(--bg);
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -10%;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: rgba(29,158,117,0.1);
-      filter: blur(80px);
-      z-index: 0;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      max-width: 800px;
-      padding: 2rem;
-    }
-
-    .hero-tag {
-      display: inline-block;
-      background: var(--green);
-      color: var(--white);
-      padding: 0.6rem 1.2rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.5px;
-    }
-
-    .hero h1 {
-      font-size: 3.5rem;
-      line-height: 1.2;
-      color: var(--white);
-      margin-bottom: 1.5rem;
-      font-weight: 700;
-    }
-
-    .hero p {
-      font-size: 1.1rem;
-      color: #ddd;
-      margin-bottom: 2rem;
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .hero-cta button {
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .hero-cta .btn-primary {
-      background: var(--green);
-      color: var(--white);
-    }
-
-    .hero-cta .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(29,158,117,0.3);
-    }
-
-    .hero-cta .btn-secondary {
-      background: var(--white);
-      color: var(--dark);
-      border: 2px solid var(--white);
-    }
-
-    .hero-cta .btn-secondary:hover {
-      background: transparent;
-      color: var(--white);
-    }
-
-    /* STATS */
-    .stats-section {
-      background: var(--white);
-      padding: 3rem 2rem;
-      margin: 3rem 0;
-    }
-
-    .stats-grid {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-    }
-
-    .stat-card {
-      text-align: center;
-      padding: 2rem;
-      border: 2px solid var(--lightgray);
-      border-radius: 8px;
-      transition: all 0.3s;
-    }
-
-    .stat-card:hover {
-      border-color: var(--green);
-      box-shadow: 0 4px 12px rgba(29,158,117,0.1);
-    }
-
-    .stat-card h3 {
-      font-size: 2.5rem;
-      color: var(--green);
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-card p {
-      color: var(--gray);
-      font-size: 0.95rem;
-    }
-
-    /* HOW IT WORKS */
-    .how-section {
-      max-width: 1200px;
-      margin: 4rem auto;
-      padding: 2rem;
-    }
-
-    .how-section h2 {
-      font-size: 2.5rem;
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .how-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-
-    .how-card {
-      text-align: center;
-      padding: 2rem;
-    }
-
-    .how-card-icon {
-      width: 70px;
-      height: 70px;
-      background: var(--green);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.5rem;
-      color: var(--white);
-      font-size: 1.8rem;
-    }
-
-    .how-card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .how-card p {
-      color: var(--gray);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    /* FEATURED TAILORS */
-    .featured-section {
-      background: var(--white);
-      padding: 3rem 2rem;
-      margin: 3rem 0;
-    }
-
-    .featured-section h2 {
-      font-size: 2.5rem;
+    .auth-header {
       text-align: center;
       margin-bottom: 2rem;
     }
 
-    .featured-grid {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    .tailor-card {
-      background: var(--white);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: all 0.3s;
-      cursor: pointer;
-      border: 1px solid var(--lightgray);
-    }
-
-    .tailor-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    }
-
-    .tailor-header {
-      background: linear-gradient(135deg, var(--green) 0%, #16a373 100%);
-      padding: 2rem 1.5rem;
-      text-align: center;
-      color: var(--white);
-    }
-
-    .tailor-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1rem;
+    .auth-logo {
       font-size: 2rem;
       font-weight: 700;
-      border: 3px solid var(--white);
-    }
-
-    .tailor-name {
-      font-size: 1.3rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .tailor-location {
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
-
-    .tailor-body {
-      padding: 1.5rem;
-    }
-
-    .tailor-badges {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-      justify-content: center;
-    }
-
-    .tailor-badge {
-      font-size: 0.75rem;
-      padding: 0.3rem 0.7rem;
-      background: var(--lightgray);
-      border-radius: 20px;
-      color: var(--dark);
-      font-weight: 600;
-    }
-
-    .tailor-badge.verified {
-      background: rgba(29,158,117,0.2);
       color: var(--green);
-    }
-
-    .tailor-specialties {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-
-    .spec-chip {
-      font-size: 0.8rem;
-      padding: 0.4rem 0.8rem;
-      background: var(--lightgray);
-      border-radius: 4px;
-      color: var(--dark);
-    }
-
-    .tailor-rating {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-      font-size: 0.9rem;
-    }
-
-    .tailor-rating .stars {
-      color: var(--green);
-    }
-
-    .tailor-price {
-      text-align: center;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--green);
-      margin-bottom: 1rem;
-    }
-
-    .tailor-card button {
-      width: 100%;
-      padding: 0.75rem;
-      background: var(--green);
-      color: var(--white);
-      border: none;
-      border-radius: 4px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .tailor-card button:hover {
-      opacity: 0.9;
-    }
-
-    /* TESTIMONIALS */
-    .testimonials-section {
-      max-width: 1200px;
-      margin: 4rem auto;
-      padding: 2rem;
-    }
-
-    .testimonials-section h2 {
-      font-size: 2.5rem;
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    .testimonial-card {
-      background: var(--white);
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      border: 1px solid var(--lightgray);
-    }
-
-    .testimonial-stars {
-      color: #ffc107;
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
-    }
-
-    .testimonial-quote {
-      font-style: italic;
-      color: var(--gray);
-      margin-bottom: 1.5rem;
-      line-height: 1.8;
-    }
-
-    .testimonial-author {
-      font-weight: 600;
-      color: var(--dark);
-      margin-bottom: 0.25rem;
-    }
-
-    .testimonial-city {
-      font-size: 0.9rem;
-      color: var(--gray);
-    }
-
-    /* EARN SECTION */
-    .earn-section {
-      background: linear-gradient(135deg, var(--dark) 0%, rgba(29,158,117,0.3) 100%);
-      color: var(--white);
-      padding: 3rem 2rem;
-      text-align: center;
-    }
-
-    .earn-content {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .earn-section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: var(--white);
-    }
-
-    .earn-section p {
-      font-size: 1.1rem;
-      margin-bottom: 2rem;
-      opacity: 0.95;
-    }
-
-    .earn-section button {
-      padding: 1rem 2rem;
-      background: var(--green);
-      color: var(--white);
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .earn-section button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(29,158,117,0.4);
-    }
-
-    /* TAILORS PAGE */
-    .tailors-container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 2rem;
-    }
-
-    .tailors-header {
-      margin-bottom: 2rem;
-    }
-
-    .tailors-header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .tailors-filters {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .filter-group label {
-      font-weight: 600;
       margin-bottom: 0.5rem;
-      color: var(--dark);
     }
 
-    .filter-group input,
-    .filter-group select {
-      padding: 0.75rem;
-      border: 1px solid var(--lightgray);
-      border-radius: 4px;
-      font-size: 0.95rem;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    .filter-group input:focus,
-    .filter-group select:focus {
-      outline: none;
-      border-color: var(--green);
-      box-shadow: 0 0 0 2px rgba(29,158,117,0.1);
-    }
-
-    .specialty-tags {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
-    }
-
-    .spec-tag {
-      padding: 0.5rem 1rem;
-      background: var(--lightgray);
-      border: 2px solid var(--lightgray);
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s;
-    }
-
-    .spec-tag.active {
-      background: var(--green);
-      color: var(--white);
-      border-color: var(--green);
-    }
-
-    .tailors-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    .no-results {
-      text-align: center;
-      padding: 3rem;
-      color: var(--gray);
-      font-size: 1.1rem;
-    }
-
-    /* HOW PAGE */
-    .how-container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 2rem;
-    }
-
-    .how-container h1 {
-      font-size: 2.5rem;
-      margin-bottom: 3rem;
-      text-align: center;
-    }
-
-    .how-role {
-      margin-bottom: 4rem;
-    }
-
-    .how-role h2 {
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      color: var(--green);
-    }
-
-    .how-steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-    }
-
-    .step {
-      background: var(--white);
-      padding: 2rem;
-      border-radius: 8px;
-      border-left: 4px solid var(--green);
-    }
-
-    .step-number {
-      display: inline-flex;
-      width: 40px;
-      height: 40px;
-      background: var(--green);
-      color: var(--white);
-      border-radius: 50%;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .step h3 {
-      margin-bottom: 0.75rem;
-      font-size: 1.2rem;
-    }
-
-    .step p {
-      color: var(--gray);
-      line-height: 1.6;
-    }
-
-    /* DASHBOARD */
-    .dashboard-container {
-      display: grid;
-      grid-template-columns: 250px 1fr;
-      gap: 2rem;
-      max-width: 1400px;
-      margin: 2rem auto;
-      padding: 2rem;
-      min-height: 80vh;
-    }
-
-    .dashboard-sidebar {
-      background: var(--white);
-      border-radius: 8px;
-      padding: 1.5rem;
-      height: fit-content;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .dashboard-sidebar h3 {
-      margin-bottom: 1.5rem;
-      font-size: 1.1rem;
-    }
-
-    .sidebar-menu {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .sidebar-menu button {
-      padding: 0.75rem 1rem;
-      background: transparent;
-      border: none;
-      text-align: left;
-      cursor: pointer;
-      font-weight: 500;
-      border-radius: 4px;
-      transition: all 0.3s;
-      color: var(--dark);
-    }
-
-    .sidebar-menu button:hover,
-    .sidebar-menu button.active {
-      background: var(--lightgray);
-      color: var(--green);
-    }
-
-    .dashboard-panels {
-      background: var(--white);
-      border-radius: 8px;
-      padding: 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .panel {
-      display: none;
-    }
-
-    .panel.active {
-      display: block;
-    }
-
-    .panel h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .panel-form {
-      display: grid;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-group label {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--dark);
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      padding: 0.75rem;
-      border: 1px solid var(--lightgray);
-      border-radius: 4px;
-      font-size: 0.95rem;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: var(--green);
-      box-shadow: 0 0 0 2px rgba(29,158,117,0.1);
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    .panel-button {
-      padding: 0.75rem 1.5rem;
-      background: var(--green);
-      color: var(--white);
-      border: none;
-      border-radius: 4px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      width: fit-content;
-    }
-
-    .panel-button:hover {
-      opacity: 0.9;
-    }
-
-    .orders-table,
-    .users-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-
-    .orders-table th,
-    .users-table th {
-      text-align: left;
-      padding: 1rem;
-      background: var(--lightgray);
-      font-weight: 600;
-      border-bottom: 2px solid #ddd;
-    }
-
-    .orders-table td,
-    .users-table td {
-      padding: 1rem;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .orders-table tr:hover,
-    .users-table tr:hover {
-      background: var(--lightgray);
-    }
-
-    .status-badge {
-      display: inline-block;
-      padding: 0.4rem 0.8rem;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .status-pending {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .status-completed {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    .status-cancelled {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    /* MODALS */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      animation: fadeIn 0.3s ease;
-    }
-
-    .modal.active {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-content {
-      background: var(--white);
-      padding: 2rem;
-      border-radius: 12px;
-      max-width: 500px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--gray);
-    }
-
-    .modal-close:hover {
-      color: var(--dark);
-    }
-
-    .modal h2 {
-      margin-bottom: 1.5rem;
-    }
-
-    .tabs {
+    .auth-tabs {
       display: flex;
       gap: 1rem;
       margin-bottom: 2rem;
       border-bottom: 2px solid var(--lightgray);
     }
 
-    .tab-btn {
-      padding: 0.75rem 1.5rem;
+    .auth-tab-btn {
+      flex: 1;
+      padding: 0.75rem;
       background: none;
       border: none;
+      border-bottom: 3px solid transparent;
       cursor: pointer;
       font-weight: 600;
       color: var(--gray);
-      border-bottom: 3px solid transparent;
       transition: all 0.3s;
     }
 
-    .tab-btn.active {
+    .auth-tab-btn.active {
       color: var(--green);
       border-bottom-color: var(--green);
     }
 
-    .tab-content {
-      display: none;
+    .auth-form { display: none; }
+    .auth-form.active { display: block; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
-    .tab-content.active {
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
       display: block;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .oauth-button {
-      padding: 0.75rem;
-      background: var(--lightgray);
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      cursor: pointer;
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      transition: all 0.3s;
-      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+      font-size: 0.9rem;
     }
 
-    .oauth-button:hover {
-      background: #f5f5f5;
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--lightgray);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.3s;
     }
 
-    .toggle-role {
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(29,158,117,0.1);
+    }
+
+    .role-toggle {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
 
-    .toggle-role button {
+    .role-btn {
       flex: 1;
       padding: 0.75rem;
-      background: var(--lightgray);
       border: 2px solid var(--lightgray);
-      border-radius: 4px;
+      background: var(--white);
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
       transition: all 0.3s;
+      color: var(--dark);
     }
 
-    .toggle-role button.active {
+    .role-btn.active {
       background: var(--green);
       color: var(--white);
       border-color: var(--green);
     }
 
-    /* TAILOR PROFILE MODAL */
-    .profile-modal-content {
-      max-width: 700px;
-    }
+    .tailor-type-group { display: none; }
+    .tailor-type-group.active { display: block; }
 
-    .profile-header {
-      background: linear-gradient(135deg, var(--green) 0%, #16a373 100%);
-      padding: 2rem;
-      text-align: center;
-      color: var(--white);
-      border-radius: 8px;
-      margin-bottom: 2rem;
-    }
-
-    .profile-avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1rem;
-      font-size: 2.5rem;
-      font-weight: 700;
-      border: 4px solid var(--white);
-    }
-
-    .profile-name {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .profile-details {
+    .tailor-type-options {
       display: grid;
-      gap: 1.5rem;
-    }
-
-    .detail-row {
-      display: flex;
-      gap: 2rem;
-    }
-
-    .detail {
-      flex: 1;
-    }
-
-    .detail-label {
-      font-weight: 600;
-      color: var(--gray);
-      font-size: 0.85rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .detail-value {
-      font-size: 1.1rem;
-      color: var(--dark);
-    }
-
-    /* PAYMENT MODAL */
-    .payment-modal-content {
-      max-width: 600px;
-    }
-
-    .payment-summary {
-      background: var(--lightgray);
-      padding: 1.5rem;
-      border-radius: 8px;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
       margin-bottom: 1.5rem;
     }
 
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.75rem;
-    }
-
-    .summary-row.total {
-      font-weight: 700;
-      font-size: 1.1rem;
-      border-top: 2px solid #ddd;
-      padding-top: 0.75rem;
-      margin-top: 0.75rem;
-    }
-
-    .card-placeholder {
-      background: var(--lightgray);
-      padding: 2rem;
-      border-radius: 8px;
-      text-align: center;
-      margin: 1.5rem 0;
-      color: var(--gray);
-      font-size: 0.95rem;
-    }
-
-    .success-message {
-      display: none;
-      background: #d4edda;
-      color: #155724;
+    .tailor-type-card {
       padding: 1rem;
-      border-radius: 4px;
-      margin-bottom: 1rem;
-    }
-
-    .success-message.show {
-      display: block;
-    }
-
-    /* JOIN PAGE */
-    .join-container {
-      max-width: 700px;
-      margin: 2rem auto;
-      padding: 2rem;
-    }
-
-    .join-container h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
+      border: 2px solid var(--lightgray);
+      border-radius: 8px;
+      cursor: pointer;
       text-align: center;
-    }
-
-    .join-container p {
-      text-align: center;
-      color: var(--gray);
-      margin-bottom: 2rem;
-    }
-
-    .progress-bar {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .progress-step {
-      flex: 1;
-      height: 4px;
-      background: var(--lightgray);
-      border-radius: 2px;
       transition: all 0.3s;
     }
 
-    .progress-step.active,
-    .progress-step.completed {
+    .tailor-type-card:hover {
+      border-color: var(--green);
+      background: rgba(29,158,117,0.05);
+    }
+
+    .tailor-type-card.selected {
+      border-color: var(--green);
+      background: rgba(29,158,117,0.1);
+    }
+
+    .tailor-type-card h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tailor-type-card p {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .form-group.hidden { display: none; }
+
+    .auth-btn {
+      width: 100%;
+      padding: 0.9rem;
       background: var(--green);
-    }
-
-    .join-section {
-      display: none;
-    }
-
-    .join-section.active {
-      display: block;
-      animation: slideUp 0.3s ease;
-    }
-
-    .join-nav {
-      display: flex;
-      gap: 1rem;
-      justify-content: space-between;
-      margin-top: 2rem;
-    }
-
-    .join-nav button {
-      padding: 0.75rem 1.5rem;
+      color: var(--white);
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       font-weight: 600;
+      font-size: 1rem;
       cursor: pointer;
       transition: all 0.3s;
+      margin-top: 1rem;
     }
 
-    .join-nav button.back {
+    .auth-btn:hover {
+      background: #16a373;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(29,158,117,0.3);
+    }
+
+    .error-message {
+      background: #fdecea;
+      color: #c0392b;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      border: 1px solid #f5c6cb;
+      display: none;
+    }
+
+    .error-message.show { display: block; }
+
+    .success-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      border: 1px solid #c3e6cb;
+      display: none;
+    }
+
+    .success-message.show { display: block; }
+
+    /* ===== MAIN APP ===== */
+    .main-app {
+      display: none;
+      height: 100vh;
+      display: flex;
+    }
+
+    .main-app.authenticated {
+      display: flex;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 250px;
+      background: var(--white);
+      border-right: 1px solid var(--lightgray);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--lightgray);
+      text-align: center;
+    }
+
+    .sidebar-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-user {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+
+    .sidebar-menu {
+      flex: 1;
+      padding: 1rem 0;
+    }
+
+    .sidebar-item {
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      border-left: 3px solid transparent;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 500;
+    }
+
+    .sidebar-item:hover {
       background: var(--lightgray);
       color: var(--dark);
     }
 
-    .join-nav button.next,
-    .join-nav button.submit {
+    .sidebar-item.active {
+      background: rgba(29,158,117,0.1);
+      color: var(--green);
+      border-left-color: var(--green);
+    }
+
+    .sidebar-item i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar-footer {
+      padding: 1rem;
+      border-top: 1px solid var(--lightgray);
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--lightgray);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--dark);
+      transition: all 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: var(--danger);
+      color: var(--white);
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      margin-left: 250px;
+      background: var(--bg);
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    .content-header {
+      background: var(--white);
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--lightgray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .content-header h1 {
+      font-size: 1.8rem;
+      margin: 0;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--green);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .content-area {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* DASHBOARD SECTIONS */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--lightgray);
+      padding-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .card-icon {
+      font-size: 1.5rem;
+      color: var(--green);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gray);
+    }
+
+    .empty-state-icon {
+      font-size: 2rem;
+      color: var(--lightgray);
+      margin-bottom: 1rem;
+    }
+
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .item {
+      padding: 1rem;
+      background: var(--lightgray);
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .item-title {
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .item-meta {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-active {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .badge-completed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    /* QUICK ACTIONS */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .action-btn {
+      padding: 1rem;
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .action-btn:hover {
+      background: #16a373;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(29,158,117,0.3);
+    }
+
+    /* PROFILE SECTIONS */
+    .profile-section {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .profile-section-title {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--lightgray);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group-inline {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group-inline label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+      font-size: 0.9rem;
+    }
+
+    .form-group-inline input,
+    .form-group-inline textarea,
+    .form-group-inline select {
+      padding: 0.75rem;
+      border: 1px solid var(--lightgray);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.3s;
+    }
+
+    .form-group-inline input:focus,
+    .form-group-inline textarea:focus,
+    .form-group-inline select:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(29,158,117,0.1);
+    }
+
+    .form-group-inline textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .save-btn, .delete-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .save-btn {
       background: var(--green);
       color: var(--white);
     }
 
-    .join-nav button:hover {
-      opacity: 0.9;
+    .save-btn:hover {
+      background: #16a373;
     }
 
-    .join-nav button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .delete-btn {
+      background: var(--lightgray);
+      color: var(--danger);
     }
 
-    /* ADMIN PAGE */
-    .admin-container {
-      max-width: 1400px;
-      margin: 2rem auto;
-      padding: 2rem;
+    .delete-btn:hover {
+      background: var(--danger);
+      color: var(--white);
     }
 
-    .admin-container h1 {
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .admin-grid {
+    /* IMAGE UPLOAD */
+    .portfolio-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-bottom: 3rem;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
     }
 
-    .admin-card {
-      background: var(--white);
-      padding: 2rem;
+    .portfolio-item {
+      position: relative;
+      aspect-ratio: 1;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
+      border: 2px dashed var(--lightgray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: var(--bg);
+    }
+
+    .portfolio-item:hover {
+      border-color: var(--green);
+      background: rgba(29,158,117,0.05);
+    }
+
+    .portfolio-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .upload-placeholder {
       text-align: center;
-    }
-
-    .admin-card h3 {
-      font-size: 3rem;
-      color: var(--green);
-      margin-bottom: 0.5rem;
-    }
-
-    .admin-card p {
       color: var(--gray);
     }
 
-    /* FOOTER */
-    footer {
-      background: var(--dark);
-      color: var(--white);
-      padding: 3rem 2rem;
-      margin-top: 3rem;
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .footer-section h4 {
-      margin-bottom: 1rem;
-    }
-
-    .footer-section ul {
-      list-style: none;
-    }
-
-    .footer-section ul li {
+    .upload-placeholder i {
+      font-size: 2rem;
       margin-bottom: 0.5rem;
     }
 
-    .footer-section ul li a {
-      color: #ccc;
-      text-decoration: none;
-      cursor: pointer;
-      transition: color 0.3s;
+    .file-input {
+      display: none;
     }
 
-    .footer-section ul li a:hover {
-      color: var(--green);
-    }
-
-    .footer-logo {
+    /* MEASUREMENTS LIST */
+    .measurement-item {
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .footer-logo img {
-      height: 35px;
-      width: auto;
-    }
-
-    .footer-trust {
-      background: rgba(29,158,117,0.1);
+      justify-content: space-between;
       padding: 1rem;
+      background: var(--lightgray);
       border-radius: 6px;
-      text-align: center;
-      margin-bottom: 2rem;
-      color: #ccc;
-      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
     }
 
-    .footer-bottom {
-      text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 1.5rem;
-      color: #999;
+    .measurement-label {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .measurement-value {
+      color: var(--green);
+      font-weight: 600;
     }
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-      nav {
-        flex-wrap: wrap;
-        gap: 1rem;
+      .sidebar {
+        width: 200px;
       }
 
-      nav .logo-brand {
-        flex: 1;
+      .main-content {
+        margin-left: 200px;
       }
 
-      nav .nav-links {
-        order: 3;
-        flex-basis: 100%;
-        flex-wrap: wrap;
-        gap: 1rem;
-      }
-
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-
-      .how-section h2,
-      .featured-section h2,
-      .testimonials-section h2 {
-        font-size: 2rem;
-      }
-
-      .dashboard-container {
+      .dashboard-grid {
         grid-template-columns: 1fr;
       }
 
-      .dashboard-sidebar {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        height: auto;
+      .tailor-type-options {
+        grid-template-columns: 1fr;
+      }
+
+      .content-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .sidebar {
+        width: 180px;
+      }
+
+      .main-content {
+        margin-left: 180px;
+      }
+
+      .content-area {
+        padding: 1rem;
       }
 
       .form-grid {
         grid-template-columns: 1fr;
-      }
-
-      .detail-row {
-        flex-direction: column;
-      }
-
-      .toggle-role {
-        flex-direction: column;
-      }
-
-      .progress-bar {
-        gap: 0.3rem;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="logo-brand" onclick="GO('home')">
-    <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge">
-    <span>SewBridge</span>
-  </div>
-  <div class="nav-links">
-    <a onclick="GO('home')">Home</a>
-    <a onclick="GO('tailors')">Find a Tailor</a>
-    <a onclick="GO('how')">How it Works</a>
-  </div>
-  <div class="auth-buttons" id="authBtns">
-    <button class="signin-btn" onclick="MODAL('auth')">Sign In</button>
-    <button class="signup-btn" onclick="MODAL('auth'); SWITCHMODAL('signup')">Sign Up</button>
-  </div>
-  <div class="user-menu" id="userMenu">
-    <div class="dropdown">
-      <div class="user-avatar" id="userAvatar" onclick="toggleDropdown()">JD</div>
-      <div class="dropdown-content" id="dropdownContent">
-        <a onclick="CLOSEDROPDOWN(); GO('dashboard')">Dashboard</a>
-        <a id="adminLink" style="display:none;" onclick="CLOSEDROPDOWN(); GO('admin')">Admin Panel</a>
-        <a onclick="CLOSEDROPDOWN(); LOGOUT()">Sign Out</a>
-      </div>
+<!-- ===== LANDING PAGE ===== -->
+<div class="landing-container" id="landingPage">
+  <div class="auth-box">
+    <div class="auth-header">
+      <div class="auth-logo">SewBridge</div>
+      <p style="color: var(--gray); font-size: 0.95rem;">Connect with Master Tailors</p>
     </div>
-  </div>
-</nav>
 
-<!-- DEMO BANNER -->
-<div id="demoBanner" style="display:none; background: linear-gradient(90deg, #1D9E75, #148f67); color: white; padding: 0.7rem 2rem; align-items: center; justify-content: space-between; font-size: 0.88rem; font-weight: 600; position: sticky; top: 73px; z-index: 99; box-shadow: 0 2px 6px rgba(29,158,117,0.4);">
-  <span>🎯 <strong>Demo Mode</strong> — Exploring as <span id="demoRoleLabel">Customer</span>. Data is simulated and changes won't be saved.</span>
-  <div style="display:flex; gap:1rem; align-items:center;">
-    <button onclick="ENTERDEMO('customer')" id="demoSwitchCustomer" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); color:white; padding:0.35rem 0.9rem; border-radius:4px; cursor:pointer; font-size:0.82rem;">👤 Switch to Customer</button>
-    <button onclick="ENTERDEMO('tailor')" id="demoSwitchTailor" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); color:white; padding:0.35rem 0.9rem; border-radius:4px; cursor:pointer; font-size:0.82rem;">✂️ Switch to Tailor</button>
-    <button onclick="EXITDEMO()" style="background:rgba(255,255,255,0.25); border:1px solid rgba(255,255,255,0.6); color:white; padding:0.35rem 0.9rem; border-radius:4px; cursor:pointer; font-weight:700; font-size:0.82rem;">✕ Exit Demo</button>
+    <div class="error-message" id="errorMsg"></div>
+    <div class="success-message" id="successMsg"></div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab-btn active" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab-btn" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- SIGN IN -->
+    <form class="auth-form active" id="signinForm" onsubmit="handleSignIn(event)">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="signinEmail" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="signinPassword" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="auth-btn">Sign In</button>
+    </form>
+
+    <!-- SIGN UP -->
+    <form class="auth-form" id="signupForm" onsubmit="handleSignUp(event)">
+      <div class="form-group">
+        <label>I want to sign up as:</label>
+        <div class="role-toggle">
+          <button type="button" class="role-btn active" onclick="selectRole('customer')">
+            <i class="fas fa-user"></i> Customer
+          </button>
+          <button type="button" class="role-btn" onclick="selectRole('tailor')">
+            <i class="fas fa-scissors"></i> Tailor
+          </button>
+        </div>
+      </div>
+
+      <div class="tailor-type-group" id="tailorTypeGroup">
+        <label style="display: block; font-weight: 600; margin-bottom: 1rem;">Account Type:</label>
+        <div class="tailor-type-options">
+          <div class="tailor-type-card" onclick="selectTailorType('individual')">
+            <i class="fas fa-user-tie" style="font-size: 1.5rem; color: var(--green); margin-bottom: 0.5rem;"></i>
+            <h4>Individual</h4>
+            <p>Self-employed tailor</p>
+          </div>
+          <div class="tailor-type-card" onclick="selectTailorType('company')">
+            <i class="fas fa-building" style="font-size: 1.5rem; color: var(--green); margin-bottom: 0.5rem;"></i>
+            <h4>Company</h4>
+            <p>Tailoring business</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" id="signupFirstName" placeholder="Your first name" required>
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" id="signupLastName" placeholder="Your last name" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="signupEmail" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="signupPassword" placeholder="••••••••" required>
+      </div>
+
+      <div class="form-group hidden" id="companyNameGroup">
+        <label>Company Name</label>
+        <input type="text" id="companyName" placeholder="Your business name">
+      </div>
+
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="signupLocation" placeholder="City, State" required>
+      </div>
+
+      <button type="submit" class="auth-btn">Create Account</button>
+    </form>
   </div>
 </div>
 
-<!-- HOME PAGE -->
-<div class="page active" id="home">
-  <div class="hero">
-    <div class="hero-content">
-      <div class="hero-tag">Welcome to SewBridge</div>
-      <h1>Every Stitch. Perfectly Yours.</h1>
-      <p>Connect with master tailors who transform your fashion dreams into reality. Fast, secure, and beautifully personal.</p>
-      <div class="hero-cta">
-        <button class="btn-primary" onclick="GO('tailors')">Find a Tailor</button>
-        <button class="btn-secondary" onclick="GO('how')">Learn More</button>
-      </div>
+<!-- ===== MAIN APP ===== -->
+<div class="main-app" id="mainApp">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">SewBridge</div>
+      <div class="sidebar-user" id="sidebarUserName">User</div>
+    </div>
+
+    <div class="sidebar-menu" id="sidebarMenu">
+      <!-- Menu items inserted here based on role -->
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="handleLogout()">
+        <i class="fas fa-sign-out-alt"></i> Sign Out
+      </button>
     </div>
   </div>
 
-  <div class="stats-section">
-    <div class="stats-grid">
-      <div class="stat-card scroll-reveal">
-        <h3>2,400+</h3>
-        <p>Expert Tailors</p>
-      </div>
-      <div class="stat-card scroll-reveal">
-        <h3>45K+</h3>
-        <p>Happy Customers</p>
-      </div>
-      <div class="stat-card scroll-reveal">
-        <h3>98%</h3>
-        <p>Satisfaction Rate</p>
-      </div>
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="content-header">
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="user-avatar" id="userAvatar">JD</div>
     </div>
-  </div>
 
-  <div class="how-section">
-    <h2>How It Works</h2>
-    <div class="how-grid">
-      <div class="how-card scroll-reveal">
-        <div class="how-card-icon"><i class="fas fa-search"></i></div>
-        <h3>Find Your Tailor</h3>
-        <p>Browse verified tailors by specialty, location, and rating. Read reviews and see their portfolio.</p>
-      </div>
-      <div class="how-card scroll-reveal">
-        <div class="how-card-icon"><i class="fas fa-handshake"></i></div>
-        <h3>Request & Discuss</h3>
-        <p>Message directly with your tailor to discuss measurements, style preferences, and timeline.</p>
-      </div>
-      <div class="how-card scroll-reveal">
-        <div class="how-card-icon"><i class="fas fa-shield-alt"></i></div>
-        <h3>Secure Payment</h3>
-        <p>Pay securely through Stripe escrow. Your money is protected until you're fully satisfied.</p>
-      </div>
-      <div class="how-card scroll-reveal">
-        <div class="how-card-icon"><i class="fas fa-star"></i></div>
-        <h3>Enjoy & Review</h3>
-        <p>Receive your custom garment and share your experience. Help other customers find great tailors.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="featured-section">
-    <h2>Featured Tailors</h2>
-    <div class="featured-grid" id="featuredGrid">
-    </div>
-  </div>
-
-  <div class="testimonials-section">
-    <h2>What Our Customers Say</h2>
-    <div class="testimonials-grid">
-      <div class="testimonial-card scroll-reveal">
-        <div class="testimonial-stars">★★★★★</div>
-        <div class="testimonial-quote">"Adaeze's work is absolutely stunning. My wedding dress was perfect, and she was so patient through every fitting."</div>
-        <div class="testimonial-author">Maria Gonzalez</div>
-        <div class="testimonial-city">New York, NY</div>
-      </div>
-      <div class="testimonial-card scroll-reveal">
-        <div class="testimonial-stars">★★★★★</div>
-        <div class="testimonial-quote">"Grace made my son's traditional outfit exactly as I imagined. The attention to detail is incredible."</div>
-        <div class="testimonial-author">James Thompson</div>
-        <div class="testimonial-city">Boston, MA</div>
-      </div>
-      <div class="testimonial-card scroll-reveal">
-        <div class="testimonial-stars">★★★★★</div>
-        <div class="testimonial-quote">"Priya's knowledge of traditional sari draping is unmatched. I've been a customer for 3 years now."</div>
-        <div class="testimonial-author">Anjali Patel</div>
-        <div class="testimonial-city">San Francisco, CA</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="earn-section">
-    <div class="earn-content">
-      <h2>Earn with SewBridge</h2>
-      <p>Are you a talented tailor? Join thousands of craftspeople building thriving businesses on SewBridge.</p>
-      <button onclick="GO('join')">Become a Tailor</button>
+    <div class="content-area" id="contentArea">
+      <!-- Content inserted here -->
     </div>
   </div>
 </div>
 
-<!-- TAILORS PAGE -->
-<div class="page" id="tailors">
-  <div class="tailors-container">
-    <div class="tailors-header">
-      <h1>Find Your Perfect Tailor</h1>
-    </div>
+<script>
+// ===== STATE MANAGEMENT =====
+let currentUser = null;
+let selectedRole = 'customer';
+let selectedTailorType = 'individual';
+let currentPage = 'dashboard';
 
-    <div class="tailors-filters">
-      <div class="filter-group">
-        <label>Search by Name or Specialty</label>
-        <input type="text" id="searchInput" placeholder="e.g., Adaeze, Bridal, Qipao" onkeyup="FILTERTAILORS()">
-      </div>
-      <div class="filter-group">
-        <label>Filter by Location</label>
-        <select id="locationSelect" onchange="FILTERTAILORS()">
-          <option value="">All Locations</option>
-          <option value="Alabama">Alabama (AL)</option>
-          <option value="Alaska">Alaska (AK)</option>
-          <option value="Arizona">Arizona (AZ)</option>
-          <option value="Arkansas">Arkansas (AR)</option>
-          <option value="California">California (CA)</option>
-          <option value="Colorado">Colorado (CO)</option>
-          <option value="Connecticut">Connecticut (CT)</option>
-          <option value="Delaware">Delaware (DE)</option>
-          <option value="Florida">Florida (FL)</option>
-          <option value="Georgia">Georgia (GA)</option>
-          <option value="Hawaii">Hawaii (HI)</option>
-          <option value="Idaho">Idaho (ID)</option>
-          <option value="Illinois">Illinois (IL)</option>
-          <option value="Indiana">Indiana (IN)</option>
-          <option value="Iowa">Iowa (IA)</option>
-          <option value="Kansas">Kansas (KS)</option>
-          <option value="Kentucky">Kentucky (KY)</option>
-          <option value="Louisiana">Louisiana (LA)</option>
-          <option value="Maine">Maine (ME)</option>
-          <option value="Maryland">Maryland (MD)</option>
-          <option value="Massachusetts">Massachusetts (MA)</option>
-          <option value="Michigan">Michigan (MI)</option>
-          <option value="Minnesota">Minnesota (MN)</option>
-          <option value="Mississippi">Mississippi (MS)</option>
-          <option value="Missouri">Missouri (MO)</option>
-          <option value="Montana">Montana (MT)</option>
-          <option value="Nebraska">Nebraska (NE)</option>
-          <option value="Nevada">Nevada (NV)</option>
-          <option value="New Hampshire">New Hampshire (NH)</option>
-          <option value="New Jersey">New Jersey (NJ)</option>
-          <option value="New Mexico">New Mexico (NM)</option>
-          <option value="New York">New York (NY)</option>
-          <option value="North Carolina">North Carolina (NC)</option>
-          <option value="North Dakota">North Dakota (ND)</option>
-          <option value="Ohio">Ohio (OH)</option>
-          <option value="Oklahoma">Oklahoma (OK)</option>
-          <option value="Oregon">Oregon (OR)</option>
-          <option value="Pennsylvania">Pennsylvania (PA)</option>
-          <option value="Rhode Island">Rhode Island (RI)</option>
-          <option value="South Carolina">South Carolina (SC)</option>
-          <option value="South Dakota">South Dakota (SD)</option>
-          <option value="Tennessee">Tennessee (TN)</option>
-          <option value="Texas">Texas (TX)</option>
-          <option value="Utah">Utah (UT)</option>
-          <option value="Vermont">Vermont (VT)</option>
-          <option value="Virginia">Virginia (VA)</option>
-          <option value="Washington">Washington (WA)</option>
-          <option value="West Virginia">West Virginia (WV)</option>
-          <option value="Wisconsin">Wisconsin (WI)</option>
-          <option value="Wyoming">Wyoming (WY)</option>
-          <option value="District of Columbia">District of Columbia (DC)</option>
-        </select>
-      </div>
-    </div>
+const BUILTIN_ACCOUNTS = {
+  'ignitedtrans@gmail.com': { pwd: 'password123', name: 'Ignited Trans', role: 'customer' },
+  'gracekip9@gmail.com': { pwd: 'SewBridge#Tailor26', name: 'Grace Kipchoge', role: 'tailor' },
+  'ministry.servant9@gmail.com': { pwd: 'SewBridge#Customer26', name: 'Ministry Servant', role: 'customer' }
+};
 
-    <div>
-      <p style="margin-bottom: 1rem; color: var(--gray);">Filter by Specialty:</p>
-      <div class="specialty-tags" id="specTags">
-        <span class="spec-tag" data-spec="Bridal" onclick="TOGGLESPEC(this)">Bridal</span>
-        <span class="spec-tag" data-spec="Formal" onclick="TOGGLESPEC(this)">Formal</span>
-        <span class="spec-tag" data-spec="Traditional" onclick="TOGGLESPEC(this)">Traditional</span>
-        <span class="spec-tag" data-spec="Alterations" onclick="TOGGLESPEC(this)">Alterations</span>
-        <span class="spec-tag" data-spec="Custom" onclick="TOGGLESPEC(this)">Custom</span>
-        <span class="spec-tag" data-spec="Kids" onclick="TOGGLESPEC(this)">Kids</span>
-      </div>
-    </div>
+// ===== AUTH FUNCTIONS =====
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+  document.getElementById(tab === 'signin' ? 'signinForm' : 'signupForm').classList.add('active');
+  clearMessages();
+}
 
-    <div class="tailors-grid" id="tailorsGrid">
-    </div>
-    <div class="no-results" id="noResults" style="display:none;">
-      No tailors found matching your criteria. Try adjusting your filters.
-    </div>
-  </div>
-</div>
+function selectRole(role) {
+  selectedRole = role;
+  document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.closest('.role-btn').classList.add('active');
+  const tailorGroup = document.getElementById('tailorTypeGroup');
+  if(role === 'tailor') {
+    tailorGroup.classList.add('active');
+  } else {
+    tailorGroup.classList.remove('active');
+  }
+}
 
-<!-- HOW PAGE -->
-<div class="page" id="how">
-  <div class="how-container">
-    <h1>How SewBridge Works</h1>
+function selectTailorType(type) {
+  selectedTailorType = type;
+  document.querySelectorAll('.tailor-type-card').forEach(card => card.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const companyGroup = document.getElementById('companyNameGroup');
+  if(type === 'company') {
+    companyGroup.classList.remove('hidden');
+    document.getElementById('companyName').required = true;
+  } else {
+    companyGroup.classList.add('hidden');
+    document.getElementById('companyName').required = false;
+  }
+}
 
-    <div class="how-role">
-      <h2>For Customers</h2>
-      <div class="how-steps">
-        <div class="step scroll-reveal">
-          <div class="step-number">1</div>
-          <h3>Browse Tailors</h3>
-          <p>Explore our verified tailors. Filter by specialty, location, and ratings to find your perfect match.</p>
-        </div>
-        <div class="step scroll-reveal">
-          <div class="step-number">2</div>
-          <h3>Request an Order</h3>
-          <p>Click "Request Order" on a tailor's profile, describe your garment, and book securely online.</p>
-        </div>
-        <div class="step scroll-reveal">
-          <div class="step-number">3</div>
-          <h3>Discuss Details</h3>
-          <p>Message with your tailor about measurements, style preferences, fabric, and timeline.</p>
-        </div>
-        <div class="step scroll-reveal">
-          <div class="step-number">4</div>
-          <h3>Receive & Review</h3>
-          <p>Get your custom garment, track fittings via secure messaging, and review your tailor.</p>
-        </div>
-      </div>
-    </div>
+function handleSignIn(event) {
+  event.preventDefault();
+  const email = document.getElementById('signinEmail').value.trim();
+  const password = document.getElementById('signinPassword').value;
 
-    <div class="how-role">
-      <h2>For Tailors</h2>
-      <div class="how-steps">
-        <div class="step scroll-reveal">
-          <div class="step-number">1</div>
-          <h3>Create Your Profile</h3>
-          <p>Sign up and build your tailor profile. Showcase your specialties, pricing, and previous work.</p>
-        </div>
-        <div class="step scroll-reveal">
-          <div class="step-number">2</div>
-          <h3>Get Verified</h3>
-          <p>Complete our verification process to earn a trusted badge and appear in search results.</p>
-        </div>
-        <div class="step scroll-reveal">
-          <div class="step-number">3</div>
-          <h3>Receive Orders</h3>
-          <p>Accept orders, communicate with customers, and manage measurements all in one dashboard.</p>
-        </div>
-        <div class="step scroll-reveal">
-          <div class="step-number">4</div>
-          <h3>Grow Your Business</h3>
-          <p>Build your reputation, increase earnings, and grow your customer base month over month.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  if(BUILTIN_ACCOUNTS[email] && BUILTIN_ACCOUNTS[email].pwd === password) {
+    const account = BUILTIN_ACCOUNTS[email];
+    currentUser = {
+      email: email,
+      name: account.name,
+      role: account.role,
+      location: 'United States'
+    };
+    localStorage.setItem('sewbridgeUser', JSON.stringify(currentUser));
+    showApp();
+    return;
+  }
 
-<!-- DASHBOARD PAGE -->
-<div class="page" id="dashboard">
-  <div class="dashboard-container">
-    <div class="dashboard-sidebar">
-      <h3>Menu</h3>
-      <div class="sidebar-menu">
-        <button class="active" onclick="PANEL('profile', this)">My Profile</button>
-        <button onclick="PANEL('orders', this)">Orders</button>
-        <button onclick="PANEL('messages', this)">Messages</button>
-        <button onclick="PANEL('measurements', this)">Measurements</button>
-        <button id="tailorOrders" style="display:none;" onclick="PANEL('incoming', this)">Incoming Orders</button>
-        <button id="tailorEarnings" style="display:none;" onclick="PANEL('earnings', this)">Earnings</button>
-      </div>
-    </div>
+  showError('Invalid email or password. Try: ignitedtrans@gmail.com / password123');
+}
 
-    <div class="dashboard-panels">
-      <div class="panel active" id="profilePanel">
-        <h2>My Profile</h2>
-        <div class="panel-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>First Name</label>
-              <input type="text" id="firstName" placeholder="Your first name">
-            </div>
-            <div class="form-group">
-              <label>Last Name</label>
-              <input type="text" id="lastName" placeholder="Your last name">
+function handleSignUp(event) {
+  event.preventDefault();
+  const firstName = document.getElementById('signupFirstName').value.trim();
+  const lastName = document.getElementById('signupLastName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const location = document.getElementById('signupLocation').value.trim();
+
+  if(!firstName || !lastName || !email || !password || !location) {
+    showError('Please fill in all required fields.');
+    return;
+  }
+
+  if(password.length < 6) {
+    showError('Password must be at least 6 characters.');
+    return;
+  }
+
+  currentUser = {
+    email: email,
+    name: firstName + ' ' + lastName,
+    role: selectedRole,
+    location: location,
+    tailorType: selectedRole === 'tailor' ? selectedTailorType : null,
+    companyName: selectedRole === 'tailor' && selectedTailorType === 'company' ? document.getElementById('companyName').value : null
+  };
+
+  localStorage.setItem('sewbridgeUser', JSON.stringify(currentUser));
+  showSuccess('Account created successfully! Welcome to SewBridge.');
+
+  setTimeout(() => {
+    showApp();
+  }, 1500);
+}
+
+function showApp() {
+  document.getElementById('landingPage').style.display = 'none';
+  document.getElementById('mainApp').classList.add('authenticated');
+  updateUI();
+  renderSidebar();
+  showPage('dashboard');
+}
+
+function updateUI() {
+  const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+  document.getElementById('userAvatar').textContent = initials;
+  document.getElementById('sidebarUserName').textContent = currentUser.name;
+}
+
+function handleLogout() {
+  if(confirm('Sign out?')) {
+    currentUser = null;
+    localStorage.removeItem('sewbridgeUser');
+    document.getElementById('mainApp').classList.remove('authenticated');
+    document.getElementById('landingPage').style.display = 'flex';
+    document.getElementById('signinForm').reset();
+    document.getElementById('signupForm').reset();
+  }
+}
+
+// ===== SIDEBAR RENDERING =====
+function renderSidebar() {
+  const menu = document.getElementById('sidebarMenu');
+  menu.innerHTML = '';
+
+  const items = {
+    customer: [
+      { icon: 'fa-home', label: 'Dashboard', page: 'dashboard' },
+      { icon: 'fa-shopping-bag', label: 'Active Orders', page: 'orders' },
+      { icon: 'fa-comments', label: 'Messages', page: 'messages' },
+      { icon: 'fa-heart', label: 'Saved Tailors', page: 'saved-tailors' },
+      { icon: 'fa-user', label: 'Profile', page: 'profile' },
+      { icon: 'fa-cog', label: 'Settings', page: 'settings' }
+    ],
+    tailor: [
+      { icon: 'fa-home', label: 'Dashboard', page: 'dashboard' },
+      { icon: 'fa-ruler', label: 'Measurement Studio', page: 'measurement-studio' },
+      { icon: 'fa-inbox', label: 'New Requests', page: 'requests' },
+      { icon: 'fa-briefcase', label: 'Active Jobs', page: 'jobs' },
+      { icon: 'fa-calendar', label: 'Calendar', page: 'calendar' },
+      { icon: 'fa-dollar-sign', label: 'Earnings', page: 'earnings' },
+      { icon: 'fa-user', label: 'Profile', page: 'profile' },
+      { icon: 'fa-cog', label: 'Settings', page: 'settings' }
+    ],
+    admin: [
+      { icon: 'fa-home', label: 'Dashboard', page: 'dashboard' },
+      { icon: 'fa-check-circle', label: 'Approvals', page: 'approvals' },
+      { icon: 'fa-exclamation-circle', label: 'Issues', page: 'issues' },
+      { icon: 'fa-chart-bar', label: 'Analytics', page: 'analytics' },
+      { icon: 'fa-user', label: 'Profile', page: 'profile' },
+      { icon: 'fa-cog', label: 'Settings', page: 'settings' }
+    ]
+  };
+
+  const role = currentUser.role;
+  const menuItems = items[role] || items.customer;
+
+  menuItems.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'sidebar-item';
+    div.onclick = () => showPage(item.page);
+    div.innerHTML = `<i class="fas ${item.icon}"></i> ${item.label}`;
+    menu.appendChild(div);
+  });
+}
+
+// ===== PAGE RENDERING =====
+function showPage(page) {
+  currentPage = page;
+  const contentArea = document.getElementById('contentArea');
+
+  // Update sidebar active state
+  document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+  event?.currentTarget?.classList.add('active');
+
+  if(page === 'dashboard') {
+    renderDashboard();
+  } else if(page === 'profile') {
+    renderProfile();
+  } else if(page === 'settings') {
+    renderSettings();
+  } else if(page === 'measurement-studio') {
+    studioStep = 1;
+    renderMeasurementStudio();
+  } else {
+    contentArea.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-construction"></i></div><p>Coming soon...</p></div>`;
+  }
+
+  document.getElementById('pageTitle').textContent = {
+    dashboard: 'Dashboard',
+    profile: 'Profile',
+    settings: 'Settings',
+    'measurement-studio': 'Measurement Studio',
+    orders: 'Active Orders',
+    messages: 'Messages',
+    requests: 'New Requests',
+    jobs: 'Active Jobs',
+    calendar: 'Calendar',
+    earnings: 'Earnings',
+    approvals: 'Pending Approvals',
+    issues: 'Issues'
+  }[page] || 'Page';
+}
+
+function renderDashboard() {
+  const contentArea = document.getElementById('contentArea');
+
+  if(currentUser.role === 'customer') {
+    contentArea.innerHTML = `
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-shopping-bag card-icon"></i>
+            <div class="card-title">Active Orders</div>
+          </div>
+          <div class="item-list">
+            <div class="item">
+              <div>
+                <div class="item-title">Formal Suit</div>
+                <div class="item-meta">by Grace Tailor</div>
+              </div>
+              <span class="badge badge-active">In Progress</span>
             </div>
           </div>
-          <div class="form-group">
+          <div style="margin-top: 1rem; text-align: center; color: var(--gray); font-size: 0.9rem;">1 active order</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-comments card-icon"></i>
+            <div class="card-title">Recent Messages</div>
+          </div>
+          <div class="empty-state" style="padding: 1rem;">
+            <i class="fas fa-inbox" style="font-size: 2rem; color: var(--lightgray); margin-bottom: 0.5rem;"></i>
+            <p style="font-size: 0.9rem;">No messages yet</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-heart card-icon"></i>
+            <div class="card-title">Saved Tailors</div>
+          </div>
+          <div class="empty-state" style="padding: 1rem;">
+            <i class="fas fa-star" style="font-size: 2rem; color: var(--lightgray); margin-bottom: 0.5rem;"></i>
+            <p style="font-size: 0.9rem;">No saved tailors</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-lightning-bolt card-icon"></i>
+          <div class="card-title">Quick Actions</div>
+        </div>
+        <div class="quick-actions">
+          <button class="action-btn"><i class="fas fa-plus"></i> New Order</button>
+          <button class="action-btn"><i class="fas fa-search"></i> Browse Tailors</button>
+        </div>
+      </div>
+    `;
+  } else if(currentUser.role === 'tailor') {
+    contentArea.innerHTML = `
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-inbox card-icon"></i>
+            <div class="card-title">New Requests</div>
+          </div>
+          <div class="empty-state" style="padding: 1rem;">
+            <i class="fas fa-envelope" style="font-size: 2rem; color: var(--lightgray); margin-bottom: 0.5rem;"></i>
+            <p style="font-size: 0.9rem;">No pending requests</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-briefcase card-icon"></i>
+            <div class="card-title">Active Jobs</div>
+          </div>
+          <div class="item-list">
+            <div class="item">
+              <div>
+                <div class="item-title">Wedding Dress Alteration</div>
+                <div class="item-meta">Due: 5 days</div>
+              </div>
+              <span class="badge badge-active">Active</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-dollar-sign card-icon"></i>
+            <div class="card-title">Earnings Summary</div>
+          </div>
+          <div style="padding: 1rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Today</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--green);">$0</div>
+              </div>
+              <div>
+                <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">This Week</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--green);">$125</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-calendar card-icon"></i>
+            <div class="card-title">Upcoming Deadlines</div>
+          </div>
+          <div class="item-list">
+            <div class="item">
+              <div>
+                <div class="item-title">Wedding Dress</div>
+                <div class="item-meta">Due: Mar 10, 2026</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-lightning-bolt card-icon"></i>
+          <div class="card-title">Quick Actions</div>
+        </div>
+        <div class="quick-actions">
+          <button class="action-btn"><i class="fas fa-check"></i> Accept Order</button>
+          <button class="action-btn"><i class="fas fa-calendar"></i> Update Availability</button>
+        </div>
+      </div>
+    `;
+  } else {
+    contentArea.innerHTML = `
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-users card-icon"></i>
+            <div class="card-title">Platform Stats</div>
+          </div>
+          <div style="padding: 1rem;">
+            <div style="display: grid; gap: 1rem;">
+              <div>
+                <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Total Users</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--dark);">2,347</div>
+              </div>
+              <div>
+                <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Orders Today</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--dark);">43</div>
+              </div>
+              <div>
+                <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Revenue Snapshot</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--green);">$4,520</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-check-circle card-icon"></i>
+            <div class="card-title">Pending Approvals</div>
+          </div>
+          <div class="item-list">
+            <div class="item">
+              <div>
+                <div class="item-title">New Tailor Signup</div>
+                <div class="item-meta">Grace Studio</div>
+              </div>
+              <span class="badge badge-pending">Review</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-exclamation-circle card-icon"></i>
+            <div class="card-title">Issues/Reports</div>
+          </div>
+          <div class="empty-state" style="padding: 1rem;">
+            <i class="fas fa-check" style="font-size: 2rem; color: var(--success); margin-bottom: 0.5rem;"></i>
+            <p style="font-size: 0.9rem; color: var(--success);">No active issues</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function renderProfile() {
+  const contentArea = document.getElementById('contentArea');
+
+  if(currentUser.role === 'customer') {
+    contentArea.innerHTML = `
+      <div class="profile-section">
+        <div class="profile-section-title">Basic Information</div>
+        <div class="form-grid">
+          <div class="form-group-inline">
+            <label>First Name</label>
+            <input type="text" value="${currentUser.name.split(' ')[0]}" placeholder="First name">
+          </div>
+          <div class="form-group-inline">
+            <label>Last Name</label>
+            <input type="text" value="${currentUser.name.split(' ').slice(1).join(' ')}" placeholder="Last name">
+          </div>
+          <div class="form-group-inline">
             <label>Email</label>
-            <input type="email" id="profileEmail" disabled>
+            <input type="email" value="${currentUser.email}" placeholder="Email">
           </div>
-          <div class="form-group">
-            <label>Bio</label>
-            <textarea id="bio" placeholder="Tell customers about yourself..."></textarea>
+          <div class="form-group-inline">
+            <label>Phone</label>
+            <input type="tel" placeholder="Phone number">
           </div>
-          <div class="form-group" id="locationGroup">
-            <label>Location</label>
-            <input type="text" id="location" placeholder="City, State">
-          </div>
-          <div class="form-group" id="specialtiesGroup" style="display:none;">
-            <label>Specialties (comma-separated)</label>
-            <input type="text" id="specialties" placeholder="e.g., Bridal, Formal, Traditional">
-          </div>
-          <div class="form-group" id="priceGroup" style="display:none;">
-            <label>Starting Price ($)</label>
-            <input type="number" id="price" placeholder="100" min="0">
-          </div>
-          <div class="form-group" id="heritageGroup" style="display:none;">
-            <label>Cultural Heritage/Background</label>
-            <input type="text" id="heritage" placeholder="e.g., Nigerian, Indian, Mexican">
-          </div>
-          <button class="panel-button" onclick="SAVEPROFILE()">Save Profile</button>
         </div>
       </div>
 
-      <div class="panel" id="ordersPanel">
-        <h2>Your Orders</h2>
-        <table class="orders-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Tailor</th>
-              <th>Item</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody id="ordersBody">
-          </tbody>
-        </table>
-      </div>
-
-      <div class="panel" id="messagesPanel">
-        <h2>Messages</h2>
+      <div class="profile-section">
+        <div class="profile-section-title">Measurements</div>
         <div style="margin-bottom: 1.5rem;">
-          <label>Select a conversation:</label>
-          <select id="threadSelect" onchange="THREAD(this.value)" style="width:100%; margin-top: 0.5rem; padding: 0.75rem; border: 1px solid var(--lightgray); border-radius: 4px;">
-            <option value="">-- No conversations --</option>
-          </select>
-        </div>
-        <div id="messagesContainer" style="display:none; background: var(--lightgray); padding: 1.5rem; border-radius: 8px; max-height: 400px; overflow-y: auto; margin-bottom: 1rem;">
-          <div id="messagesList"></div>
-        </div>
-        <div class="panel-form" id="messageForm" style="display:none;">
-          <textarea id="messageInput" placeholder="Type your message..."></textarea>
-          <div style="display:flex; gap: 1rem;">
-            <button class="panel-button" onclick="SENDMSG()" style="flex:1;">Send</button>
-            <button class="panel-button" style="background: var(--lightgray); color: var(--dark); flex:1;" onclick="document.getElementById('messagesContainer').style.display='none'; document.getElementById('messageForm').style.display='none';">Close</button>
+          <h4 style="margin-bottom: 1rem; font-size: 1rem;">Saved Measurements</h4>
+          <div class="measurement-item">
+            <span class="measurement-label">Bust</span>
+            <span class="measurement-value">36"</span>
+          </div>
+          <div class="measurement-item">
+            <span class="measurement-label">Waist</span>
+            <span class="measurement-value">28"</span>
+          </div>
+          <div class="measurement-item">
+            <span class="measurement-label">Hips</span>
+            <span class="measurement-value">38"</span>
           </div>
         </div>
-        <div id="contactWarning" style="display:none; background: #fff3cd; color: #856404; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
-          Warning: Don't share phone numbers, emails, or payment details in messages. Use SewBridge's secure system.
-        </div>
+        <button class="action-btn" style="width: 100%; max-width: 200px;">+ Add Measurements</button>
       </div>
 
-      <div class="panel" id="measurementsPanel">
-        <h2>Measurements</h2>
-        <div class="panel-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Bust (inches)</label>
-              <input type="number" id="bust" placeholder="0" min="0" step="0.5">
-            </div>
-            <div class="form-group">
-              <label>Waist (inches)</label>
-              <input type="number" id="waist" placeholder="0" min="0" step="0.5">
+      <div class="profile-section">
+        <div class="profile-section-title">Addresses</div>
+        <div class="item-list">
+          <div class="item" style="justify-content: flex-start;">
+            <div>
+              <div class="item-title">Home</div>
+              <div class="item-meta">123 Main St, Apt 4B</div>
             </div>
           </div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Hips (inches)</label>
-              <input type="number" id="hips" placeholder="0" min="0" step="0.5">
-            </div>
-            <div class="form-group">
-              <label>Shoulder Width (inches)</label>
-              <input type="number" id="shoulders" placeholder="0" min="0" step="0.5">
-            </div>
-          </div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Sleeve Length (inches)</label>
-              <input type="number" id="sleeves" placeholder="0" min="0" step="0.5">
-            </div>
-            <div class="form-group">
-              <label>Inseam (inches)</label>
-              <input type="number" id="inseam" placeholder="0" min="0" step="0.5">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Additional Notes</label>
-            <textarea id="measurementNotes" placeholder="Any special fitting instructions..."></textarea>
-          </div>
-          <button class="panel-button" onclick="SAVEM()">Save Measurements</button>
         </div>
+        <button class="action-btn" style="width: 100%; max-width: 200px; margin-top: 1rem;">+ Add Address</button>
       </div>
 
-      <div class="panel" id="incomingPanel">
-        <h2>Incoming Orders</h2>
-        <table class="orders-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Item</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="incomingBody">
-          </tbody>
-        </table>
-      </div>
-
-      <div class="panel" id="earningsPanel">
-        <h2>Earnings</h2>
-        <div class="stat-card" style="margin-bottom: 2rem;">
-          <h3 id="totalEarnings">$0</h3>
-          <p>Total Earnings</p>
+      <div class="profile-section">
+        <div class="profile-section-title">Payment Methods</div>
+        <div class="empty-state" style="padding: 1rem;">
+          <i class="fas fa-credit-card" style="font-size: 2rem; color: var(--lightgray); margin-bottom: 0.5rem;"></i>
+          <p style="font-size: 0.9rem;">No payment methods</p>
         </div>
-        <table class="orders-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Amount</th>
-              <th>Your Cut (92%)</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="earningsBody">
-          </tbody>
-        </table>
+        <button class="action-btn" style="width: 100%; max-width: 200px; margin-top: 1rem;">+ Add Payment Method</button>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- JOIN PAGE -->
-<div class="page" id="join">
-  <div class="join-container">
-    <h1>Become a SewBridge Tailor</h1>
-    <p>Join our community of skilled tailors and grow your business online.</p>
-
-    <div class="progress-bar" id="progressBar">
-      <div class="progress-step active"></div>
-      <div class="progress-step"></div>
-      <div class="progress-step"></div>
-      <div class="progress-step"></div>
-      <div class="progress-step"></div>
-    </div>
-
-    <div class="join-section active" id="step1">
-      <h2>Tell Us About Yourself</h2>
-      <div class="panel-form">
+      <div class="form-actions">
+        <button class="save-btn"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    `;
+  } else if(currentUser.role === 'tailor') {
+    contentArea.innerHTML = `
+      <div class="profile-section">
+        <div class="profile-section-title">Business Information</div>
         <div class="form-grid">
-          <div class="form-group">
-            <label>First Name</label>
-            <input type="text" id="joinFirstName" placeholder="Your first name">
+          <div class="form-group-inline">
+            <label>Business Name</label>
+            <input type="text" value="${currentUser.companyName || currentUser.name}" placeholder="Business name">
           </div>
-          <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" id="joinLastName" placeholder="Your last name">
+          <div class="form-group-inline">
+            <label>Location</label>
+            <input type="text" value="${currentUser.location}" placeholder="City, State">
+          </div>
+          <div class="form-group-inline" style="grid-column: 1 / -1;">
+            <label>Bio</label>
+            <textarea placeholder="Tell customers about your work..."></textarea>
           </div>
         </div>
-        <div class="form-group">
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-section-title">Specialties & Skills</div>
+        <div style="margin-bottom: 1.5rem;">
+          <div class="item" style="margin-bottom: 0.75rem;">
+            <span class="item-title">Selected Specialties</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            <span class="badge" style="background: var(--lightgray); color: var(--dark);">Bridal</span>
+            <span class="badge" style="background: var(--lightgray); color: var(--dark);">Formal Wear</span>
+            <span class="badge" style="background: var(--lightgray); color: var(--dark);">Custom Design</span>
+          </div>
+        </div>
+        <button class="action-btn" style="width: 100%; max-width: 200px;">Edit Specialties</button>
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-section-title">Portfolio</div>
+        <div class="portfolio-grid">
+          <label class="portfolio-item" style="cursor: pointer;">
+            <div class="upload-placeholder">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <div style="font-size: 0.8rem; margin-top: 0.5rem;">Upload</div>
+            </div>
+            <input type="file" class="file-input" accept="image/*">
+          </label>
+          <label class="portfolio-item" style="cursor: pointer;">
+            <div class="upload-placeholder">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <div style="font-size: 0.8rem; margin-top: 0.5rem;">Upload</div>
+            </div>
+            <input type="file" class="file-input" accept="image/*">
+          </label>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-section-title">Pricing & Services</div>
+        <div class="form-grid">
+          <div class="form-group-inline">
+            <label>Starting Price</label>
+            <input type="number" placeholder="$" value="100">
+          </div>
+          <div class="form-group-inline">
+            <label>Turnaround Time (days)</label>
+            <input type="number" placeholder="14" value="14">
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-section-title">Availability</div>
+        <div style="display: grid; gap: 1rem;">
+          <label style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" checked> Available for new orders
+          </label>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-section-title">Reviews</div>
+        <div class="empty-state" style="padding: 1rem;">
+          <i class="fas fa-star" style="font-size: 2rem; color: var(--lightgray); margin-bottom: 0.5rem;"></i>
+          <p style="font-size: 0.9rem;">No reviews yet</p>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="save-btn"><i class="fas fa-save"></i> Save Profile</button>
+      </div>
+    `;
+  }
+}
+
+function renderSettings() {
+  const contentArea = document.getElementById('contentArea');
+  contentArea.innerHTML = `
+    <div class="profile-section">
+      <div class="profile-section-title">Account Settings</div>
+      <div class="form-grid">
+        <div class="form-group-inline">
           <label>Email</label>
-          <input type="email" id="joinEmail" placeholder="your@email.com">
+          <input type="email" value="${currentUser.email}">
         </div>
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="tel" id="joinPhone" placeholder="(555) 123-4567">
+        <div class="form-group-inline">
+          <label>Current Password</label>
+          <input type="password" placeholder="••••••••">
         </div>
-      </div>
-    </div>
-
-    <div class="join-section" id="step2">
-      <h2>Your Experience</h2>
-      <div class="panel-form">
-        <div class="form-group">
-          <label>Years of Experience</label>
-          <input type="number" id="yearsExp" placeholder="5" min="0">
+        <div class="form-group-inline">
+          <label>New Password</label>
+          <input type="password" placeholder="••••••••">
         </div>
-        <div class="form-group">
-          <label>Cultural Heritage / Background</label>
-          <input type="text" id="joinHeritage" placeholder="e.g., Nigerian, Indian, Mexican">
-        </div>
-        <div class="form-group">
-          <label>Brief Bio</label>
-          <textarea id="joinBio" placeholder="Tell customers about your tailoring style and expertise..."></textarea>
+        <div class="form-group-inline">
+          <label>Confirm Password</label>
+          <input type="password" placeholder="••••••••">
         </div>
       </div>
     </div>
 
-    <div class="join-section" id="step3">
-      <h2>Your Specialties</h2>
-      <div class="panel-form">
-        <div class="form-group" style="grid-column: 1 / -1;">
-          <label>Select Your Main Specialties (check all that apply)</label>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem;">
-            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
-              <input type="checkbox" value="Bridal" class="specCheckbox"> Bridal
-            </label>
-            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
-              <input type="checkbox" value="Formal" class="specCheckbox"> Formal Wear
-            </label>
-            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
-              <input type="checkbox" value="Traditional" class="specCheckbox"> Traditional Garments
-            </label>
-            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
-              <input type="checkbox" value="Alterations" class="specCheckbox"> Alterations
-            </label>
-            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
-              <input type="checkbox" value="Custom" class="specCheckbox"> Custom Design
-            </label>
-            <label style="display: flex; gap: 0.5rem; font-weight: normal;">
-              <input type="checkbox" value="Kids" class="specCheckbox"> Kids Wear
-            </label>
+    <div class="profile-section">
+      <div class="profile-section-title">Notifications</div>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <label style="display: flex; align-items: center; gap: 0.5rem;">
+          <input type="checkbox" checked> Email notifications
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem;">
+          <input type="checkbox" checked> Order updates
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem;">
+          <input type="checkbox"> Marketing emails
+        </label>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-title">Security</div>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <label style="display: flex; align-items: center; gap: 0.5rem;">
+          <input type="checkbox"> Two-Factor Authentication (2FA)
+        </label>
+        <button class="action-btn" style="width: 100%; max-width: 200px;">Enable 2FA</button>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="save-btn"><i class="fas fa-save"></i> Save Settings</button>
+    </div>
+  `;
+}
+
+// ===== MEASUREMENT STUDIO =====
+let studioStep = 1;
+let studioData = {
+  customerName: '',
+  gender: 'male',
+  age: 30,
+  height: 70,
+  weight: 180,
+  unit: 'inches',
+  chest: 0,
+  waist: 0,
+  hips: 0,
+  shoulder: 0,
+  sleeve: 0,
+  inseam: 0,
+  fitStyle: 'regular',
+  seamAllowance: true,
+  fabricType: 'non-stretch'
+};
+
+const EASE_ALLOWANCES = {
+  slim: { tops: 1, pants: 0.75 },
+  regular: { tops: 2.5, pants: 1.5 },
+  relaxed: { tops: 3.5, pants: 2.5 },
+  oversized: { tops: 5, pants: 3.5 }
+};
+
+const SEAM_ALLOWANCE = 0.5;
+
+function renderMeasurementStudio() {
+  const contentArea = document.getElementById('contentArea');
+  contentArea.innerHTML = `
+    <div style="display: grid; grid-template-columns: 1fr 350px; gap: 2rem; margin-bottom: 2rem;">
+      <div>
+        <!-- STEP 1: CUSTOMER INFO -->
+        ${studioStep === 1 ? `
+          <div class="card" style="margin-bottom: 2rem;">
+            <div class="profile-section-title" style="margin: 0 0 1.5rem 0;">Step 1: Customer Information</div>
+            <div class="form-grid">
+              <div class="form-group-inline" style="grid-column: 1 / -1;">
+                <label>Customer Name *</label>
+                <input type="text" id="studioCustomerName" value="${studioData.customerName}" placeholder="Full name" onchange="updateStudioData('customerName', this.value)">
+              </div>
+              <div class="form-group-inline">
+                <label>Gender</label>
+                <select id="studioGender" onchange="updateStudioData('gender', this.value)">
+                  <option value="male" ${studioData.gender === 'male' ? 'selected' : ''}>Male</option>
+                  <option value="female" ${studioData.gender === 'female' ? 'selected' : ''}>Female</option>
+                </select>
+              </div>
+              <div class="form-group-inline">
+                <label>Age</label>
+                <input type="number" id="studioAge" value="${studioData.age}" min="15" max="100" onchange="updateStudioData('age', this.value)">
+              </div>
+              <div class="form-group-inline">
+                <label>Height (${studioData.unit === 'inches' ? 'inches' : 'cm'})</label>
+                <input type="number" id="studioHeight" value="${studioData.height}" step="0.5" onchange="updateStudioData('height', this.value)">
+              </div>
+              <div class="form-group-inline">
+                <label>Weight (${studioData.unit === 'inches' ? 'lbs' : 'kg'})</label>
+                <input type="number" id="studioWeight" value="${studioData.weight}" step="0.5" onchange="updateStudioData('weight', this.value)">
+              </div>
+              <div class="form-group-inline">
+                <label>Unit</label>
+                <select id="studioUnit" onchange="updateStudioData('unit', this.value)">
+                  <option value="inches" ${studioData.unit === 'inches' ? 'selected' : ''}>Inches / lbs</option>
+                  <option value="cm" ${studioData.unit === 'cm' ? 'selected' : ''}>Centimeters / kg</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+              <button class="action-btn" onclick="advanceStudioStep(2)" style="background: var(--green);">Next: Measurements →</button>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- STEP 2: MEASUREMENTS -->
+        ${studioStep === 2 ? `
+          <div class="card" style="margin-bottom: 2rem;">
+            <div class="profile-section-title" style="margin: 0 0 1.5rem 0;">Step 2: Body Measurements</div>
+            <div style="background: #f0f8ff; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 0.9rem; color: #0c5460;">
+              <i class="fas fa-info-circle"></i> Measure close to skin, not tight
+            </div>
+            <div class="form-grid">
+              <div class="form-group-inline">
+                <label>Chest / Bust (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
+                <input type="number" id="studioChest" value="${studioData.chest}" step="0.25" placeholder="0" onchange="updateStudioData('chest', this.value); validateMeasurements()">
+              </div>
+              <div class="form-group-inline">
+                <label>Waist (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
+                <input type="number" id="studioWaist" value="${studioData.waist}" step="0.25" placeholder="0" onchange="updateStudioData('waist', this.value); validateMeasurements()">
+              </div>
+              <div class="form-group-inline">
+                <label>Hips (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
+                <input type="number" id="studioHips" value="${studioData.hips}" step="0.25" placeholder="0" onchange="updateStudioData('hips', this.value); validateMeasurements()">
+              </div>
+              <div class="form-group-inline">
+                <label>Shoulder Width (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
+                <input type="number" id="studioShoulder" value="${studioData.shoulder}" step="0.25" placeholder="0" onchange="updateStudioData('shoulder', this.value); validateMeasurements()">
+              </div>
+              <div class="form-group-inline">
+                <label>Sleeve Length (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
+                <input type="number" id="studioSleeve" value="${studioData.sleeve}" step="0.25" placeholder="0" onchange="updateStudioData('sleeve', this.value); validateMeasurements()">
+              </div>
+              <div class="form-group-inline">
+                <label>Inseam (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
+                <input type="number" id="studioInseam" value="${studioData.inseam}" step="0.25" placeholder="0" onchange="updateStudioData('inseam', this.value); validateMeasurements()">
+              </div>
+            </div>
+            <div id="validationMsg"></div>
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: space-between;">
+              <button class="action-btn" style="background: var(--lightgray); color: var(--dark);" onclick="advanceStudioStep(1);">← Back</button>
+              <button class="action-btn" onclick="advanceStudioStep(3)" style="background: var(--green);">Next: Fit Style →</button>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- STEP 3: FIT SELECTION -->
+        ${studioStep === 3 ? `
+          <div class="card" style="margin-bottom: 2rem;">
+            <div class="profile-section-title" style="margin: 0 0 1.5rem 0;">Step 3: Fit & Fabric Selection</div>
+            <div style="margin-bottom: 1.5rem;">
+              <label style="display: block; font-weight: 600; margin-bottom: 1rem;">Fit Style</label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                ${['slim', 'regular', 'relaxed', 'oversized'].map(fit => `
+                  <div onclick="updateStudioData('fitStyle', '${fit}')" style="padding: 1rem; border: 2px solid ${studioData.fitStyle === fit ? 'var(--green)' : 'var(--lightgray)'}; border-radius: 8px; cursor: pointer; text-align: center; background: ${studioData.fitStyle === fit ? 'rgba(29,158,117,0.1)' : 'transparent'};">
+                    <div style="font-weight: 600; color: var(--dark);">${fit.charAt(0).toUpperCase() + fit.slice(1)}</div>
+                    <div style="font-size: 0.85rem; color: var(--gray); margin-top: 0.5rem;">
+                      ${fit === 'slim' ? '+1" to +1.5" ease' : fit === 'regular' ? '+2" to +3" ease' : fit === 'relaxed' ? '+3" to +4" ease' : '+4"+ ease'}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+              <label style="display: block; font-weight: 600; margin-bottom: 1rem;">Fabric Type</label>
+              <select id="studioFabric" onchange="updateStudioData('fabricType', this.value)">
+                <option value="stretch" ${studioData.fabricType === 'stretch' ? 'selected' : ''}>Stretch Fabric</option>
+                <option value="non-stretch" ${studioData.fabricType === 'non-stretch' ? 'selected' : ''}>Non-Stretch Fabric</option>
+                <option value="heavy" ${studioData.fabricType === 'heavy' ? 'selected' : ''}>Heavy Fabric</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" ${studioData.seamAllowance ? 'checked' : ''} onchange="updateStudioData('seamAllowance', this.checked)">
+                Include Seam Allowance (0.5")
+              </label>
+            </div>
+
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: space-between;">
+              <button class="action-btn" style="background: var(--lightgray); color: var(--dark);" onclick="advanceStudioStep(2);">← Back</button>
+              <button class="action-btn" onclick="advanceStudioStep(4)" style="background: var(--green);">Next: Generate Output →</button>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- STEP 4: OUTPUT -->
+        ${studioStep === 4 ? `
+          <div class="card" style="margin-bottom: 2rem;">
+            <div class="profile-section-title" style="margin: 0 0 1.5rem 0;">Generated Measurements</div>
+            <div id="measurementOutput"></div>
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap;">
+              <button class="action-btn" style="background: var(--lightgray); color: var(--dark);" onclick="advanceStudioStep(3);">← Back</button>
+              <div style="display: flex; gap: 1rem;">
+                <button class="action-btn" onclick="saveMeasurementProfile()" style="background: var(--green);"><i class="fas fa-save"></i> Save Profile</button>
+                <button class="action-btn" onclick="exportToPDF()" style="background: var(--green);"><i class="fas fa-file-pdf"></i> Export PDF</button>
+              </div>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+
+      <!-- STICKY PREVIEW PANEL -->
+      <div style="position: sticky; top: 20px; background: var(--white); border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); max-height: calc(100vh - 100px); overflow-y: auto;">
+        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid var(--lightgray);">
+          <i class="fas fa-eye"></i> Live Preview
+        </div>
+        <div id="studioPreview">
+          <div style="color: var(--gray); text-align: center; padding: 2rem 0;">
+            <i class="fas fa-ruler" style="font-size: 2rem; color: var(--lightgray); margin-bottom: 0.5rem; display: block;"></i>
+            Fill in customer info to begin
           </div>
         </div>
       </div>
     </div>
+  `;
 
-    <div class="join-section" id="step4">
-      <h2>Pricing & Service Area</h2>
-      <div class="panel-form">
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Starting Price ($)</label>
-            <input type="number" id="joinPrice" placeholder="100" min="0">
-          </div>
-          <div class="form-group">
-            <label>Average Turnaround (days)</label>
-            <input type="number" id="joinTurnaround" placeholder="14" min="1">
-          </div>
-        </div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>City</label>
-            <input type="text" id="joinCity" placeholder="Atlanta">
-          </div>
-          <div class="form-group">
-            <label>State</label>
-            <select id="joinState" style="padding: 0.75rem; border: 1px solid var(--lightgray); border-radius: 4px; font-size: 1rem;">
-              <option value="">-- Select State --</option>
-              <option value="Alabama">Alabama (AL)</option>
-              <option value="Alaska">Alaska (AK)</option>
-              <option value="Arizona">Arizona (AZ)</option>
-              <option value="Arkansas">Arkansas (AR)</option>
-              <option value="California">California (CA)</option>
-              <option value="Colorado">Colorado (CO)</option>
-              <option value="Connecticut">Connecticut (CT)</option>
-              <option value="Delaware">Delaware (DE)</option>
-              <option value="Florida">Florida (FL)</option>
-              <option value="Georgia">Georgia (GA)</option>
-              <option value="Hawaii">Hawaii (HI)</option>
-              <option value="Idaho">Idaho (ID)</option>
-              <option value="Illinois">Illinois (IL)</option>
-              <option value="Indiana">Indiana (IN)</option>
-              <option value="Iowa">Iowa (IA)</option>
-              <option value="Kansas">Kansas (KS)</option>
-              <option value="Kentucky">Kentucky (KY)</option>
-              <option value="Louisiana">Louisiana (LA)</option>
-              <option value="Maine">Maine (ME)</option>
-              <option value="Maryland">Maryland (MD)</option>
-              <option value="Massachusetts">Massachusetts (MA)</option>
-              <option value="Michigan">Michigan (MI)</option>
-              <option value="Minnesota">Minnesota (MN)</option>
-              <option value="Mississippi">Mississippi (MS)</option>
-              <option value="Missouri">Missouri (MO)</option>
-              <option value="Montana">Montana (MT)</option>
-              <option value="Nebraska">Nebraska (NE)</option>
-              <option value="Nevada">Nevada (NV)</option>
-              <option value="New Hampshire">New Hampshire (NH)</option>
-              <option value="New Jersey">New Jersey (NJ)</option>
-              <option value="New Mexico">New Mexico (NM)</option>
-              <option value="New York">New York (NY)</option>
-              <option value="North Carolina">North Carolina (NC)</option>
-              <option value="North Dakota">North Dakota (ND)</option>
-              <option value="Ohio">Ohio (OH)</option>
-              <option value="Oklahoma">Oklahoma (OK)</option>
-              <option value="Oregon">Oregon (OR)</option>
-              <option value="Pennsylvania">Pennsylvania (PA)</option>
-              <option value="Rhode Island">Rhode Island (RI)</option>
-              <option value="South Carolina">South Carolina (SC)</option>
-              <option value="South Dakota">South Dakota (SD)</option>
-              <option value="Tennessee">Tennessee (TN)</option>
-              <option value="Texas">Texas (TX)</option>
-              <option value="Utah">Utah (UT)</option>
-              <option value="Vermont">Vermont (VT)</option>
-              <option value="Virginia">Virginia (VA)</option>
-              <option value="Washington">Washington (WA)</option>
-              <option value="West Virginia">West Virginia (WV)</option>
-              <option value="Wisconsin">Wisconsin (WI)</option>
-              <option value="Wyoming">Wyoming (WY)</option>
-              <option value="District of Columbia">District of Columbia (DC)</option>
-            </select>
-          </div>
-        </div>
+  if(studioStep === 4) {
+    renderMeasurementOutput();
+    updateStudioPreview();
+  } else {
+    updateStudioPreview();
+  }
+}
+
+function updateStudioData(field, value) {
+  if(field === 'seamAllowance') {
+    studioData[field] = value;
+  } else if(field === 'age' || field === 'height' || field === 'weight' || field === 'chest' || field === 'waist' || field === 'hips' || field === 'shoulder' || field === 'sleeve' || field === 'inseam') {
+    studioData[field] = parseFloat(value) || 0;
+  } else {
+    studioData[field] = value;
+  }
+  updateStudioPreview();
+}
+
+function validateMeasurements() {
+  const msg = document.getElementById('validationMsg');
+  if(!msg) return;
+
+  let errors = [];
+  if(studioData.chest <= 0) errors.push('Chest measurement required');
+  if(studioData.waist <= 0) errors.push('Waist measurement required');
+  if(studioData.hips <= 0) errors.push('Hips measurement required');
+
+  if(errors.length > 0) {
+    msg.innerHTML = `<div style="background: #fdecea; color: #c0392b; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; border: 1px solid #f5c6cb;"><i class="fas fa-exclamation-circle"></i> ${errors.join(', ')}</div>`;
+  } else {
+    msg.innerHTML = '';
+  }
+}
+
+function advanceStudioStep(step) {
+  if(step === 2 && !studioData.customerName) {
+    alert('Please enter customer name');
+    return;
+  }
+  if(step === 3 && (studioData.chest <= 0 || studioData.waist <= 0 || studioData.hips <= 0)) {
+    alert('Please fill in all measurements');
+    return;
+  }
+  studioStep = step;
+  renderMeasurementStudio();
+}
+
+function updateStudioPreview() {
+  const preview = document.getElementById('studioPreview');
+  if(!preview) return;
+
+  let html = '';
+
+  if(studioData.customerName) {
+    html += `<div style="margin-bottom: 1rem;"><strong style="color: var(--dark); font-size: 0.95rem;">${studioData.customerName}</strong><br><span style="font-size: 0.85rem; color: var(--gray);">${studioData.gender === 'male' ? '♂ Male' : '♀ Female'}, Age ${studioData.age}</span></div>`;
+  }
+
+  if(studioData.chest > 0) {
+    html += `
+      <div style="font-weight: 600; font-size: 0.9rem; color: var(--dark); margin-bottom: 0.75rem;">Raw Measurements:</div>
+      <div style="font-size: 0.85rem; color: var(--gray); line-height: 1.8;">
+        Chest: ${studioData.chest}" | Waist: ${studioData.waist}" | Hips: ${studioData.hips}"<br>
+        Shoulder: ${studioData.shoulder}" | Sleeve: ${studioData.sleeve}" | Inseam: ${studioData.inseam}"
       </div>
-    </div>
+    `;
+  }
 
-    <div class="join-section" id="step5">
-      <h2>Review & Submit</h2>
+  if(studioData.fitStyle) {
+    html += `
+      <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--lightgray);">
+        <div style="font-weight: 600; font-size: 0.9rem; color: var(--dark); margin-bottom: 0.5rem;">Fit Style: <span style="color: var(--green);">${studioData.fitStyle.charAt(0).toUpperCase() + studioData.fitStyle.slice(1)}</span></div>
+      </div>
+    `;
+  }
+
+  preview.innerHTML = html || `<div style="color: var(--gray); text-align: center; padding: 2rem 0;"><i class="fas fa-ruler" style="font-size: 2rem; color: var(--lightgray); margin-bottom: 0.5rem; display: block;"></i>Fill in info</div>`;
+}
+
+function renderMeasurementOutput() {
+  const output = document.getElementById('measurementOutput');
+  if(!output) return;
+
+  const calculations = calculateMeasurements();
+
+  output.innerHTML = `
+    <div style="display: grid; gap: 1.5rem;">
       <div style="background: var(--lightgray); padding: 1.5rem; border-radius: 8px;">
-        <h3 style="margin-bottom: 1rem;">Application Summary</h3>
-        <div id="reviewSummary"></div>
-        <p style="color: var(--gray); margin-top: 1.5rem; font-size: 0.9rem;">By submitting, you agree to our Tailor Terms of Service. Your application will be reviewed within 3-5 business days.</p>
-      </div>
-    </div>
-
-    <div class="join-nav">
-      <button class="back" id="backBtn" onclick="JOINNAV(-1)" style="display:none;">Back</button>
-      <button class="next" id="nextBtn" onclick="JOINNAV(1)">Next</button>
-      <button class="submit" id="submitBtn" onclick="SUBMITJOIN()" style="display:none;">Submit Application</button>
-    </div>
-  </div>
-</div>
-
-<!-- ADMIN PAGE -->
-<div class="page" id="admin">
-  <div class="dashboard-container">
-
-    <!-- Admin Sidebar -->
-    <div class="dashboard-sidebar">
-      <h3>Admin Panel</h3>
-      <div class="sidebar-menu" id="adminSidebarMenu">
-        <button class="active" onclick="ADMINPANEL('adminOverview', this)">📊 Overview</button>
-        <button onclick="ADMINPANEL('adminVerifications', this)">✅ Verifications</button>
-        <button onclick="ADMINPANEL('adminOrders', this)">📦 Orders</button>
-        <button onclick="ADMINPANEL('adminUsers', this)">👥 Users</button>
-        <button onclick="ADMINPANEL('adminSettings', this)">⚙️ Settings</button>
-      </div>
-    </div>
-
-    <!-- Admin Panels -->
-    <div class="dashboard-panels">
-
-      <!-- Overview Panel -->
-      <div class="panel active" id="adminOverviewPanel">
-        <h2>Admin Dashboard</h2>
-        <div class="admin-grid">
-          <div class="admin-card">
-            <h3 id="adminUsersCount">0</h3>
-            <p>Total Users</p>
-          </div>
-          <div class="admin-card">
-            <h3 id="adminTailorsCount">0</h3>
-            <p>Active Tailors</p>
-          </div>
-          <div class="admin-card">
-            <h3 id="adminOrdersCount">0</h3>
-            <p>Total Orders</p>
-          </div>
-          <div class="admin-card">
-            <h3 id="adminRevenue">$0</h3>
-            <p>Platform Revenue</p>
-          </div>
+        <h4 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 700;">T-Shirts & Tops</h4>
+        <div style="display: grid; gap: 0.75rem; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between;"><span>Chest:</span> <strong>${calculations.topChest.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Shoulder:</span> <strong>${calculations.topShoulder.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Sleeve Length:</span> <strong>${calculations.topSleeve.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Sleeve Width:</span> <strong>${calculations.topSleeveWidth.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Neck Opening:</span> <strong>${calculations.neckOpening.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Hem Width:</span> <strong>${calculations.hemWidth.toFixed(2)}"</strong></div>
         </div>
       </div>
 
-      <!-- Verifications Panel -->
-      <div class="panel" id="adminVerificationsPanel">
-        <h2>Pending Verifications</h2>
-        <table class="users-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Applied</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="verificationsBody"></tbody>
-        </table>
-      </div>
-
-      <!-- Orders Panel -->
-      <div class="panel" id="adminOrdersPanel">
-        <h2>Recent Orders</h2>
-        <table class="users-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Tailor</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="adminOrdersBody"></tbody>
-        </table>
-      </div>
-
-      <!-- Users Panel -->
-      <div class="panel" id="adminUsersPanel">
-        <h2>All Users</h2>
-        <table class="users-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Joined</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="adminUsersBody"></tbody>
-        </table>
-      </div>
-
-      <!-- Settings Panel -->
-      <div class="panel" id="adminSettingsPanel">
-        <h2>Platform Settings</h2>
-        <div class="panel-form">
-          <div class="form-group">
-            <label>Platform Commission (%)</label>
-            <input type="number" id="commissionRate" value="8" min="1" max="30" style="padding: 0.75rem; border: 1px solid var(--lightgray); border-radius: 4px; font-size: 1rem;">
-          </div>
-          <div class="form-group">
-            <label>Max Turnaround Days</label>
-            <input type="number" id="maxTurnaround" value="60" min="1" style="padding: 0.75rem; border: 1px solid var(--lightgray); border-radius: 4px; font-size: 1rem;">
-          </div>
-          <div class="form-group">
-            <label>Platform Maintenance Mode</label>
-            <select id="maintenanceMode" style="padding: 0.75rem; border: 1px solid var(--lightgray); border-radius: 4px; font-size: 1rem;">
-              <option value="off">Off — Platform is live</option>
-              <option value="on">On — Maintenance active</option>
-            </select>
-          </div>
-          <button class="panel-button" onclick="alert('Settings saved successfully!')">Save Settings</button>
+      <div style="background: var(--lightgray); padding: 1.5rem; border-radius: 8px;">
+        <h4 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 700;">Pants</h4>
+        <div style="display: grid; gap: 0.75rem; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between;"><span>Waist:</span> <strong>${calculations.pantWaist.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Hip:</span> <strong>${calculations.pantHip.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Thigh:</span> <strong>${calculations.thigh.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Knee:</span> <strong>${calculations.knee.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Ankle:</span> <strong>${calculations.ankle.toFixed(2)}"</strong></div>
+          <div style="display: flex; justify-content: space-between;"><span>Inseam:</span> <strong>${calculations.inseam.toFixed(2)}"</strong></div>
         </div>
       </div>
 
-    </div>
-  </div>
-</div>
-
-<!-- AUTH MODAL -->
-<div class="modal" id="authModal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="CLOSEMODAL()">&times;</button>
-    <div class="tabs">
-      <button class="tab-btn active" onclick="SWITCHMODAL('signin')">Sign In</button>
-      <button class="tab-btn" onclick="SWITCHMODAL('signup')">Sign Up</button>
-    </div>
-
-    <div class="tab-content active" id="signinTab">
-      <div class="panel-form">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="signinEmail" placeholder="your@email.com">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="signinPassword" placeholder="••••••••">
-        </div>
-        <button class="panel-button" style="width: 100%;" onclick="SIGNIN()">Sign In</button>
-        <button class="oauth-button" onclick="GOOGLESIGNIN()">
-          <i class="fab fa-google"></i> Sign in with Google
-        </button>
-        <p style="text-align: center; margin-top: 1rem;">
-          <a href="#" onclick="RESETPWD(); return false;" style="color: var(--green); text-decoration: none;">Forgot password?</a>
-        </p>
-        <!-- TEST ACCOUNTS (dev only) -->
-        <div style="margin-top: 1.5rem; border-top: 1px solid var(--lightgray); padding-top: 1.5rem;">
-          <p style="text-align:center; color: var(--gray); font-size: 0.82rem; margin-bottom: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase;">— Quick Fill Test Accounts —</p>
-          <div style="display: flex; gap: 0.75rem; margin-bottom: 0.6rem;">
-            <button onclick="QUICKFILL('ministry.servant9@gmail.com','SewBridge#Customer26')" style="flex:1; padding:0.65rem; background: var(--dark); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">👤 Fill Customer</button>
-            <button onclick="QUICKFILL('gracekip9@gmail.com','SewBridge#Tailor26')" style="flex:1; padding:0.65rem; background: var(--green); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">✂️ Fill Tailor</button>
-          </div>
-          <p style="text-align:center; color: var(--gray); font-size: 0.76rem; margin-bottom: 1rem;">Fills email &amp; password — then click <strong>Sign In</strong>.</p>
-          <p style="text-align:center; color: var(--gray); font-size: 0.82rem; margin-bottom: 0.75rem; letter-spacing: 0.3px; text-transform: uppercase;">— or try a simulated demo —</p>
-          <div style="display: flex; gap: 0.75rem;">
-            <button onclick="ENTERDEMO('customer')" style="flex:1; padding:0.65rem; background: #e0e0e0; color: var(--dark); border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">👤 Customer Demo</button>
-            <button onclick="ENTERDEMO('tailor')" style="flex:1; padding:0.65rem; background: #e0e0e0; color: var(--dark); border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">✂️ Tailor Demo</button>
-          </div>
-          <p style="text-align:center; color: var(--gray); font-size: 0.76rem; margin-top: 0.6rem;">Demo = simulated data only, no Supabase needed.</p>
-        </div>
+      <div style="background: #f0f8ff; padding: 1rem; border-radius: 6px; font-size: 0.85rem; color: #0c5460;">
+        <strong>Adjustments applied:</strong><br>
+        • Fit: ${studioData.fitStyle} (${EASE_ALLOWANCES[studioData.fitStyle].tops}" ease)<br>
+        ${studioData.seamAllowance ? '• Seam allowance: +0.5"' : '• No seam allowance'}
       </div>
     </div>
-
-    <div class="tab-content" id="signupTab">
-      <div class="panel-form">
-        <div class="toggle-role">
-          <button class="active" data-role="customer" onclick="TOGGLEROLE(this, 'customer')">Customer</button>
-          <button data-role="tailor" onclick="TOGGLEROLE(this, 'tailor')">Tailor</button>
-        </div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>First Name</label>
-            <input type="text" id="signupFirstName" placeholder="Your first name">
-          </div>
-          <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" id="signupLastName" placeholder="Your last name">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="signupEmail" placeholder="your@email.com">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="signupPassword" placeholder="••••••••">
-        </div>
-        <button class="panel-button" style="width: 100%;" onclick="SIGNUP()">Create Account</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- TAILOR PROFILE MODAL -->
-<div class="modal" id="profileModal">
-  <div class="modal-content profile-modal-content">
-    <button class="modal-close" onclick="CLOSEMODAL()">&times;</button>
-    <div class="profile-header">
-      <div class="profile-avatar" id="profileAvatar">AD</div>
-      <div class="profile-name" id="profileNameDisplay">Adaeze Anioke</div>
-      <div style="font-size: 0.95rem;" id="profileLocationDisplay">Atlanta, GA</div>
-      <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-        <span id="profileVerified" style="display:none;">Verified</span>
-      </div>
-    </div>
-    <div class="profile-details">
-      <div>
-        <div class="detail-label">Heritage/Background</div>
-        <div class="detail-value" id="profileHeritage">Nigerian</div>
-      </div>
-      <div>
-        <div class="detail-label">Specialties</div>
-        <div class="detail-value" id="profileSpecs">Bridal, Ankara</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail">
-          <div class="detail-label">Rating</div>
-          <div class="detail-value" id="profileRating">4.9</div>
-        </div>
-        <div class="detail">
-          <div class="detail-label">Orders Completed</div>
-          <div class="detail-value" id="profileOrders">87</div>
-        </div>
-      </div>
-      <div>
-        <div class="detail-label">Turnaround Time</div>
-        <div class="detail-value" id="profileTurnaround">14-21 days</div>
-      </div>
-      <div>
-        <div class="detail-label">Bio</div>
-        <div class="detail-value" id="profileBio">Passionate about authentic African textiles and modern bridal design.</div>
-      </div>
-      <div>
-        <div class="detail-label">Starting Price</div>
-        <div class="detail-value" id="profileStartPrice">$120</div>
-      </div>
-      <button class="panel-button" style="width: 100%; margin-top: 1rem;" onclick="MODAL('payment')">Request Order</button>
-    </div>
-  </div>
-</div>
-
-<!-- PAYMENT MODAL -->
-<div class="modal" id="paymentModal">
-  <div class="modal-content payment-modal-content">
-    <button class="modal-close" onclick="CLOSEMODAL()">&times;</button>
-    <h2>Order Details</h2>
-
-    <div class="success-message" id="successMsg">
-      Order created successfully! Check your dashboard for details.
-    </div>
-
-    <div class="payment-summary">
-      <div class="summary-row">
-        <span>Tailor</span>
-        <span id="payTailorName">Adaeze Anioke</span>
-      </div>
-      <div class="summary-row">
-        <span>Item Type</span>
-        <span id="payItemType">Custom Garment</span>
-      </div>
-      <div class="summary-row">
-        <span>Starting Price</span>
-        <span id="payStartPrice">$120.00</span>
-      </div>
-      <div class="summary-row total">
-        <span>Total Amount</span>
-        <span id="payTotal">$120.00</span>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Item Description</label>
-      <textarea id="payItemDesc" placeholder="Describe the garment you want tailored..."></textarea>
-    </div>
-
-    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem;">Payment Information</h3>
-    <div class="card-placeholder">
-      <p><strong>Stripe Card Fields</strong></p>
-      <p style="margin-top: 0.5rem; font-size: 0.85rem;">Stripe integration: Add your publishable key to the STRIPE_KEY variable at the top of the script.</p>
-      <p style="margin-top: 0.75rem; color: #666; font-size: 0.85rem;">For now, this is a placeholder UI. Payment processing would be enabled with proper Stripe setup.</p>
-    </div>
-
-    <button class="panel-button" style="width: 100%; margin-top: 1.5rem;" onclick="COMPLETEPAYMENT()">Pay Securely</button>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-content">
-    <div class="footer-section">
-      <div class="footer-logo">
-        <img src="https://raw.githubusercontent.com/ignitedone3-commits/SewLink/main/SewBrindge_Logo%206.png" alt="SewBridge">
-        <span>SewBridge</span>
-      </div>
-      <p style="color: #999; font-size: 0.95rem;">Connecting customers with master tailors worldwide.</p>
-    </div>
-    <div class="footer-section">
-      <h4>Explore</h4>
-      <ul>
-        <li><a onclick="GO('tailors')">Find a Tailor</a></li>
-        <li><a onclick="GO('join')">Join as Tailor</a></li>
-        <li><a onclick="GO('how')">How it Works</a></li>
-      </ul>
-    </div>
-    <div class="footer-section">
-      <h4>Legal</h4>
-      <ul>
-        <li><a href="#privacy">Privacy Policy</a></li>
-        <li><a href="#terms">Terms of Service</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="footer-trust">
-    All payments protected by Stripe escrow. Your funds stay safe until you're satisfied.
-  </div>
-
-  <div class="footer-bottom">
-    <p>&copy; 2026 SewBridge. All rights reserved.</p>
-  </div>
-</footer>
-
-<script>
-const SUPABASE_URL='https://prypgbyuwszdjtftouzj.supabase.co';const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByeXBnYnl1d3N6ZGp0ZnRvdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTA1ODYsImV4cCI6MjA4OTQyNjU4Nn0.mh-9T4lldUqJqZZ0ey276Kq7iqfJvc9Y-naKYGr__IY';const STRIPE_KEY='pk_test_YOUR_KEY_HERE';const supa=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);let CURRENT_USER=null;let CURRENT_PAGE='home';let SELECTED_TAILOR=null;let ALL_TAILORS=[];let FILTERED_TAILORS=[];let ACTIVE_SPEC_FILTERS=[];let JOIN_STEP=1;let SIGNUP_ROLE='customer';let DEMO_MODE=false;const STATIC_TAILORS=[{id:'tailor-1',full_name:'Adaeze Anioke',location:'Atlanta, GA',heritage:'Nigerian',specialties:['Ankara','Bridal'],rating:4.9,orders_completed:87,starting_price:120,turnaround_days:14,bio:'Passionate about authentic African textiles and modern bridal design.',is_verified:true,role:'tailor'},{id:'tailor-2',full_name:'Grace Owusu',location:'New York, NY',heritage:'Ghanaian',specialties:['Kente','Kids'],rating:5.0,orders_completed:64,starting_price:95,turnaround_days:12,bio:'Expert in traditional Kente cloth and kids wear.',is_verified:true,role:'tailor'},{id:'tailor-3',full_name:'Sofia Reyes',location:'Miami, FL',heritage:'Mexican',specialties:['Quinceañera','Formal'],rating:4.8,orders_completed:51,starting_price:105,turnaround_days:18,bio:'Specializing in beautiful quinceañera gowns and formal wear.',is_verified:true,role:'tailor'},{id:'tailor-4',full_name:'Priya Sharma',location:'Dallas, TX',heritage:'Indian',specialties:['Sari','Salwar','Bridal'],rating:5.0,orders_completed:73,starting_price:115,turnaround_days:16,bio:'Master of traditional Indian garments with impeccable draping.',is_verified:true,role:'tailor'},{id:'tailor-5',full_name:'Fatou Diallo',location:'Houston, TX',heritage:'Senegalese',specialties:['Boubou','Wax print'],rating:4.7,orders_completed:43,starting_price:75,turnaround_days:14,bio:'Creating stunning traditional Senegalese outfits with vibrant wax prints.',is_verified:true,role:'tailor'},{id:'tailor-6',full_name:'Chen Wei',location:'San Francisco, CA',heritage:'Chinese',specialties:['Qipao','Cheongsam','Modern'],rating:4.9,orders_completed:38,starting_price:130,turnaround_days:15,bio:'Elegant qipao and cheongsam tailoring with contemporary flair.',is_verified:true,role:'tailor'}];document.addEventListener('DOMContentLoaded',async()=>{LOADFEATURED();LOADTAILORS();AUTHSTATELISTENER();SETUPSCROLLREVEAL();});function AUTHSTATELISTENER(){supa.auth.onAuthStateChange(async(event,session)=>{if(session){CURRENT_USER=session.user;await LOADPROFILE();UPDATENAV();}else{CURRENT_USER=null;UPDATENAV();}});}function UPDATENAV(){const authBtns=document.getElementById('authBtns');const userMenu=document.getElementById('userMenu');if(CURRENT_USER){authBtns.style.display='none';userMenu.classList.add('active');const initials=GETINITIALS(CURRENT_USER.user_metadata?.full_name||'User');document.getElementById('userAvatar').textContent=initials;if(CURRENT_USER.user_metadata?.role==='admin'){document.getElementById('adminLink').style.display='block';}}else{authBtns.style.display='flex';userMenu.classList.remove('active');}}async function SIGNIN(){const email=document.getElementById('signinEmail').value;const password=document.getElementById('signinPassword').value;if(!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signInWithPassword({email,password});if(error){alert('Sign in failed: '+error.message);}else{CLOSEMODAL();GO('dashboard');}}async function SIGNUP(){const firstName=document.getElementById('signupFirstName').value;const lastName=document.getElementById('signupLastName').value;const email=document.getElementById('signupEmail').value;const password=document.getElementById('signupPassword').value;if(!firstName||!lastName||!email||!password){alert('Please fill in all fields');return;}const{data,error}=await supa.auth.signUp({email,password,options:{data:{full_name:firstName+' '+lastName,role:SIGNUP_ROLE}}});if(error){alert('Sign up failed: '+error.message);}else{await supa.from('profiles').upsert({id:data.user.id,full_name:firstName+' '+lastName,email,role:SIGNUP_ROLE,is_verified:false,created_at:new Date().toISOString()});alert('Sign up successful! Please check your email to confirm.');CLOSEMODAL();}}async function GOOGLESIGNIN(){const{error}=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});if(error){alert('Google sign in failed: '+error.message);}}function RESETPWD(){const email=prompt('Enter your email to reset password:');if(email){supa.auth.resetPasswordForEmail(email).then(({error})=>{if(error){alert('Error: '+error.message);}else{alert('Password reset link sent to '+email);}});}}async function LOGOUT(){try{if(DEMO_MODE){CURRENT_USER=null;DEMO_MODE=false;UPDATENAV();GO('home');return;}await supa.auth.signOut();CURRENT_USER=null;UPDATENAV();GO('home');}catch(e){console.error('Logout error: '+e.message);CURRENT_USER=null;UPDATENAV();GO('home');}}async function LOADPROFILE(){if(!CURRENT_USER)return;const{data,error}=await supa.from('profiles').select('*').eq('id',CURRENT_USER.id).single();if(data){document.getElementById('firstName').value=data.full_name?.split(' ')[0]||'';document.getElementById('lastName').value=data.full_name?.split(' ').slice(1).join(' ')||'';document.getElementById('profileEmail').value=data.email||'';document.getElementById('bio').value=data.bio||'';document.getElementById('location').value=data.location||'';if(data.role==='tailor'){document.getElementById('locationGroup').style.display='block';document.getElementById('specialtiesGroup').style.display='block';document.getElementById('priceGroup').style.display='block';document.getElementById('heritageGroup').style.display='block';document.getElementById('tailorOrders').style.display='block';document.getElementById('tailorEarnings').style.display='block';document.getElementById('specialties').value=(data.specialties||[]).join(', ');document.getElementById('price').value=data.starting_price||'';document.getElementById('heritage').value=data.heritage||'';LOADORDERS('tailor');LOADEARN();}else{LOADORDERS('customer');}}}async function SAVEPROFILE(){if(!CURRENT_USER){alert('Please sign in first');return;}const firstName=document.getElementById('firstName').value;const lastName=document.getElementById('lastName').value;const bio=document.getElementById('bio').value;const location=document.getElementById('location').value;const specialties=document.getElementById('specialties').value?document.getElementById('specialties').value.split(',').map(s=>s.trim()):[];const price=document.getElementById('price').value;const heritage=document.getElementById('heritage').value;const updates={id:CURRENT_USER.id,full_name:firstName+' '+lastName,bio,location,specialties:specialties.length>0?specialties:null,starting_price:price?parseInt(price):null,heritage:heritage||null,updated_at:new Date().toISOString()};const{error}=await supa.from('profiles').upsert(updates);if(error){alert('Error saving profile: '+error.message);}else{alert('Profile saved successfully!');}}async function LOADORDERS(type='customer'){if(!CURRENT_USER)return;const tbody=type==='customer'?document.getElementById('ordersBody'):document.getElementById('incomingBody');tbody.innerHTML='';let query=supa.from('orders').select('*');if(type==='customer'){query=query.eq('customer_id',CURRENT_USER.id);}else{query=query.eq('tailor_id',CURRENT_USER.id);}const{data,error}=await query;if(data&&data.length>0){data.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${type==='customer'?'Tailor':order.customer_id}</td><td>${order.item_name}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td><td>${new Date(order.created_at).toLocaleDateString()}</td>${type==='tailor'?'<td><button onclick="alert(\'Accept order\')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">Accept</button></td>':''}
-</tr>`;tbody.innerHTML+=row;});}else{tbody.innerHTML='<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--gray);">No orders yet</td></tr>';}}async function LOADEARN(){if(!CURRENT_USER)return;const{data,error}=await supa.from('orders').select('*').eq('tailor_id',CURRENT_USER.id).eq('status','completed');let total=0;const tbody=document.getElementById('earningsBody');tbody.innerHTML='';if(data&&data.length>0){data.forEach(order=>{const tailorCut=Math.round(order.amount*0.92);total+=tailorCut;const row=`<tr><td>${order.id}</td><td>Customer</td><td>$${order.amount}</td><td>$${tailorCut}</td><td><span class="status-badge status-completed">Completed</span></td></tr>`;tbody.innerHTML+=row;});}document.getElementById('totalEarnings').textContent='$'+total;}async function SAVEM(){if(!CURRENT_USER){alert('Please sign in first');return;}const measurements={user_id:CURRENT_USER.id,bust:parseFloat(document.getElementById('bust').value)||0,waist:parseFloat(document.getElementById('waist').value)||0,hips:parseFloat(document.getElementById('hips').value)||0,shoulders:parseFloat(document.getElementById('shoulders').value)||0,sleeves:parseFloat(document.getElementById('sleeves').value)||0,inseam:parseFloat(document.getElementById('inseam').value)||0,notes:document.getElementById('measurementNotes').value,updated_at:new Date().toISOString()};const{error}=await supa.from('measurements').upsert(measurements);if(error){alert('Error saving measurements: '+error.message);}else{alert('Measurements saved successfully!');}}async function LOADFEATURED(){const grid=document.getElementById('featuredGrid');const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true).limit(3);if(data&&data.length>0){BUILDGRID(data,'featuredGrid');}else{BUILDGRID(STATIC_TAILORS.slice(0,3),'featuredGrid');}}async function LOADTAILORS(){const{data,error}=await supa.from('profiles').select('*').eq('role','tailor').eq('is_verified',true);if(data&&data.length>0){ALL_TAILORS=data;}else{ALL_TAILORS=STATIC_TAILORS;}FILTERED_TAILORS=[...ALL_TAILORS];BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function BUILDGRID(tailors,gridId='tailorsGrid'){const grid=document.getElementById(gridId);grid.innerHTML='';tailors.forEach(tailor=>{const initials=GETINITIALS(tailor.full_name);const specs=Array.isArray(tailor.specialties)?tailor.specialties:[];const card=`<div class="tailor-card" onclick="OPENTAILORPROFILE('${tailor.id}')"><div class="tailor-header"><div class="tailor-avatar">${initials}</div><div class="tailor-name">${tailor.full_name}</div><div class="tailor-location">${tailor.location}</div></div><div class="tailor-body"><div class="tailor-badges">${tailor.is_verified?'<span class="tailor-badge verified">Verified</span>':''}</div><div class="tailor-specialties">${specs.map(s=>`<span class="spec-chip">${s}</span>`).join('')}</div><div class="tailor-rating"><span class="stars">${'★'.repeat(Math.round(tailor.rating||5))}</span><span>${tailor.rating||5} (${tailor.orders_completed||0} orders)</span></div><div class="tailor-price">Starting at $${tailor.starting_price||100}</div><button>View Profile</button></div></div>`;grid.innerHTML+=card;});if(tailors.length===0){document.getElementById('noResults').style.display='block';}else{document.getElementById('noResults').style.display='none';}}function FILTERTAILORS(){const search=document.getElementById('searchInput').value.toLowerCase();const location=document.getElementById('locationSelect').value.toLowerCase();FILTERED_TAILORS=ALL_TAILORS.filter(t=>{const matchSearch=!search||t.full_name.toLowerCase().includes(search)||(Array.isArray(t.specialties)&&t.specialties.some(s=>s.toLowerCase().includes(search)))||t.location.toLowerCase().includes(search);const matchLocation=!location||t.location.toLowerCase().includes(location);const matchSpecs=ACTIVE_SPEC_FILTERS.length===0||(Array.isArray(t.specialties)&&ACTIVE_SPEC_FILTERS.some(f=>t.specialties.includes(f)));return matchSearch&&matchLocation&&matchSpecs;});BUILDGRID(FILTERED_TAILORS,'tailorsGrid');}function TOGGLESPEC(el){const spec=el.dataset.spec;el.classList.toggle('active');if(el.classList.contains('active')){if(!ACTIVE_SPEC_FILTERS.includes(spec)){ACTIVE_SPEC_FILTERS.push(spec);}}else{ACTIVE_SPEC_FILTERS=ACTIVE_SPEC_FILTERS.filter(f=>f!==spec);}FILTERTAILORS();}function OPENTAILORPROFILE(tailorId){const tailor=ALL_TAILORS.find(t=>t.id===tailorId)||STATIC_TAILORS.find(t=>t.id===tailorId);if(tailor){SELECTED_TAILOR=tailor;const initials=GETINITIALS(tailor.full_name);document.getElementById('profileAvatar').textContent=initials;document.getElementById('profileNameDisplay').textContent=tailor.full_name;document.getElementById('profileLocationDisplay').textContent=tailor.location;document.getElementById('profileHeritage').textContent=tailor.heritage||'Not specified';document.getElementById('profileSpecs').textContent=(Array.isArray(tailor.specialties)?tailor.specialties:[]).join(', ')||'Various';document.getElementById('profileRating').textContent=tailor.rating||5;document.getElementById('profileOrders').textContent=tailor.orders_completed||0;document.getElementById('profileTurnaround').textContent=(tailor.turnaround_days||14)+'-'+((tailor.turnaround_days||14)+7)+' days';document.getElementById('profileBio').textContent=tailor.bio||'Skilled tailor';document.getElementById('profileStartPrice').textContent='$'+(tailor.starting_price||100);if(tailor.is_verified){document.getElementById('profileVerified').style.display='inline';}else{document.getElementById('profileVerified').style.display='none';}MODAL('profile');}}async function SENDMSG(){const content=document.getElementById('messageInput').value;if(!content){alert('Message cannot be empty');return;}if(SCANMSG(content)){document.getElementById('contactWarning').style.display='block';return;}if(!CURRENT_USER){alert('Please sign in first');return;}const{error}=await supa.from('messages').insert({sender_id:CURRENT_USER.id,recipient_id:document.getElementById('threadSelect').value,content,order_id:null,created_at:new Date().toISOString()});if(error){alert('Error sending message: '+error.message);}else{document.getElementById('messageInput').value='';alert('Message sent!');THREAD(document.getElementById('threadSelect').value);}}function SCANMSG(val){const phoneRegex=/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/;const emailRegex=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;const externalPaymentRegex=/paypal|venmo|cashapp|zelle/i;return phoneRegex.test(val)||emailRegex.test(val)||externalPaymentRegex.test(val);}async function THREAD(recipientId){if(!recipientId)return;const container=document.getElementById('messagesContainer');const form=document.getElementById('messageForm');const list=document.getElementById('messagesList');container.style.display='block';form.style.display='block';list.innerHTML='';const{data,error}=await supa.from('messages').select('*').or(`and(sender_id.eq.${CURRENT_USER.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${CURRENT_USER.id})`).order('created_at',{ascending:true});if(data){data.forEach(msg=>{const isOwn=msg.sender_id===CURRENT_USER.id;const msgEl=`<div style="margin-bottom: 1rem; text-align: ${isOwn?'right':'left'};"><div style="background: ${isOwn?'var(--green)':'var(--white)'}; color: ${isOwn?'white':'var(--dark)'}; padding: 0.75rem 1rem; border-radius: 8px; display: inline-block; max-width: 70%;">${msg.content}</div></div>`;list.innerHTML+=msgEl;});}}function JOINNAV(direction){JOIN_STEP+=direction;if(JOIN_STEP<1)JOIN_STEP=1;if(JOIN_STEP>5)JOIN_STEP=5;for(let i=1;i<=5;i++){document.getElementById(`step${i}`).classList.remove('active');}document.getElementById(`step${JOIN_STEP}`).classList.add('active');const steps=document.querySelectorAll('.progress-step');steps.forEach((step,idx)=>{if(idx+1<JOIN_STEP){step.classList.add('completed');}else if(idx+1===JOIN_STEP){step.classList.add('active');}else{step.classList.remove('active','completed');}});document.getElementById('backBtn').style.display=JOIN_STEP>1?'block':'none';document.getElementById('nextBtn').style.display=JOIN_STEP<5?'block':'none';document.getElementById('submitBtn').style.display=JOIN_STEP===5?'block':'none';if(JOIN_STEP===5){UPDATEREVIEWSUMMARY();}}function UPDATEREVIEWSUMMARY(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const summary=`<p><strong>Name:</strong> ${document.getElementById('joinFirstName').value} ${document.getElementById('joinLastName').value}</p><p><strong>Email:</strong> ${document.getElementById('joinEmail').value}</p><p><strong>Phone:</strong> ${document.getElementById('joinPhone').value}</p><p><strong>Experience:</strong> ${document.getElementById('yearsExp').value} years</p><p><strong>Heritage:</strong> ${document.getElementById('joinHeritage').value}</p><p><strong>Specialties:</strong> ${specs.join(', ')}</p><p><strong>Location:</strong> ${document.getElementById('joinCity').value}, ${document.getElementById('joinState').value}</p><p><strong>Starting Price:</strong> $${document.getElementById('joinPrice').value}</p><p><strong>Turnaround:</strong> ${document.getElementById('joinTurnaround').value} days</p>`;document.getElementById('reviewSummary').innerHTML=summary;}async function SUBMITJOIN(){const specs=[];document.querySelectorAll('.specCheckbox:checked').forEach(cb=>{specs.push(cb.value);});const application={full_name:document.getElementById('joinFirstName').value+' '+document.getElementById('joinLastName').value,email:document.getElementById('joinEmail').value,phone:document.getElementById('joinPhone').value,years_experience:parseInt(document.getElementById('yearsExp').value),heritage:document.getElementById('joinHeritage').value,specialties:specs,location:document.getElementById('joinCity').value+', '+document.getElementById('joinState').value,starting_price:parseInt(document.getElementById('joinPrice').value),turnaround_days:parseInt(document.getElementById('joinTurnaround').value),bio:document.getElementById('joinBio').value,status:'pending',created_at:new Date().toISOString()};const{error}=await supa.from('tailor_applications').insert(application);if(error){alert('Error submitting application: '+error.message);}else{alert('Application submitted! We will review it within 3-5 business days.');GO('home');JOIN_STEP=1;}}async function COMPLETEPAYMENT(){if(!CURRENT_USER||!SELECTED_TAILOR){alert('Please sign in and select a tailor');return;}const itemDesc=document.getElementById('payItemDesc').value;const amount=SELECTED_TAILOR.starting_price||100;if(!itemDesc){alert('Please describe the item');return;}const orderRef='SB-'+Date.now();const{error}=await supa.from('orders').insert({customer_id:CURRENT_USER.id,tailor_id:SELECTED_TAILOR.id,item_name:itemDesc,amount,order_ref:orderRef,status:'pending',created_at:new Date().toISOString()});if(error){alert('Error creating order: '+error.message);}else{document.getElementById('successMsg').classList.add('show');setTimeout(()=>{CLOSEMODAL();GO('dashboard');},2000);}}function GO(page){try{const pages=document.querySelectorAll('.page');pages.forEach(p=>p.classList.remove('active'));const pageEl=document.getElementById(page);if(!pageEl){console.error('Page not found: '+page);return;}pageEl.classList.add('active');CURRENT_PAGE=page;if(page==='tailors'){LOADTAILORS();}else if(page==='dashboard'&&CURRENT_USER){LOADPROFILE();}else if(page==='admin'&&CURRENT_USER?.user_metadata?.role==='admin'){LOADADMIN();}window.scrollTo(0,0);}catch(e){console.error('Navigation error: '+e.message);}}async function LOADADMIN(){if(!CURRENT_USER||CURRENT_USER.user_metadata?.role!=='admin'){alert('Access denied');GO('home');return;}ADMINPANEL('adminOverview',document.querySelector('#adminSidebarMenu button'));const{count:userCount}=await supa.from('profiles').select('*',{count:'exact',head:true});const{count:tailorCount}=await supa.from('profiles').select('*',{count:'exact',head:true}).eq('role','tailor');const{count:orderCount}=await supa.from('orders').select('*',{count:'exact',head:true});const{data:orders}=await supa.from('orders').select('amount');let revenue=0;if(orders){revenue=orders.reduce((sum,o)=>sum+(o.amount||0),0)*0.08;}document.getElementById('adminUsersCount').textContent=userCount||0;document.getElementById('adminTailorsCount').textContent=tailorCount||0;document.getElementById('adminOrdersCount').textContent=orderCount||0;document.getElementById('adminRevenue').textContent='$'+Math.round(revenue);const{data:apps}=await supa.from('tailor_applications').select('*').eq('status','pending');const verifBody=document.getElementById('verificationsBody');verifBody.innerHTML='';if(apps&&apps.length>0){apps.forEach(app=>{const row=`<tr><td>${app.full_name}</td><td>${app.email}</td><td><span class="status-badge status-pending">Pending</span></td><td>${new Date(app.created_at).toLocaleDateString()}</td><td><button onclick="VERIFYTAILOR('${app.id}')" style="padding:0.5rem 1rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer; margin-right:0.5rem;">Verify</button><button onclick="REJECTAPP('${app.id}')" style="padding:0.5rem 1rem; background:#e74c3c; color:white; border:none; border-radius:4px; cursor:pointer;">Reject</button></td></tr>`;verifBody.innerHTML+=row;});}else{verifBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No pending verifications</td></tr>';}const{data:recentOrders}=await supa.from('orders').select('*').order('created_at',{ascending:false}).limit(20);const adminOrdersBody=document.getElementById('adminOrdersBody');adminOrdersBody.innerHTML='';if(recentOrders&&recentOrders.length>0){recentOrders.forEach(order=>{const row=`<tr><td>${order.id}</td><td>${order.customer_id}</td><td>${order.tailor_id}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td></tr>`;adminOrdersBody.innerHTML+=row;});}else{adminOrdersBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No orders yet</td></tr>';}const{data:allUsers}=await supa.from('profiles').select('*').order('created_at',{ascending:false}).limit(50);const adminUsersBody=document.getElementById('adminUsersBody');adminUsersBody.innerHTML='';if(allUsers&&allUsers.length>0){allUsers.forEach(user=>{const row=`<tr><td>${user.full_name||'—'}</td><td>${user.email||'—'}</td><td><span class="status-badge" style="background:${user.role==='tailor'?'#d5f5e3':'#d6eaf8'}; color:var(--dark);">${user.role||'customer'}</span></td><td>${user.created_at?new Date(user.created_at).toLocaleDateString():'—'}</td><td><button onclick="alert('View user: '+' ${user.full_name||user.id}')" style="padding:0.4rem 0.8rem; background:var(--green); color:white; border:none; border-radius:4px; cursor:pointer;">View</button></td></tr>`;adminUsersBody.innerHTML+=row;});}else{adminUsersBody.innerHTML='<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--gray);">No users found</td></tr>';};}async function VERIFYTAILOR(appId){const{error}=await supa.from('tailor_applications').update({status:'approved'}).eq('id',appId);if(error){alert('Error: '+error.message);}else{alert('Tailor verified successfully!');LOADADMIN();}}async function REJECTAPP(appId){const{error}=await supa.from('tailor_applications').update({status:'rejected'}).eq('id',appId);if(error){alert('Error: '+error.message);}else{alert('Application rejected.');LOADADMIN();}}function PANEL(name,btn){const panels=document.querySelectorAll('#dashboard .panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('#dashboard .sidebar-menu button');buttons.forEach(b=>b.classList.remove('active'));if(btn){btn.classList.add('active');}else if(event&&event.target){event.target.classList.add('active');}}function ADMINPANEL(name,btn){const panels=document.querySelectorAll('#admin .panel');panels.forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');const buttons=document.querySelectorAll('#adminSidebarMenu button');buttons.forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}function MODAL(type){if(type==='auth'){document.getElementById('authModal').classList.add('active');}else if(type==='profile'){document.getElementById('profileModal').classList.add('active');}else if(type==='payment'){if(!CURRENT_USER){alert('Please sign in first');MODAL('auth');return;}document.getElementById('payTailorName').textContent=SELECTED_TAILOR.full_name;document.getElementById('payStartPrice').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('payTotal').textContent='$'+(SELECTED_TAILOR.starting_price||100)+'.00';document.getElementById('paymentModal').classList.add('active');CLOSEMODAL();}}function CLOSEMODAL(){document.querySelectorAll('.modal').forEach(m=>{m.classList.remove('active');});document.getElementById('successMsg').classList.remove('show');}function SWITCHMODAL(tab){const tabs=document.querySelectorAll('.tab-content');const btns=document.querySelectorAll('.tab-btn');tabs.forEach(t=>t.classList.remove('active'));btns.forEach(b=>b.classList.remove('active'));if(tab==='signin'){document.getElementById('signinTab').classList.add('active');btns[0].classList.add('active');}else{document.getElementById('signupTab').classList.add('active');btns[1].classList.add('active');}}function TOGGLEROLE(btn,role){const buttons=btn.parentElement.querySelectorAll('button');buttons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');SIGNUP_ROLE=role;}function toggleDropdown(){document.getElementById('dropdownContent').classList.toggle('active');}function CLOSEDROPDOWN(){document.getElementById('dropdownContent').classList.remove('active');}function GETINITIALS(name){if(!name)return'JD';const parts=name.split(' ');return(parts[0][0]+(parts[1]?.[0]||'')).toUpperCase();}function SETUPSCROLLREVEAL(){const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');}});},{threshold:0.1});document.querySelectorAll('.scroll-reveal').forEach(el=>{observer.observe(el);});}</script>
-
-<script>
-// =============================================
-// DEMO MODE — simulated accounts, no Supabase
-// =============================================
-const DEMO_CUSTOMER_USER={id:'demo-customer',email:'customer@demo.sewbridge.com',user_metadata:{full_name:'Alex Johnson',role:'customer'}};
-const DEMO_TAILOR_USER={id:'demo-tailor',email:'tailor@demo.sewbridge.com',user_metadata:{full_name:'Amara Nwosu',role:'tailor'}};
-const DEMO_PROFILE_CUSTOMER={id:'demo-customer',full_name:'Alex Johnson',email:'customer@demo.sewbridge.com',bio:'I love custom fashion and unique cultural garments. SewBridge makes it so easy to find skilled tailors!',location:'New York, NY',role:'customer'};
-const DEMO_PROFILE_TAILOR={id:'demo-tailor',full_name:'Amara Nwosu',email:'tailor@demo.sewbridge.com',bio:'Specializing in Ankara and Bridal wear with 10+ years of experience. Passionate about authentic African textiles.',location:'Atlanta, GA',role:'tailor',heritage:'Nigerian',specialties:['Ankara','Bridal','Traditional'],starting_price:135,turnaround_days:14,is_verified:true};
-const DEMO_ORDERS_CUSTOMER=[{id:'SB-2026-001',tailor_name:'Adaeze Anioke',item_name:'Custom Ankara Dress',amount:180,status:'completed',created_at:'2026-02-15T10:00:00Z'},{id:'SB-2026-002',tailor_name:'Grace Owusu',item_name:'Formal Suit Alterations',amount:95,status:'in_progress',created_at:'2026-03-10T14:00:00Z'},{id:'SB-2026-003',tailor_name:'Priya Sharma',item_name:'Traditional Sari',amount:220,status:'pending',created_at:'2026-03-28T09:00:00Z'}];
-const DEMO_ORDERS_TAILOR=[{id:'SB-2026-101',customer_id:'Customer A',item_name:'Bridal Gown',amount:450,status:'in_progress',created_at:'2026-03-01T10:00:00Z'},{id:'SB-2026-102',customer_id:'Customer B',item_name:'Ankara Maxi Dress',amount:160,status:'pending',created_at:'2026-03-20T11:00:00Z'},{id:'SB-2026-103',customer_id:'Customer C',item_name:'Wedding Guest Suit',amount:280,status:'completed',created_at:'2026-02-10T08:00:00Z'}];
-const DEMO_MEASUREMENTS={bust:36,waist:28,hips:38,shoulders:15,sleeves:24,inseam:30,notes:'Prefer a slightly relaxed fit through the shoulders.'};
-
-function ENTERDEMO(role){
-  DEMO_MODE=true;
-  CURRENT_USER=role==='tailor'?DEMO_TAILOR_USER:DEMO_CUSTOMER_USER;
-  CLOSEMODAL();
-  const banner=document.getElementById('demoBanner');
-  banner.style.display='flex';
-  document.getElementById('demoRoleLabel').textContent=role==='tailor'?'Tailor':'Customer';
-  document.getElementById('demoSwitchCustomer').style.display=role==='tailor'?'inline-block':'none';
-  document.getElementById('demoSwitchTailor').style.display=role==='customer'?'inline-block':'none';
-  UPDATENAV();
-  GO('dashboard');
+  `;
 }
 
-function EXITDEMO(){
-  DEMO_MODE=false;
-  CURRENT_USER=null;
-  document.getElementById('demoBanner').style.display='none';
-  UPDATENAV();
-  GO('home');
+function calculateMeasurements() {
+  const ease = EASE_ALLOWANCES[studioData.fitStyle].tops;
+  const pantEase = EASE_ALLOWANCES[studioData.fitStyle].pants;
+  const seam = studioData.seamAllowance ? SEAM_ALLOWANCE : 0;
+
+  return {
+    topChest: studioData.chest + ease + seam,
+    topShoulder: studioData.shoulder + (ease * 0.5),
+    topSleeve: studioData.sleeve + 0.5,
+    topSleeveWidth: (studioData.chest * 0.15) + (ease * 0.3),
+    neckOpening: (studioData.chest * 0.2),
+    hemWidth: studioData.chest - 1,
+    pantWaist: studioData.waist + pantEase + seam,
+    pantHip: studioData.hips + (pantEase * 0.5),
+    thigh: (studioData.hips * 0.35) + 1,
+    knee: (studioData.hips * 0.25),
+    ankle: (studioData.hips * 0.18),
+    inseam: studioData.inseam
+  };
 }
 
-window.UPDATENAV=function(){
-  const authBtns=document.getElementById('authBtns');
-  const userMenu=document.getElementById('userMenu');
-  if(CURRENT_USER){
-    authBtns.style.display='none';
-    userMenu.classList.add('active');
-    const name=CURRENT_USER.user_metadata?.full_name||'User';
-    document.getElementById('userAvatar').textContent=GETINITIALS(name);
-    if(!DEMO_MODE&&CURRENT_USER.user_metadata?.role==='admin'){document.getElementById('adminLink').style.display='block';}
-  }else{
-    authBtns.style.display='flex';
-    userMenu.classList.remove('active');
-  }
-};
-
-window.LOADPROFILE=async function(){
-  if(!CURRENT_USER)return;
-  let data;
-  if(DEMO_MODE){
-    data=CURRENT_USER.id==='demo-tailor'?DEMO_PROFILE_TAILOR:DEMO_PROFILE_CUSTOMER;
-  }else{
-    const result=await supa.from('profiles').select('*').eq('id',CURRENT_USER.id).single();
-    data=result.data;
-  }
-  if(data){
-    document.getElementById('firstName').value=data.full_name?.split(' ')[0]||'';
-    document.getElementById('lastName').value=data.full_name?.split(' ').slice(1).join(' ')||'';
-    document.getElementById('profileEmail').value=data.email||'';
-    document.getElementById('bio').value=data.bio||'';
-    document.getElementById('location').value=data.location||'';
-    if(data.role==='tailor'){
-      document.getElementById('locationGroup').style.display='block';
-      document.getElementById('specialtiesGroup').style.display='block';
-      document.getElementById('priceGroup').style.display='block';
-      document.getElementById('heritageGroup').style.display='block';
-      document.getElementById('tailorOrders').style.display='block';
-      document.getElementById('tailorEarnings').style.display='block';
-      document.getElementById('specialties').value=(data.specialties||[]).join(', ');
-      document.getElementById('price').value=data.starting_price||'';
-      document.getElementById('heritage').value=data.heritage||'';
-      LOADORDERS('tailor');
-      LOADEARN();
-    }else{
-      LOADORDERS('customer');
-      if(DEMO_MODE)LOADDEMO_MEASUREMENTS();
-    }
-  }
-};
-
-function LOADDEMO_MEASUREMENTS(){
-  const m=DEMO_MEASUREMENTS;
-  document.getElementById('bust').value=m.bust;
-  document.getElementById('waist').value=m.waist;
-  document.getElementById('hips').value=m.hips;
-  document.getElementById('shoulders').value=m.shoulders;
-  document.getElementById('sleeves').value=m.sleeves;
-  document.getElementById('inseam').value=m.inseam;
-  document.getElementById('measurementNotes').value=m.notes;
-}
-
-window.LOADORDERS=async function(type='customer'){
-  if(!CURRENT_USER)return;
-  const tbody=type==='customer'?document.getElementById('ordersBody'):document.getElementById('incomingBody');
-  tbody.innerHTML='';
-  let data;
-  if(DEMO_MODE){
-    data=type==='tailor'?DEMO_ORDERS_TAILOR:DEMO_ORDERS_CUSTOMER;
-  }else{
-    let query=supa.from('orders').select('*');
-    if(type==='customer'){query=query.eq('customer_id',CURRENT_USER.id);}else{query=query.eq('tailor_id',CURRENT_USER.id);}
-    const result=await query;
-    data=result.data;
-  }
-  if(data&&data.length>0){
-    data.forEach(order=>{
-      const who=type==='customer'?(order.tailor_name||'Tailor'):order.customer_id;
-      const actionCell=type==='tailor'?`<td><button onclick="ACCEPTORDER('${order.id}',this)" style="padding:0.45rem 0.9rem;background:${order.status==='pending'?'var(--green)':'#bbb'};color:white;border:none;border-radius:4px;cursor:pointer;" ${order.status!=='pending'?'disabled':''}>${order.status==='pending'?'Accept':'Accepted ✓'}</button></td>`:'';
-      tbody.innerHTML+=`<tr><td>${order.id}</td><td>${who}</td><td>${order.item_name}</td><td>$${order.amount}</td><td><span class="status-badge status-${order.status}">${order.status}</span></td><td>${new Date(order.created_at).toLocaleDateString()}</td>${actionCell}</tr>`;
-    });
-  }else{tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--gray);">No orders yet</td></tr>';}
-};
-
-window.LOADEARN=async function(){
-  if(!CURRENT_USER)return;
-  let data;
-  if(DEMO_MODE){
-    data=DEMO_ORDERS_TAILOR.filter(o=>o.status==='completed');
-  }else{
-    const result=await supa.from('orders').select('*').eq('tailor_id',CURRENT_USER.id).eq('status','completed');
-    data=result.data;
-  }
-  let total=0;
-  const tbody=document.getElementById('earningsBody');
-  tbody.innerHTML='';
-  if(data&&data.length>0){
-    data.forEach(order=>{
-      const cut=Math.round(order.amount*0.92);
-      total+=cut;
-      tbody.innerHTML+=`<tr><td>${order.id}</td><td>${order.customer_id||'Customer'}</td><td>$${order.amount}</td><td>$${cut}</td><td><span class="status-badge status-completed">Completed</span></td></tr>`;
-    });
-  }
-  document.getElementById('totalEarnings').textContent='$'+total;
-};
-
-window.SAVEPROFILE=async function(){
-  if(!CURRENT_USER){alert('Please sign in first');return;}
-  if(DEMO_MODE){alert('Demo Mode: Profile changes won\'t be saved.\n\nCreate a real account to save your profile!');return;}
-  const firstName=document.getElementById('firstName').value;
-  const lastName=document.getElementById('lastName').value;
-  const bio=document.getElementById('bio').value;
-  const location=document.getElementById('location').value;
-  const specialties=document.getElementById('specialties').value?document.getElementById('specialties').value.split(',').map(s=>s.trim()):[];
-  const price=document.getElementById('price').value;
-  const heritage=document.getElementById('heritage').value;
-  const updates={id:CURRENT_USER.id,full_name:firstName+' '+lastName,bio,location,specialties:specialties.length>0?specialties:null,starting_price:price?parseInt(price):null,heritage:heritage||null,updated_at:new Date().toISOString()};
-  const{error}=await supa.from('profiles').upsert(updates);
-  if(error){alert('Error saving profile: '+error.message);}else{alert('Profile saved successfully!');}
-};
-
-window.SAVEM=async function(){
-  if(!CURRENT_USER){alert('Please sign in first');return;}
-  if(DEMO_MODE){alert('Demo Mode: Measurements won\'t be saved.\n\nCreate a real account to save your measurements!');return;}
-  const measurements={user_id:CURRENT_USER.id,bust:parseFloat(document.getElementById('bust').value)||0,waist:parseFloat(document.getElementById('waist').value)||0,hips:parseFloat(document.getElementById('hips').value)||0,shoulders:parseFloat(document.getElementById('shoulders').value)||0,sleeves:parseFloat(document.getElementById('sleeves').value)||0,inseam:parseFloat(document.getElementById('inseam').value)||0,notes:document.getElementById('measurementNotes').value,updated_at:new Date().toISOString()};
-  const{error}=await supa.from('measurements').upsert(measurements);
-  if(error){alert('Error saving measurements: '+error.message);}else{alert('Measurements saved successfully!');}
-};
-
-window.LOGOUT=function(){
-  CLOSEDROPDOWN();
-  if(DEMO_MODE){EXITDEMO();UPDATENAV();GO('home');return;}
-  localStorage.removeItem('sewbridge_user');
-  localStorage.removeItem('sb-prypgbyuwszdjtftouzj-auth-token');
-  CURRENT_USER=null;
-  window.currentUser=null;
-  UPDATENAV();
-  GO('home');
-};
-
-function QUICKFILL(email,password){
-  document.getElementById('signinEmail').value=email;
-  document.getElementById('signinPassword').value=password;
-}
-
-// ── DEFINITIVE SIGNIN override ──────────────────────────────────────────────
-// Handles: wrong password, email not confirmed, missing profile row, network errors
-// Built-in user database - NO Supabase dependency
-const BUILTIN_USERS={'gracekip9@gmail.com':{pwd:'SewBridge#Tailor26',role:'tailor',name:'Grace Kipchoge'},'ministry.servant9@gmail.com':{pwd:'SewBridge#Customer26',role:'customer',name:'Ministry Servant'},'ignitedtrans@gmail.com':{pwd:'password123',role:'customer',name:'Ignited Trans'}};
-
-window.SIGNIN=function(){
-  const email=document.getElementById('signinEmail').value.trim();
-  const password=document.getElementById('signinPassword').value;
-  const btn=document.querySelector('#signinTab .panel-button');
-
-  if(!email||!password){
-    SHOWERR('signinErr','Please enter email and password.');
+function saveMeasurementProfile() {
+  if(!studioData.customerName) {
+    alert('Please enter customer name');
     return;
   }
 
-  btn.textContent='Signing in…';btn.disabled=true;
-  SHOWERR('signinErr','');
+  const profile = {
+    name: studioData.customerName,
+    date: new Date().toLocaleDateString(),
+    data: JSON.parse(JSON.stringify(studioData))
+  };
 
-  // INSTANT local login - no waiting
-  if(BUILTIN_USERS[email]&&BUILTIN_USERS[email].pwd===password){
-    const user=BUILTIN_USERS[email];
-    const sess={user:{id:'u_'+Math.random().toString(36).substr(2,9),email:email,user_metadata:{full_name:user.name,role:user.role}}};
+  let profiles = JSON.parse(localStorage.getItem('measurementProfiles') || '[]');
+  profiles.push(profile);
+  localStorage.setItem('measurementProfiles', JSON.stringify(profiles));
 
-    localStorage.setItem('sewbridge_user',JSON.stringify(sess));
-    CURRENT_USER=sess.user;
-    window.currentUser=sess.user;
-
-    btn.textContent='Sign In';btn.disabled=false;
-    setTimeout(()=>{
-      UPDATENAV();
-      CLOSEMODAL();
-      GO('dashboard');
-    },200);
-    return;
-  }
-
-  // Wrong credentials
-  btn.textContent='Sign In';btn.disabled=false;
-  SHOWERR('signinErr','Wrong email or password.\n\nTry:\nignitedtrans@gmail.com / password123\ngracekip9@gmail.com / SewBridge#Tailor26\nministry.servant9@gmail.com / SewBridge#Customer26');
-};
-
-// ── DEFINITIVE SIGNUP override ───────────────────────────────────────────────
-// After signup, immediately tries to sign in.
-// If Supabase has "Confirm email" OFF → user is logged in right away.
-// If it's ON → shows a clear message and pre-fills the sign-in form.
-window.SIGNUP=async function(){
-  const firstName=document.getElementById('signupFirstName').value.trim();
-  const lastName=document.getElementById('signupLastName').value.trim();
-  const email=document.getElementById('signupEmail').value.trim();
-  const password=document.getElementById('signupPassword').value;
-  if(!firstName||!lastName||!email||!password){
-    SHOWERR('signupErr','Please fill in all fields.');
-    return;
-  }
-  if(password.length<6){SHOWERR('signupErr','Password must be at least 6 characters.');return;}
-  const btn=document.querySelector('#signupTab .panel-button');
-  btn.textContent='Creating account…';btn.disabled=true;
-  SHOWERR('signupErr','');
-
-  const{data,error}=await supa.auth.signUp({
-    email,password,
-    options:{data:{full_name:firstName+' '+lastName,role:SIGNUP_ROLE}}
-  });
-
-  btn.textContent='Create Account';btn.disabled=false;
-
-  if(error){SHOWERR('signupErr','⚠️ '+error.message);return;}
-
-  // Upsert profile row
-  if(data.user){
-    await supa.from('profiles').upsert({
-      id:data.user.id,
-      full_name:firstName+' '+lastName,
-      email,
-      role:SIGNUP_ROLE,
-      is_verified:false,
-      created_at:new Date().toISOString()
-    });
-  }
-
-  // If Supabase returned a session, email confirmation is disabled — log in now
-  if(data.session){
-    CLOSEMODAL();
-    GO('dashboard');
-    return;
-  }
-
-  // Email confirmation is required — guide the user
-  SHOWERR('signupErr',
-    '✅ Account created! Check <strong>'+email+'</strong> for a confirmation link. After confirming, come back and sign in.',
-    'green');
-  // Pre-fill sign-in fields so one click logs them in after confirming
-  document.getElementById('signinEmail').value=email;
-  document.getElementById('signinPassword').value=password;
-};
-
-// Inline error/message helper — puts a message inside the modal instead of alert()
-function SHOWERR(id,msg,color){
-  let el=document.getElementById(id);
-  if(!el){
-    el=document.createElement('div');
-    el.id=id;
-    el.style.cssText='margin-top:0.75rem;padding:0.75rem 1rem;border-radius:6px;font-size:0.85rem;line-height:1.5;display:none;';
-    if(id==='signinErr'){
-      const tab=document.getElementById('signinTab');
-      tab.querySelector('.panel-form').appendChild(el);
-    } else {
-      const tab=document.getElementById('signupTab');
-      tab.querySelector('.panel-form').appendChild(el);
-    }
-  }
-  if(!msg){el.style.display='none';return;}
-  el.style.display='block';
-  el.style.background=color==='green'?'#d5f5e3':'#fdecea';
-  el.style.color=color==='green'?'#1a7a52':'#c0392b';
-  el.style.border=`1px solid ${color==='green'?'#a8e6cf':'#f5c6cb'}`;
-  el.innerHTML=msg;
+  alert(`✓ Profile saved for ${studioData.customerName}`);
 }
 
-window.ACCEPTORDER=function(orderId,btn){
-  if(DEMO_MODE){btn.textContent='Accepted ✓';btn.style.background='#bbb';btn.disabled=true;return;}
-  supa.from('orders').update({status:'in_progress'}).eq('id',orderId).then(({error})=>{
-    if(error){alert('Error: '+error.message);}
-    else{btn.textContent='Accepted ✓';btn.style.background='#bbb';btn.disabled=true;}
-  });
-};
-
-// Auto-signup function for demo setup
-window.AUTO_SETUP_ACCOUNTS=async function(){
-  const accounts=[
-    {email:'gracekip9@gmail.com',password:'SewBridge#Tailor26',full_name:'Fundi Mwalimu',role:'tailor'},
-    {email:'ministry.servant9@gmail.com',password:'SewBridge#Customer26',full_name:'Misa Esambo',role:'customer'}
-  ];
-
-  const results={};
-  for(const acc of accounts){
-    try{
-      const {data,error}=await supa.auth.signUp({
-        email:acc.email,
-        password:acc.password,
-        options:{data:{full_name:acc.full_name,role:acc.role}}
-      });
-
-      if(error){
-        results[acc.email]='Error: '+error.message;
-      }else if(data.user){
-        // Create profile
-        await supa.from('profiles').upsert({
-          id:data.user.id,
-          full_name:acc.full_name,
-          email:acc.email,
-          role:acc.role,
-          is_verified:false,
-          created_at:new Date().toISOString()
-        });
-        results[acc.email]='Created';
-      }
-    }catch(e){
-      results[acc.email]='Exception: '+e.message;
-    }
+function exportToPDF() {
+  if(!studioData.customerName) {
+    alert('Please enter customer name');
+    return;
   }
 
-  console.log('Account Setup Results:', results);
-  return results;
-};
-
-// Auto-run setup if requested via URL parameter
-if(window.location.search.includes('auto_signup=1')){
-  window.addEventListener('load',()=>{
-    setTimeout(()=>AUTO_SETUP_ACCOUNTS().then(r=>console.log('Setup complete:',r)),1000);
-  });
+  alert('PDF export feature coming soon! For now, use your browser print function (Ctrl+P or Cmd+P) to save as PDF.');
 }
+
+// ===== UTILITIES =====
+function showError(message) {
+  const errorEl = document.getElementById('errorMsg');
+  errorEl.textContent = message;
+  errorEl.classList.add('show');
+  setTimeout(() => errorEl.classList.remove('show'), 5000);
+}
+
+function showSuccess(message) {
+  const successEl = document.getElementById('successMsg');
+  successEl.textContent = message;
+  successEl.classList.add('show');
+}
+
+function clearMessages() {
+  document.getElementById('errorMsg').classList.remove('show');
+  document.getElementById('successMsg').classList.remove('show');
+}
+
+// ===== INIT =====
+window.addEventListener('DOMContentLoaded', function() {
+  const saved = localStorage.getItem('sewbridgeUser');
+  if(saved) {
+    currentUser = JSON.parse(saved);
+    showApp();
+  }
+});
 </script>
 
 </body>
