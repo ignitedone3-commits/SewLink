@@ -985,6 +985,7 @@ function renderSidebar() {
     tailor: [
       { icon: 'fa-home', label: 'Dashboard', page: 'dashboard' },
       { icon: 'fa-ruler', label: 'Measurement Studio', page: 'measurement-studio' },
+      { icon: 'fa-users', label: 'Customer Profiles', page: 'customer-profiles' },
       { icon: 'fa-inbox', label: 'New Requests', page: 'requests' },
       { icon: 'fa-briefcase', label: 'Active Jobs', page: 'jobs' },
       { icon: 'fa-calendar', label: 'Calendar', page: 'calendar' },
@@ -1032,6 +1033,8 @@ function showPage(page) {
   } else if(page === 'measurement-studio') {
     studioStep = 1;
     renderMeasurementStudio();
+  } else if(page === 'customer-profiles') {
+    renderCustomerProfiles();
   } else {
     contentArea.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-construction"></i></div><p>Coming soon...</p></div>`;
   }
@@ -1041,6 +1044,7 @@ function showPage(page) {
     profile: 'Profile',
     settings: 'Settings',
     'measurement-studio': 'Measurement Studio',
+    'customer-profiles': 'Customer Profiles',
     orders: 'Active Orders',
     messages: 'Messages',
     requests: 'New Requests',
@@ -1176,15 +1180,37 @@ function renderDashboard() {
 
       <div class="card">
         <div class="card-header">
+          <i class="fas fa-users card-icon"></i>
+          <div class="card-title">Customer Profiles</div>
+        </div>
+        <div style="padding: 1rem;">
+          <div style="margin-bottom: 1rem;">
+            <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.5rem;">Saved Customers</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: var(--green);" id="savedCustomersCount">0</div>
+          </div>
+          <button class="action-btn" onclick="showPage('customer-profiles')" style="width: 100%; background: var(--green);">
+            <i class="fas fa-database"></i> Manage Profiles
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
           <i class="fas fa-lightning-bolt card-icon"></i>
           <div class="card-title">Quick Actions</div>
         </div>
         <div class="quick-actions">
+          <button class="action-btn" onclick="showPage('measurement-studio')" style="background: var(--green);"><i class="fas fa-plus"></i> New Measurement</button>
           <button class="action-btn"><i class="fas fa-check"></i> Accept Order</button>
           <button class="action-btn"><i class="fas fa-calendar"></i> Update Availability</button>
         </div>
       </div>
     `;
+
+    // Update the saved customers count
+    setTimeout(() => {
+      document.getElementById('savedCustomersCount').textContent = customerProfiles.length;
+    }, 100);
   } else {
     contentArea.innerHTML = `
       <div class="dashboard-grid">
@@ -1464,6 +1490,135 @@ function renderSettings() {
   `;
 }
 
+// ===== CUSTOMER PROFILES MANAGEMENT =====
+function renderCustomerProfiles() {
+  loadCustomerProfiles();
+  const contentArea = document.getElementById('contentArea');
+
+  if(customerProfiles.length === 0) {
+    contentArea.innerHTML = `
+      <div class="card">
+        <div class="empty-state" style="padding: 3rem 1rem;">
+          <i class="fas fa-users" style="font-size: 3rem; color: var(--lightgray); margin-bottom: 1rem; display: block;"></i>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">No Customer Profiles Yet</h3>
+          <p style="color: var(--gray); margin-bottom: 2rem;">Save customer measurements from Measurement Studio to build your customer database.</p>
+          <button class="action-btn" onclick="showPage('measurement-studio')" style="background: var(--green);">
+            <i class="fas fa-ruler"></i> Go to Measurement Studio
+          </button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  let html = '<div style="display: grid; gap: 1rem;">';
+
+  customerProfiles.forEach((customer, index) => {
+    html += `
+      <div class="card" style="padding: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+          <div>
+            <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">${customer.name}</h4>
+            <div style="color: var(--gray); font-size: 0.9rem;">
+              <div>${customer.gender === 'male' ? 'Male' : 'Female'} • Age: ${customer.age} • ${customer.unit === 'inches' ? 'Imperial' : 'Metric'}</div>
+              <div style="margin-top: 0.25rem;">Saved: ${new Date(customer.savedDate).toLocaleDateString()}</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="action-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: var(--green);" onclick="viewCustomerProfile(${index})">
+              <i class="fas fa-eye"></i> View
+            </button>
+            <button class="action-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: var(--green);" onclick="editCustomerProfile(${index})">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="action-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: #e74c3c;" onclick="deleteCustomerProfile(${index})">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; background: var(--lightgray); padding: 1rem; border-radius: 6px;">
+          <div>
+            <div style="color: var(--gray); font-size: 0.8rem; margin-bottom: 0.25rem;">Chest</div>
+            <div style="font-weight: 600;">${customer.chest ? parseFloat(customer.chest).toFixed(1) : 'N/A'}"</div>
+          </div>
+          <div>
+            <div style="color: var(--gray); font-size: 0.8rem; margin-bottom: 0.25rem;">Shoulder</div>
+            <div style="font-weight: 600;">${customer.shoulder ? parseFloat(customer.shoulder).toFixed(1) : 'N/A'}"</div>
+          </div>
+          <div>
+            <div style="color: var(--gray); font-size: 0.8rem; margin-bottom: 0.25rem;">Waist</div>
+            <div style="font-weight: 600;">${customer.waist ? parseFloat(customer.waist).toFixed(1) : 'N/A'}"</div>
+          </div>
+          <div>
+            <div style="color: var(--gray); font-size: 0.8rem; margin-bottom: 0.25rem;">Garment Type</div>
+            <div style="font-weight: 600;">${customer.garmentType === 'both' ? 'Both' : customer.garmentType === 'tops' ? 'Tops' : 'Pants'}</div>
+          </div>
+          <div>
+            <div style="color: var(--gray); font-size: 0.8rem; margin-bottom: 0.25rem;">Fit Style</div>
+            <div style="font-weight: 600; text-transform: capitalize;">${customer.fitStyle || 'Regular'}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += '</div>';
+  contentArea.innerHTML = html;
+}
+
+function viewCustomerProfile(index) {
+  const customer = customerProfiles[index];
+  const unit = customer.unit === 'inches' ? '"' : 'cm';
+  const armhole = customer.calculated && customer.calculated.armhole ? customer.calculated.armhole.toFixed(2) : 'N/A';
+  const fullLength = customer.tshirtLength ? customer.tshirtLength : 'N/A';
+  const waist = customer.waist ? customer.waist : 'N/A';
+  const hips = customer.hips ? customer.hips : 'N/A';
+
+  alert(`Customer Profile: ${customer.name}\n\n=== INPUT MEASUREMENTS ===\nChest: ${customer.chest}${unit}\nShoulder: ${customer.shoulder}${unit}\nWaist: ${waist}${unit}\nHips: ${hips}${unit}\nNeck: ${customer.neckCirc}${unit}\nSleeve: ${customer.sleeve}${unit}\nFull Length: ${fullLength}${unit}\nInseam: ${customer.inseam}${unit}\n\n=== CALCULATED (Pattern-Ready) ===\nArmhole: ${armhole}${unit}\n\n=== GARMENT DETAILS ===\nType: ${customer.garmentType}\nFit: ${customer.fitStyle}\nSleeve: ${customer.sleeveType}`);
+}
+
+function editCustomerProfile(index) {
+  const customer = customerProfiles[index];
+  // Load customer data into studio
+  studioData.customerName = customer.name;
+  studioData.gender = customer.gender;
+  studioData.age = customer.age;
+  studioData.chest = customer.chest;
+  studioData.waist = customer.waist;
+  studioData.hips = customer.hips;
+  studioData.shoulder = customer.shoulder;
+  studioData.neckCirc = customer.neckCirc;
+  studioData.sleeve = customer.sleeve;
+  studioData.tshirtLength = customer.tshirtLength || '';
+  studioData.inseam = customer.inseam;
+  // Sleeve measurements
+  studioData.bicepCirc = customer.bicepCirc || '';
+  studioData.bicepLength = customer.bicepLength || '';
+  studioData.wristCirc = customer.wristCirc || '';
+  studioData.wristLength = customer.wristLength || '';
+  studioData.elbowCirc = customer.elbowCirc || '';
+  studioData.elbowLength = customer.elbowLength || '';
+  studioData.garmentType = customer.garmentType;
+  studioData.sleeveType = customer.sleeveType;
+  studioData.fitStyle = customer.fitStyle;
+  studioData.unit = customer.unit;
+
+  // Mark for update
+  studioData.profileIndex = index;
+
+  studioStep = 1;
+  showPage('measurement-studio');
+}
+
+function deleteCustomerProfile(index) {
+  if(confirm('Are you sure you want to delete this customer profile?')) {
+    customerProfiles.splice(index, 1);
+    saveCustomerProfiles();
+    renderCustomerProfiles();
+  }
+}
+
 // ===== MEASUREMENT STUDIO - PROFESSIONAL EDITION =====
 let studioStep = 1;
 let studioData = {
@@ -1474,13 +1629,21 @@ let studioData = {
   weight: 180,
   unit: 'inches',
   // Body measurements
-  chest: 0,
-  waist: 0,
-  hips: 0,
-  shoulder: 0,
-  neckCirc: 0,
-  sleeve: 0,
-  inseam: 0,
+  chest: '',
+  waist: '',
+  hips: '',
+  shoulder: '',
+  neckCirc: '',
+  sleeve: '',
+  tshirtLength: '',  // T-shirt full length
+  inseam: '',
+  // Sleeve-specific measurements (for long sleeves)
+  bicepCirc: '',
+  bicepLength: '',
+  wristCirc: '',
+  wristLength: '',
+  elbowCirc: '',
+  elbowLength: '',
   // Garment & fit
   garmentType: 'tops', // 'tops', 'pants', 'both'
   sleeveType: 'long', // 'short', 'long'
@@ -1493,11 +1656,40 @@ let studioData = {
   overrides: {}
 };
 
+// ===== CUSTOMER PROFILES DATABASE =====
+let customerProfiles = [];
+
+// Load customer profiles from localStorage
+function loadCustomerProfiles() {
+  const saved = localStorage.getItem('sewbridgeCustomerProfiles');
+  if(saved) {
+    customerProfiles = JSON.parse(saved);
+  }
+}
+
+// Save customer profiles to localStorage
+function saveCustomerProfiles() {
+  localStorage.setItem('sewbridgeCustomerProfiles', JSON.stringify(customerProfiles));
+}
+
+// Professional Tailoring Ease Allowances by Fit Style
 const EASE_ALLOWANCES = {
-  slim: { tops: 1.25, pants: 0.75 },
-  regular: { tops: 2.5, pants: 1.5 },
-  relaxed: { tops: 3.5, pants: 2.5 },
-  oversized: { tops: 5, pants: 3.5 }
+  slim: {
+    chest: 1, shoulder: 0.25, neckWidth: 0.1, neckDepth: 0.1, backNeckDepth: 0.05,
+    capHeight: 0.1, armhole: 0.25, pants: 0.75
+  },
+  regular: {
+    chest: 2, shoulder: 0.5, neckWidth: 0.2, neckDepth: 0.2, backNeckDepth: 0.1,
+    capHeight: 0.2, armhole: 0.5, pants: 1.5
+  },
+  relaxed: {
+    chest: 3, shoulder: 0.75, neckWidth: 0.3, neckDepth: 0.3, backNeckDepth: 0.15,
+    capHeight: 0.3, armhole: 0.75, pants: 2.5
+  },
+  oversized: {
+    chest: 4, shoulder: 1, neckWidth: 0.4, neckDepth: 0.4, backNeckDepth: 0.2,
+    capHeight: 0.4, armhole: 1, pants: 3.5
+  }
 };
 
 const SEAM_ALLOWANCE = 0.5;
@@ -1575,56 +1767,10 @@ function renderMeasurementStudio() {
           </div>
         ` : ''}
 
-        <!-- STEP 2: MEASUREMENTS -->
+        <!-- STEP 2: FIT & GARMENT SELECTION (Moved to Step 2) -->
         ${studioStep === 2 ? `
           <div class="card" style="margin-bottom: 2rem;">
-            <div class="profile-section-title" style="margin: 0 0 1.5rem 0;">Step 2: Body Measurements</div>
-            <div style="background: #f0f8ff; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 0.9rem; color: #0c5460;">
-              <i class="fas fa-info-circle"></i> Measure close to skin, not tight
-            </div>
-            <div class="form-grid">
-              <div class="form-group-inline">
-                <label>Chest / Bust (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
-                <input type="number" id="studioChest" value="${studioData.chest}" step="0.25" placeholder="0" onchange="updateStudioData('chest', this.value); updateStudioPreview()">
-              </div>
-              <div class="form-group-inline">
-                <label>Waist (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
-                <input type="number" id="studioWaist" value="${studioData.waist}" step="0.25" placeholder="0" onchange="updateStudioData('waist', this.value); updateStudioPreview()">
-              </div>
-              <div class="form-group-inline">
-                <label>Hips (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
-                <input type="number" id="studioHips" value="${studioData.hips}" step="0.25" placeholder="0" onchange="updateStudioData('hips', this.value); updateStudioPreview()">
-              </div>
-              <div class="form-group-inline">
-                <label>Shoulder Width (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
-                <input type="number" id="studioShoulder" value="${studioData.shoulder}" step="0.25" placeholder="0" onchange="updateStudioData('shoulder', this.value); updateStudioPreview()">
-              </div>
-              <div class="form-group-inline">
-                <label>Neck Circumference (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
-                <input type="number" id="studioNeckCirc" value="${studioData.neckCirc}" step="0.25" placeholder="0" onchange="updateStudioData('neckCirc', this.value); updateStudioPreview()">
-                <small style="color: var(--gray); margin-top: 0.25rem;">Suggested: Chest × 0.37</small>
-              </div>
-              <div class="form-group-inline">
-                <label>Sleeve Length (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
-                <input type="number" id="studioSleeve" value="${studioData.sleeve}" step="0.25" placeholder="0" onchange="updateStudioData('sleeve', this.value); updateStudioPreview()">
-              </div>
-              <div class="form-group-inline">
-                <label>Inseam (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
-                <input type="number" id="studioInseam" value="${studioData.inseam}" step="0.25" placeholder="0" onchange="updateStudioData('inseam', this.value); updateStudioPreview()">
-              </div>
-            </div>
-            <div id="validationMsg"></div>
-            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: space-between;">
-              <button class="action-btn" style="background: var(--lightgray); color: var(--dark);" onclick="advanceStudioStep(1);">← Back</button>
-              <button class="action-btn" onclick="advanceStudioStep(3)" style="background: var(--green);">Next →</button>
-            </div>
-          </div>
-        ` : ''}
-
-        <!-- STEP 3: FIT & GARMENT SELECTION -->
-        ${studioStep === 3 ? `
-          <div class="card" style="margin-bottom: 2rem;">
-            <div class="profile-section-title" style="margin: 0 0 1.5rem 0;">Step 3: Garment & Fit Selection</div>
+            <div class="profile-section-title" style="margin: 0 0 1.5rem 0;">Step 2: Garment & Fit Selection</div>
 
             <!-- Garment Type -->
             <div style="margin-bottom: 2rem;">
@@ -1684,6 +1830,108 @@ function renderMeasurementStudio() {
             </div>
 
             <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: space-between;">
+              <button class="action-btn" style="background: var(--lightgray); color: var(--dark);" onclick="advanceStudioStep(1);">← Back</button>
+              <button class="action-btn" onclick="advanceStudioStep(3)" style="background: var(--green);">Next →</button>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- STEP 3: BODY MEASUREMENTS (Moved to Step 3) -->
+        ${studioStep === 3 ? `
+          <div class="card" style="margin-bottom: 2rem;">
+            <div class="profile-section-title" style="margin: 0 0 1.5rem 0;">Step 3: Body Measurements</div>
+            <div style="background: #f0f8ff; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 0.9rem; color: #0c5460;">
+              <i class="fas fa-info-circle"></i> Measure close to skin, not tight
+            </div>
+            <div class="form-grid">
+              <!-- TOPS MEASUREMENTS -->
+              ${studioData.garmentType !== 'pants' ? `
+                <div class="form-group-inline">
+                  <label>Chest / Bust (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioChest" value="${studioData.chest || ''}" step="0.25" placeholder="0" onchange="updateStudioData('chest', this.value); updateStudioPreview()">
+                </div>
+                <div class="form-group-inline">
+                  <label>Shoulder Width (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioShoulder" value="${studioData.shoulder || ''}" step="0.25" placeholder="0" onchange="updateStudioData('shoulder', this.value); updateStudioPreview()">
+                </div>
+                <div class="form-group-inline">
+                  <label>Neck Circumference (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioNeckCirc" value="${studioData.neckCirc || ''}" step="0.25" placeholder="0" onchange="updateStudioData('neckCirc', this.value); updateStudioPreview()">
+                  <small style="color: var(--gray); margin-top: 0.25rem;">Suggested: Chest × 0.37</small>
+                </div>
+                <div class="form-group-inline">
+                  <label>Sleeve Length (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioSleeve" value="${studioData.sleeve || ''}" step="0.25" placeholder="0" onchange="updateStudioData('sleeve', this.value); updateStudioPreview()">
+                </div>
+                <div class="form-group-inline">
+                  <label>T-Shirt Full Length (${studioData.unit === 'inches' ? '"' : 'cm'})</label>
+                  <input type="number" id="studioTshirtLength" value="${studioData.tshirtLength || ''}" step="0.25" placeholder="0" onchange="updateStudioData('tshirtLength', this.value); updateStudioPreview()">
+                </div>
+                <div class="form-group-inline">
+                  <label>Waist (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioWaist" value="${studioData.waist || ''}" step="0.25" placeholder="0" onchange="updateStudioData('waist', this.value); updateStudioPreview()">
+                  <small style="color: var(--gray); margin-top: 0.25rem;">For t-shirt fit at waistline</small>
+                </div>
+                <div class="form-group-inline">
+                  <label>Hips (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioHips" value="${studioData.hips || ''}" step="0.25" placeholder="0" onchange="updateStudioData('hips', this.value); updateStudioPreview()">
+                  <small style="color: var(--gray); margin-top: 0.25rem;">For t-shirt fit at hip level</small>
+                </div>
+              ` : ''}
+
+              <!-- LONG SLEEVE DETAILED MEASUREMENTS -->
+              ${studioData.garmentType !== 'pants' && studioData.sleeveType === 'long' ? `
+                <div style="grid-column: 1 / -1; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--lightgray);">
+                  <div style="font-weight: 600; color: var(--green); margin-bottom: 1rem; font-size: 0.95rem;">📏 Long Sleeve Detailed Measurements (Required for accurate sleeve fitting)</div>
+                </div>
+
+                <div class="form-group-inline">
+                  <label>Bicep Circumference (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioBicepCirc" value="${studioData.bicepCirc || ''}" step="0.25" placeholder="0" onchange="updateStudioData('bicepCirc', this.value)">
+                </div>
+                <div class="form-group-inline">
+                  <label>Bicep Length (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioBicepLength" value="${studioData.bicepLength || ''}" step="0.25" placeholder="0" onchange="updateStudioData('bicepLength', this.value)">
+                </div>
+                <div class="form-group-inline">
+                  <label>Elbow Circumference (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioElbowCirc" value="${studioData.elbowCirc || ''}" step="0.25" placeholder="0" onchange="updateStudioData('elbowCirc', this.value)">
+                </div>
+                <div class="form-group-inline">
+                  <label>Elbow Length (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioElbowLength" value="${studioData.elbowLength || ''}" step="0.25" placeholder="0" onchange="updateStudioData('elbowLength', this.value)">
+                </div>
+                <div class="form-group-inline">
+                  <label>Wrist Circumference (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioWristCirc" value="${studioData.wristCirc || ''}" step="0.25" placeholder="0" onchange="updateStudioData('wristCirc', this.value)">
+                </div>
+                <div class="form-group-inline">
+                  <label>Wrist Length (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioWristLength" value="${studioData.wristLength || ''}" step="0.25" placeholder="0" onchange="updateStudioData('wristLength', this.value)">
+                </div>
+              ` : ''}
+
+              <!-- PANTS MEASUREMENTS -->
+              ${studioData.garmentType !== 'tops' ? `
+                <div style="grid-column: 1 / -1; margin-top: ${studioData.garmentType !== 'pants' ? '1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--lightgray);' : ''}">
+                  ${studioData.garmentType === 'both' ? `<div style="font-weight: 600; color: var(--green); margin-bottom: 1rem; font-size: 0.95rem;">👖 Pants Measurements</div>` : ''}
+                </div>
+                <div class="form-group-inline">
+                  <label>Waist (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioWaist" value="${studioData.waist || ''}" step="0.25" placeholder="0" onchange="updateStudioData('waist', this.value); updateStudioPreview()">
+                </div>
+                <div class="form-group-inline">
+                  <label>Hips (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioHips" value="${studioData.hips || ''}" step="0.25" placeholder="0" onchange="updateStudioData('hips', this.value); updateStudioPreview()">
+                </div>
+                <div class="form-group-inline">
+                  <label>Inseam (${studioData.unit === 'inches' ? '"' : 'cm'}) *</label>
+                  <input type="number" id="studioInseam" value="${studioData.inseam || ''}" step="0.25" placeholder="0" onchange="updateStudioData('inseam', this.value); updateStudioPreview()">
+                </div>
+              ` : ''}
+            </div>
+            <div id="validationMsg"></div>
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: space-between;">
               <button class="action-btn" style="background: var(--lightgray); color: var(--dark);" onclick="advanceStudioStep(2);">← Back</button>
               <button class="action-btn" onclick="advanceStudioStep(4)" style="background: var(--green);">Generate Output →</button>
             </div>
@@ -1740,18 +1988,57 @@ function updateStudioData(field, value) {
 }
 
 function advanceStudioStep(step) {
+  // Step 1 → Step 2: Validate customer info
   if(step === 2 && !studioData.customerName) {
     alert('Please enter customer name');
     return;
   }
-  if(step === 3 && (studioData.chest <= 0 || studioData.waist <= 0 || studioData.neckCirc <= 0)) {
-    alert('Please fill in required measurements');
-    return;
+
+  // Step 3 → Step 4: Validate body measurements and garment requirements
+  if(step === 4) {
+    // Tops validation
+    if(studioData.garmentType !== 'pants') {
+      if(studioData.chest <= 0 || studioData.shoulder <= 0 || studioData.neckCirc <= 0 || studioData.sleeve <= 0 || studioData.waist <= 0 || studioData.hips <= 0) {
+        alert('Please fill in all required top measurements:\n• Chest\n• Shoulder\n• Neck Circumference\n• Sleeve Length\n• Waist\n• Hips');
+        return;
+      }
+
+      // Long sleeve additional validation
+      if(studioData.sleeveType === 'long') {
+        if(studioData.bicepCirc <= 0 || studioData.bicepLength <= 0 || studioData.elbowCirc <= 0 || studioData.elbowLength <= 0 || studioData.wristCirc <= 0 || studioData.wristLength <= 0) {
+          alert('Please fill in all sleeve measurements:\n• Bicep Circumference & Length\n• Elbow Circumference & Length\n• Wrist Circumference & Length');
+          return;
+        }
+      }
+    }
+
+    // Pants validation
+    if(studioData.garmentType === 'pants') {
+      if(studioData.waist <= 0 || studioData.hips <= 0 || studioData.inseam <= 0) {
+        alert('Please fill in all required pants measurements (Waist, Hips, Inseam)');
+        return;
+      }
+    }
+
+    // Both validation
+    if(studioData.garmentType === 'both') {
+      if(studioData.chest <= 0 || studioData.shoulder <= 0 || studioData.neckCirc <= 0 || studioData.sleeve <= 0 || studioData.waist <= 0 || studioData.hips <= 0) {
+        alert('Please fill in all required top measurements:\n• Chest\n• Shoulder\n• Neck Circumference\n• Sleeve Length\n• Waist\n• Hips');
+        return;
+      }
+      if(studioData.inseam <= 0) {
+        alert('Please fill in all required pants measurements (Inseam)');
+        return;
+      }
+      if(studioData.sleeveType === 'long') {
+        if(studioData.bicepCirc <= 0 || studioData.bicepLength <= 0 || studioData.elbowCirc <= 0 || studioData.elbowLength <= 0 || studioData.wristCirc <= 0 || studioData.wristLength <= 0) {
+          alert('Please fill in all sleeve measurements:\n• Bicep Circumference & Length\n• Elbow Circumference & Length\n• Wrist Circumference & Length');
+          return;
+        }
+      }
+    }
   }
-  if(step === 4 && studioData.garmentType === 'pants' && studioData.inseam <= 0) {
-    alert('Inseam is required for pants');
-    return;
-  }
+
   studioStep = step;
   renderMeasurementStudio();
 }
@@ -1796,42 +2083,163 @@ function updateStudioPreview() {
 
 function calculateAndRenderOutput() {
   studioData.calculated = calculateAllMeasurements();
+
+  // VALIDATION LOG - Complete measurement verification
+  console.log('╔════════════════════════════════════════════════════════════════╗');
+  console.log('║       SEWBRIDGE MEASUREMENT CALCULATION VERIFICATION          ║');
+  console.log('╚════════════════════════════════════════════════════════════════╝');
+  console.log('');
+  console.log('📌 FIT CONFIGURATION:');
+  console.log('   Fit Style:', studioData.fitStyle.toUpperCase());
+  console.log('   Ease Config:', EASE_ALLOWANCES[studioData.fitStyle]);
+  console.log('   Seam Allowance:', studioData.seamAllowance ? '✓ 0.5"' : '✗ None');
+  console.log('');
+  console.log('📊 PRIMARY MEASUREMENTS:');
+  console.log('   Input Chest → Output:', `${studioData.chest}" → ${studioData.calculated.chest.toFixed(2)}"`);
+  console.log('   Input Shoulder → Output:', `${studioData.shoulder}" → ${studioData.calculated.shoulder.toFixed(2)}"`);
+  console.log('');
+  console.log('🔷 DERIVED PATTERN VALUES:');
+  console.log('   Chest Quarter (÷4):', studioData.calculated.chestQuarter.toFixed(2) + '"');
+  console.log('   Shoulder Half (÷2):', studioData.calculated.shoulderHalf.toFixed(2) + '"');
+  console.log('');
+  console.log('📏 CAP HEIGHT:');
+  console.log('   Calculated:', studioData.calculated.capHeightCalculated.toFixed(2) + '"');
+  console.log('   Final (adjusted):', studioData.calculated.capHeight.toFixed(2) + '"');
+  if(studioData.calculated.capHeightAdjusted) {
+    console.log('   Status: ⚠️ AUTO-ADJUSTED to optimal range (4.5-5")');
+  } else {
+    console.log('   Status: ✓ Within optimal range');
+  }
+  console.log('');
+  console.log('📏 BACK NECK DEPTH:');
+  console.log('   Formula: Front Neck Depth ÷ 3 (minimum 1.5")');
+  console.log('   Front Neck Depth:', studioData.calculated.frontNeckDepth.toFixed(2) + '"');
+  console.log('   Back Neck Depth:', studioData.calculated.backNeckDepth.toFixed(2) + '"');
+  console.log('');
+  console.log('📏 SLEEVE LENGTH:');
+  console.log('   Base Sleeve:', studioData.calculated.sleeveLengthBase.toFixed(2) + '"');
+  console.log('   Final Sleeve:', studioData.calculated.sleeveLength.toFixed(2) + '"');
+  if(studioData.calculated.sleeveLengthAllowanceAdded) {
+    console.log('   Status: ✓ +1" allowance added for 11" length');
+  } else {
+    console.log('   Status: ✓ Standard calculation');
+  }
+  console.log('');
+  console.log('╔════════════════════════════════════════════════════════════════╗');
+
   renderMeasurementOutput();
 }
 
 function calculateAllMeasurements() {
-  const ease = EASE_ALLOWANCES[studioData.fitStyle].tops;
-  const pantEase = EASE_ALLOWANCES[studioData.fitStyle].pants;
+  // CRITICAL: Ensure fitStyle is set with safety fallback
+  const fitStyle = studioData.fitStyle || 'regular';
+  const easeConfig = EASE_ALLOWANCES[fitStyle];
+
+  if(!easeConfig) {
+    console.error(`ERROR: easeConfig not found for fitStyle: ${fitStyle}`);
+    console.error('Available ease configs:', Object.keys(EASE_ALLOWANCES));
+    return {};
+  }
+
   const seam = studioData.seamAllowance ? SEAM_ALLOWANCE : 0;
 
+  // Professional tailoring calculations based on user's table
+  const armCircumference = studioData.chest * 0.4; // Estimate from chest
+  const baseCapHeight = (studioData.chest / 4 + studioData.shoulder) / 2.5;
+  const baseNeckWidth = studioData.neckCirc / 5;
+  const baseNeckDepth = studioData.neckCirc / 5;
+  const baseBackNeckDepth = studioData.neckCirc / 6;
+
+  // ARM MEASUREMENTS BASE VALUES (derived from chest)
+  const baseBicep = studioData.chest * 0.28;
+  const baseElbow = studioData.chest * 0.22;
+  const baseWrist = studioData.chest * 0.18;
+  const baseCuff = studioData.chest * 0.15;
+
+  // Calculate basic measurements with ease and seam
+  const chestFinal = studioData.chest + easeConfig.chest + seam;
+  const shoulderFinal = studioData.shoulder + easeConfig.shoulder + seam;
+
+  // DERIVED MEASUREMENTS FOR PATTERN DRAFTING
+  const chestQuarter = chestFinal / 4;
+  const shoulderHalf = shoulderFinal / 2;
+
+  // NECK MEASUREMENTS - Calculate front first, then derive back from front
+  const frontNeckDepthCalc = baseNeckDepth + easeConfig.neckDepth + seam;
+  const frontNeckWidthCalc = baseNeckWidth + easeConfig.neckWidth + seam;
+  // Back Neck Depth = Front Neck Depth / 3, minimum 1.5" for adults, plus 0.5" allowance
+  const backNeckDepthCalc = Math.max((frontNeckDepthCalc / 3), 1.5) + 0.5;
+
+  // Cap Height - Auto-adjust to 4.5-5" range if calculated value is unsuitable
+  let capHeightCalculated = baseCapHeight + easeConfig.capHeight + seam;
+  const capHeightFinal = (capHeightCalculated < 4.5 || capHeightCalculated > 5)
+    ? 4.75  // Auto-adjust to ideal 4.75" (middle of 4.5-5" range)
+    : capHeightCalculated;
+
+  // SLEEVE LENGTH - Add 1" allowance if sleeve is 11"
+  let sleeveLengthCalc = studioData.sleeveType === 'short'
+    ? (studioData.sleeve * 0.5) + easeConfig.shoulder + seam
+    : studioData.sleeve + easeConfig.shoulder + seam;
+
+  const sleeveLengthFinal = (Math.abs(sleeveLengthCalc - 11) < 0.1)
+    ? sleeveLengthCalc + 1
+    : sleeveLengthCalc;
+
+  // T-SHIRT FULL LENGTH - Add 1" for ease and sewing allowance
+  const fullLengthFinal = studioData.tshirtLength ? parseFloat(studioData.tshirtLength) + 1 : 0;
+
   return {
-    // Tops
-    chestQuarter: studioData.chest / 4,
-    chestWithEase: studioData.chest + ease + seam,
-    waistQuarter: studioData.waist / 4,
-    waistHalf: studioData.waist / 2,
-    hipsQuarter: studioData.hips / 4,
-    shoulderWithEase: studioData.shoulder + (ease * 0.25),
-    neckWidth: studioData.neckCirc / 5,
-    neckDepth: studioData.neckCirc / 5,
-    capHeight: (studioData.chest / 4 + studioData.shoulder) / 2.5,
-    armhole: (studioData.chest / 4 + studioData.shoulder / 3) / 2,
-    sleeveLength: studioData.sleeveType === 'short' ? studioData.sleeve * 0.5 : studioData.sleeve,
-    bicep: studioData.chest * 0.28,
-    elbow: studioData.chest * 0.22,
-    wrist: studioData.chest * 0.18,
-    hemWidth: studioData.chest - 2,
-    cuffWidth: studioData.chest * 0.15,
-    sideSeamLength: studioData.sleeve * 0.8,
-    // Pants
-    pantWaist: studioData.waist + pantEase + seam,
-    pantHip: studioData.hips + (pantEase * 0.5),
-    frontRise: studioData.waist / 2.5,
-    backRise: studioData.waist / 2.2,
-    thigh: studioData.hips * 0.35 + 1,
-    knee: studioData.hips * 0.25,
-    ankle: studioData.hips * 0.18,
-    inseam: studioData.inseam
+    // PROFESSIONAL FITTED MEASUREMENTS (Ready for Pattern Drafting)
+
+    // BASIC MEASUREMENTS - Fit-based ease + seam
+    chest: chestFinal,
+    chestQuarter: chestQuarter,  // Used in sleeve and neckline calculations
+    shoulder: shoulderFinal,
+    shoulderHalf: shoulderHalf,  // Used in armhole and sleeve cap calculations
+
+    // NECK MEASUREMENTS - Fit-based ease + seam
+    frontNeckWidth: frontNeckWidthCalc,
+    frontNeckDepth: frontNeckDepthCalc,
+    backNeckDepth: backNeckDepthCalc,  // Derived from front (÷3) or minimum 1.5"
+
+    // SLEEVE & ARMHOLE - Fit-based ease + seam (Cap Height auto-adjusted)
+    capHeight: capHeightFinal,
+    capHeightCalculated: capHeightCalculated,  // Show original calculation for reference
+    capHeightAdjusted: capHeightCalculated !== capHeightFinal,  // Flag if auto-adjusted
+    armhole: (armCircumference / 2) + easeConfig.armhole + seam,
+    sleeveLength: sleeveLengthFinal,
+    sleeveLengthBase: sleeveLengthCalc,  // Show base calculation for reference
+    sleeveLengthAllowanceAdded: sleeveLengthFinal !== sleeveLengthCalc,  // Flag if 1" allowance was added
+
+    // ARM CIRCUMFERENCE MEASUREMENTS - Fit-based ease + seam
+    bicep: baseBicep + easeConfig.armhole + seam,
+    elbow: baseElbow + (easeConfig.armhole * 0.75) + seam,
+    wrist: baseWrist + (easeConfig.armhole * 0.5) + seam,
+    cuffWidth: baseCuff + easeConfig.armhole + seam,
+
+    // T-SHIRT WAIST & HIPS - Calculate base with ease + seam, then divide by 4 for pattern
+    waistBase: studioData.waist ? parseFloat(studioData.waist) + easeConfig.chest + seam : 0,
+    waist: studioData.waist ? (parseFloat(studioData.waist) + easeConfig.chest + seam) / 4 : 0,
+    hipBase: studioData.hips ? parseFloat(studioData.hips) + (easeConfig.chest * 0.75) + seam : 0,
+    hip: studioData.hips ? (parseFloat(studioData.hips) + (easeConfig.chest * 0.75) + seam) / 4 : 0,
+
+    // T-SHIRT FULL LENGTH - Add 1" for ease and sewing allowance
+    tshirtFullLength: fullLengthFinal,
+    tshirtFullLengthBase: studioData.tshirtLength ? parseFloat(studioData.tshirtLength) : 0,
+
+    // HEM & SIDE SEAM - Fit-based ease + seam
+    hemWidth: (studioData.chest - 2) + easeConfig.chest + seam,
+    sideSeamLength: studioData.sleeve + (easeConfig.shoulder * 0.5) + seam,
+
+    // PANTS MEASUREMENTS - Fit-based ease + seam
+    pantWaist: studioData.waist + easeConfig.pants + seam,
+    pantHip: studioData.hips + (easeConfig.pants * 0.5) + seam,
+    frontRise: (studioData.waist / 2.5) + (easeConfig.pants * 0.25) + seam,
+    backRise: (studioData.waist / 2.2) + (easeConfig.pants * 0.25) + seam,
+    thigh: (studioData.hips * 0.35 + 1) + (easeConfig.pants * 0.5) + seam,
+    knee: (studioData.hips * 0.25) + (easeConfig.pants * 0.25) + seam,
+    ankle: (studioData.hips * 0.18) + (easeConfig.pants * 0.1) + seam,
+    inseam: studioData.inseam + seam
   };
 }
 
@@ -1847,25 +2255,46 @@ function renderMeasurementOutput() {
   if(studioData.garmentType !== 'pants') {
     html += `
       <div>
-        <h4 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 700; color: var(--green);">👕 T-Shirts & Tops</h4>
+        <h4 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 700; color: var(--green);">👕 T-Shirts & Tops (Pattern-Ready)</h4>
         <div style="display: grid; gap: 0.75rem; font-size: 0.9rem; background: var(--lightgray); padding: 1.5rem; border-radius: 8px;">
-          ${renderMeasurementRow('Chest', calc.chestWithEase, u)}
-          ${renderMeasurementRow('Shoulder', calc.shoulderWithEase, u)}
-          ${renderMeasurementRow('Neck Width', calc.neckWidth, u)}
-          ${renderMeasurementRow('Neck Depth', calc.neckDepth, u)}
-          ${renderMeasurementRow('Cap Height', calc.capHeight, u)}
+          <div style="font-weight: 600; color: var(--green); margin-bottom: 0.5rem; font-size: 0.95rem;">🔷 Pattern Measurements</div>
+          ${renderMeasurementRow('Chest Quarter', calc.chestQuarter, u)}
+          ${renderMeasurementRow('Shoulder Half', calc.shoulderHalf, u)}
+
+          <div style="font-weight: 600; color: var(--green); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem;">Neck (Front & Back)</div>
+          ${renderMeasurementRow('Front Neck Width', calc.frontNeckWidth, u)}
+          ${renderMeasurementRow('Front Neck Depth', calc.frontNeckDepth, u)}
+          ${renderMeasurementRow('Back Neck Depth', calc.backNeckDepth, u)}
+
+          <div style="font-weight: 600; color: var(--green); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem;">Sleeve & Armhole</div>
+          ${renderMeasurementRow('Cap Height', calc.capHeight, u)}${calc.capHeightAdjusted ? `<div style="font-size: 0.85rem; color: #ff6b35; margin-top: 0.25rem;">⚠️ Auto-adjusted to optimal range (4.5-5")</div>` : ''}
           ${renderMeasurementRow('Armhole', calc.armhole, u)}
+          ${renderMeasurementRow('Sleeve Length', calc.sleeveLength, u)}${calc.sleeveLengthAllowanceAdded ? `<div style="font-size: 0.85rem; color: #ff6b35; margin-top: 0.25rem;">✓ +1" allowance added for 11" length</div>` : ''}
+
+          <div style="font-weight: 600; color: var(--green); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem;">Waist & Hips (T-Shirt Fit)</div>
+          ${renderMeasurementRow('Waist', calc.waist, u)}
+          ${renderMeasurementRow('Hip', calc.hip, u)}
+
+          ${studioData.sleeveType === 'long' && (studioData.bicepCirc || studioData.elbowCirc || studioData.wristCirc) ? `
+            <div style="font-weight: 600; color: var(--green); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem;">📏 Long Sleeve Input Measurements</div>
+            ${studioData.bicepCirc ? renderMeasurementRow('Bicep Circumference', studioData.bicepCirc, u) : ''}
+            ${studioData.bicepLength ? renderMeasurementRow('Bicep Length', studioData.bicepLength, u) : ''}
+            ${studioData.elbowCirc ? renderMeasurementRow('Elbow Circumference', studioData.elbowCirc, u) : ''}
+            ${studioData.elbowLength ? renderMeasurementRow('Elbow Length', studioData.elbowLength, u) : ''}
+            ${studioData.wristCirc ? renderMeasurementRow('Wrist Circumference', studioData.wristCirc, u) : ''}
+            ${studioData.wristLength ? renderMeasurementRow('Wrist Length', studioData.wristLength, u) : ''}
+          ` : ''}
+
           ${studioData.sleeveType === 'long' ? `
-            ${renderMeasurementRow('Sleeve Length', calc.sleeveLength, u)}
+            <div style="font-weight: 600; color: var(--green); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem;">Calculated Sleeve Dimensions</div>
             ${renderMeasurementRow('Bicep', calc.bicep, u)}
             ${renderMeasurementRow('Elbow', calc.elbow, u)}
             ${renderMeasurementRow('Wrist', calc.wrist, u)}
             ${renderMeasurementRow('Cuff Width', calc.cuffWidth, u)}
-          ` : `
-            ${renderMeasurementRow('Sleeve Length', calc.sleeveLength, u)}
-          `}
-          ${renderMeasurementRow('Hem Width', calc.hemWidth, u)}
-          ${renderMeasurementRow('Side Seam Length', calc.sideSeamLength, u)}
+          ` : ''}
+
+          <div style="font-weight: 600; color: var(--green); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem;">Garment Length</div>
+          ${studioData.tshirtLength ? renderMeasurementRow('T-Shirt Full Length', calc.tshirtFullLength, u) : '<div style="color: var(--gray); font-size: 0.85rem; padding: 0.5rem 0;">T-Shirt Full Length: Not specified</div>'}
         </div>
       </div>
     `;
@@ -1874,16 +2303,21 @@ function renderMeasurementOutput() {
   if(studioData.garmentType !== 'tops') {
     html += `
       <div>
-        <h4 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 700; color: var(--green);">👖 Pants / Bottoms</h4>
+        <h4 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 700; color: var(--green);">👖 Pants / Bottoms (Pattern-Ready)</h4>
         <div style="display: grid; gap: 0.75rem; font-size: 0.9rem; background: var(--lightgray); padding: 1.5rem; border-radius: 8px;">
+          <div style="font-weight: 600; color: var(--green); margin-bottom: 0.5rem; font-size: 0.95rem;">Waist & Hip</div>
           ${renderMeasurementRow('Waist', calc.pantWaist, u)}
           ${renderMeasurementRow('Hip', calc.pantHip, u)}
+
+          <div style="font-weight: 600; color: var(--green); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem;">Rise & Inseam</div>
           ${renderMeasurementRow('Front Rise', calc.frontRise, u)}
           ${renderMeasurementRow('Back Rise', calc.backRise, u)}
+          ${renderMeasurementRow('Inseam', calc.inseam, u)}
+
+          <div style="font-weight: 600; color: var(--green); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem;">Leg Measurements</div>
           ${renderMeasurementRow('Thigh', calc.thigh, u)}
           ${renderMeasurementRow('Knee', calc.knee, u)}
           ${renderMeasurementRow('Ankle', calc.ankle, u)}
-          ${renderMeasurementRow('Inseam', calc.inseam, u)}
         </div>
       </div>
     `;
@@ -1910,17 +2344,90 @@ function saveMeasurementProfile() {
     return;
   }
 
-  const profile = {
+  // Create customer profile object
+  const customerProfile = {
+    id: Date.now().toString(),
     name: studioData.customerName,
-    date: new Date().toLocaleDateString(),
-    data: JSON.parse(JSON.stringify(studioData))
+    gender: studioData.gender,
+    age: studioData.age,
+    height: studioData.height,
+    weight: studioData.weight,
+    unit: studioData.unit,
+    // Body measurements
+    chest: studioData.chest,
+    waist: studioData.waist,
+    hips: studioData.hips,
+    shoulder: studioData.shoulder,
+    neckCirc: studioData.neckCirc,
+    sleeve: studioData.sleeve,
+    tshirtLength: studioData.tshirtLength,
+    inseam: studioData.inseam,
+    // Sleeve-specific measurements
+    bicepCirc: studioData.bicepCirc,
+    bicepLength: studioData.bicepLength,
+    wristCirc: studioData.wristCirc,
+    wristLength: studioData.wristLength,
+    elbowCirc: studioData.elbowCirc,
+    elbowLength: studioData.elbowLength,
+    // Garment & fit
+    garmentType: studioData.garmentType,
+    sleeveType: studioData.sleeveType,
+    fitStyle: studioData.fitStyle,
+    fabricType: studioData.fabricType,
+    seamAllowance: studioData.seamAllowance,
+    // Calculated measurements
+    calculated: studioData.calculated,
+    // Metadata
+    savedDate: new Date().toISOString(),
+    tailorName: currentUser.name
   };
 
-  let profiles = JSON.parse(localStorage.getItem('measurementProfiles') || '[]');
-  profiles.push(profile);
-  localStorage.setItem('measurementProfiles', JSON.stringify(profiles));
+  // Check if updating existing profile or creating new one
+  if(studioData.profileIndex !== undefined) {
+    customerProfiles[studioData.profileIndex] = customerProfile;
+    delete studioData.profileIndex;
+    alert(`✓ Profile updated for ${studioData.customerName}`);
+  } else {
+    customerProfiles.push(customerProfile);
+    alert(`✓ New customer profile saved for ${studioData.customerName}!`);
+  }
 
-  alert(`✓ Profile saved for ${studioData.customerName}`);
+  saveCustomerProfiles();
+
+  // Reset studio data for next customer
+  setTimeout(() => {
+    studioStep = 1;
+    studioData = {
+      customerName: '',
+      gender: 'male',
+      age: 30,
+      height: 70,
+      weight: 180,
+      unit: 'inches',
+      chest: '',
+      waist: '',
+      hips: '',
+      shoulder: '',
+      neckCirc: '',
+      sleeve: '',
+      tshirtLength: '',
+      inseam: '',
+      bicepCirc: '',
+      bicepLength: '',
+      wristCirc: '',
+      wristLength: '',
+      elbowCirc: '',
+      elbowLength: '',
+      garmentType: 'tops',
+      sleeveType: 'long',
+      fitStyle: 'regular',
+      fabricType: 'non-stretch',
+      seamAllowance: true,
+      calculated: {},
+      overrides: {}
+    };
+    renderMeasurementStudio();
+  }, 1500);
 }
 
 function printMeasurements() {
@@ -1951,6 +2458,7 @@ window.addEventListener('DOMContentLoaded', function() {
   const saved = localStorage.getItem('sewbridgeUser');
   if(saved) {
     currentUser = JSON.parse(saved);
+    loadCustomerProfiles();  // Load customer profiles when app starts
     showApp();
   }
 });
